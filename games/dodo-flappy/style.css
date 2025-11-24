@@ -1,0 +1,137 @@
+/* --- CSS STYLES --- */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    touch-action: none;
+    user-select: none;
+}
+
+#gameCanvas {
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+    animation: float 3s ease-in-out infinite;
+    max-width: 80%;
+    border: 4px solid #0C0C0C;
+}
+
+h1 {
+    color: #C1FF00;
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    text-shadow: 2px 2px 0px #0C0C0C;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+p {
+    color: #0C0C0C;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+button {
+    background: #C1FF00;
+    color: #0C0C0C;
+    border: 3px solid #0C0C0C;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 900;
+    transition: transform 0.1s;
+    box-shadow: 4px 4px 0 #0C0C0C;
+    text-transform: uppercase;
+}
+
+button:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.floating-text {
+    position: absolute;
+    font-family: 'Impact', sans-serif;
+    font-weight: 900;
+    pointer-events: none;
+    animation: fadeUp 1.5s forwards;
+    -webkit-text-stroke: 1.5px black;
+    color: #C1FF00;
+    font-size: 32px;
+    /* Made slightly larger */
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.5) rotate(-10deg);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1.2) rotate(5deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(1.0) rotate(0deg);
+    }
+}
+
+#mrr-display {
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Impact', sans-serif;
+    font-size: 50px;
+    color: #C1FF00;
+    -webkit-text-stroke: 2px #0C0C0C;
+    pointer-events: none;
+}

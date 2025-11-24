@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dodo Dash: The MRR Run</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <canvas id="gameCanvas"></canvas>
+    <div id="mrr-display" class="hidden">$0 MRR</div>
+
+    <div id="ui-layer">
+        <div id="startScreen" class="card">
+            <h1>DODO DASH</h1>
+            <p>Tap or Space to fly.<br>Avoid churn. Build MRR.</p>
+            <button onclick="startGame()">START SCALING</button>
+        </div>
+
+        <div id="gameOverScreen" class="card hidden">
+            <h1 id="deathTitle">Bankrupt</h1>
+            <p id="deathMessage">Out of runway.</p>
+            <div style="margin-bottom: 15px; font-size: 1.5rem; font-weight: bold; color: #0C0C0C">
+                Valuation: <span id="finalScore" style="color: #C1FF00; -webkit-text-stroke: 1px black;">$0k</span>
+            </div>
+            <div style="margin-bottom: 20px; font-size: 0.9rem; color: #666;">
+                All-Time High: <span id="bestScore">$0k</span>
+            </div>
+            <button onclick="resetGame()">PIVOT & RESTART</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
