@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Production Build Script for Dodo Flappy
+ * Production Build Script for Flappy Dodo
  * Minifies HTML, CSS, and JS and copies assets to dist folder
  */
 

@@ -1,0 +1,13 @@
+{
+  "name": "dodo-games",
+  "version": "1.0.0",
+  "description": "Collection of Dodo games for Cloudflare Pages",
+  "scripts": {
+    "build": "node build.js",
+    "preview": "npx wrangler pages dev dist"
+  },
+  "keywords": ["games", "cloudflare-pages"],
+  "author": "",
+  "license": "ISC"
+}
+

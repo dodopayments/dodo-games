@@ -1,0 +1,42 @@
+# Cloudflare Pages Deployment Checklist
+
+## Quick Deploy Steps
+
+### 1. Build the Project
+```bash
+npm run build
+```
+
+### 2. Deploy via Cloudflare Dashboard
+
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
+2. Navigate to **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**
+3. Connect your Git repository
+4. Configure build settings:
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+   - **Root directory:** `/` (leave empty)
+5. Click **Save and Deploy**
+
+### 3. Set Up Custom Domain
+
+1. In your Pages project, go to **Custom domains**
+2. Click **Set up a custom domain**
+3. Enter: `games.dodopayments.com`
+4. Add DNS record:
+   - **Type:** CNAME
+   - **Name:** `games`
+   - **Target:** Your Pages domain (shown in Cloudflare)
+   - **Proxy:** Enabled (orange cloud)
+
+### 4. Verify Deployment
+
+- Landing page: `https://games.dodopayments.com/`
+- Flappy Dodo: `https://games.dodopayments.com/flappy-dodo`
+
+## Troubleshooting
+
+- **404 errors:** Make sure build output directory is set to `dist`
+- **Assets not loading:** Verify asset paths are relative (e.g., `assets/image.svg`)
+- **Build fails:** Check that `npm run build` works locally first
+

@@ -1,4 +1,4 @@
-# Dodo Dash: The MRR Run
+# Flappy Dodo: The MRR Run
 
 A Flappy Bird-style game with a startup/business theme. Navigate your dodo through obstacles while building MRR (Monthly Recurring Revenue) and avoiding churn.
 
