@@ -1,10 +1,23 @@
 # Dodo Games
 
-A collection of web games deployed on Cloudflare Pages.
+<p align="left">
+  <a href="https://discord.gg/bYqAp4ayYh">
+    <img src="https://img.shields.io/discord/1305511580854779984?label=Join%20Discord&logo=discord" alt="Join Discord" />
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="License: GPLv3" />
+  </a>
+</p>
+
+Dodo Games is an engaging collection of playful, custom-built games created by and for the Dodo Payments community.
 
 ## Games
 
-- **[Flappy Dodo](/flappy-dodo)** - A Flappy Bird-style game with a startup/business theme
+**[Flappy Dodo](/flappy-dodo)** - A Flappy Bird-style game with a startup/business theme
+
+<img src="./images/flappy-dodo.png" alt="Flappy Dodo Screenshot" width="400">
+
+
 
 ## Local Development
 
