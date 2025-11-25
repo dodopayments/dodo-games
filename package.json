@@ -4,7 +4,8 @@
   "description": "Collection of Dodo games for Cloudflare Pages",
   "scripts": {
     "build": "node build.js",
-    "preview": "npx wrangler pages dev dist"
+    "preview": "npx wrangler pages dev dist",
+    "deploy": "npm run build && npx wrangler pages deploy dist"
   },
   "keywords": ["games", "cloudflare-pages"],
   "author": "",

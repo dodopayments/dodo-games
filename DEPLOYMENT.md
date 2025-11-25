@@ -7,7 +7,19 @@
 npm run build
 ```
 
-### 2. Deploy via Cloudflare Dashboard
+### 2. Deploy via Wrangler CLI
+
+```bash
+npm run build
+npx wrangler pages deploy dist
+```
+
+Or use the deploy script:
+```bash
+npm run deploy
+```
+
+### 3. Deploy via Cloudflare Dashboard
 
 1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
 2. Navigate to **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**
@@ -18,7 +30,7 @@ npm run build
    - **Root directory:** `/` (leave empty)
 5. Click **Save and Deploy**
 
-### 3. Set Up Custom Domain
+### 4. Set Up Custom Domain
 
 1. In your Pages project, go to **Custom domains**
 2. Click **Set up a custom domain**
@@ -29,7 +41,7 @@ npm run build
    - **Target:** Your Pages domain (shown in Cloudflare)
    - **Proxy:** Enabled (orange cloud)
 
-### 4. Verify Deployment
+### 5. Verify Deployment
 
 - Landing page: `https://games.dodopayments.com/`
 - Flappy Dodo: `https://games.dodopayments.com/flappy-dodo`
