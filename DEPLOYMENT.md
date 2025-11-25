@@ -35,6 +35,10 @@ npx wrangler login
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
    - **Root directory:** `/` (leave empty)
+   - **Deploy command:** `npx wrangler pages deploy dist --project-name=dodo-games` (if required)
+   - **Note:** Cloudflare Pages automatically provides the `CLOUDFLARE_API_TOKEN` environment variable, so wrangler will authenticate automatically
+   - **Version command:** Leave this EMPTY (not needed for static sites)
+   - **Important:** Make sure you have an API token configured in your Cloudflare Pages project settings (Settings → API tokens)
 5. Click **Save and Deploy**
 
 ### 4. Set Up Custom Domain
@@ -56,10 +60,18 @@ npx wrangler login
 ## Troubleshooting
 
 - **Authentication error [code: 10000]:** 
-  - This error occurs when Cloudflare Pages detects `wrangler.toml` and tries to use Wrangler during the build
-  - **Solution:** The `wrangler.toml` file has been removed from the repository as it's not needed for dashboard deployments
-  - The build script (`build.js`) is a pure Node.js script that doesn't require Wrangler or authentication
-  - For CLI deployments, use command-line flags instead (see "Deploy via Wrangler CLI" section)
+  - This error occurs when Cloudflare Pages tries to use Wrangler but can't authenticate
+  - **Solution:** 
+    1. **Check API Token:** Go to your Cloudflare Pages project → Settings → API tokens
+    2. Make sure there's a valid API token configured (Cloudflare should create one automatically when you connect Git)
+    3. If no token exists, you may need to regenerate it or check your project settings
+    4. The deploy command should be: `npx wrangler pages deploy dist --project-name=dodo-games`
+    5. Cloudflare Pages will automatically use the API token from project settings - you don't need to set it manually
+- **Not deploying dist folder automatically:**
+  - If you have a "Deploy command" set, Cloudflare Pages uses that command instead of auto-deploying
+  - **Solution:** Use `npx wrangler pages deploy dist --project-name=dodo-games` as the deploy command
+  - Make sure the API token is configured in your project settings
+  - The build output directory (`dist`) setting is still important for reference, but the deploy command handles the actual deployment
 - **404 errors:** Make sure build output directory is set to `dist`
 - **Assets not loading:** Verify asset paths are relative (e.g., `assets/image.svg`)
 - **Build fails:** Check that `npm run build` works locally first
