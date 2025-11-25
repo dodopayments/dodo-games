@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node build.js",
     "preview": "npx wrangler pages dev dist",
-    "deploy": "npm run build && npx wrangler pages deploy dist"
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name=dodo-games"
   },
   "keywords": ["games", "cloudflare-pages"],
   "author": "",

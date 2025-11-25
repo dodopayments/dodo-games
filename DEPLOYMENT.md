@@ -9,14 +9,21 @@ npm run build
 
 ### 2. Deploy via Wrangler CLI
 
+**Note:** For CLI deployments, you don't need `wrangler.toml`. All configuration is done via command-line flags.
+
 ```bash
 npm run build
-npx wrangler pages deploy dist
+npx wrangler pages deploy dist --project-name=dodo-games
 ```
 
 Or use the deploy script:
 ```bash
 npm run deploy
+```
+
+**Authentication:** Make sure you're logged in:
+```bash
+npx wrangler login
 ```
 
 ### 3. Deploy via Cloudflare Dashboard
@@ -48,6 +55,11 @@ npm run deploy
 
 ## Troubleshooting
 
+- **Authentication error [code: 10000]:** 
+  - This error occurs when Cloudflare Pages detects `wrangler.toml` and tries to use Wrangler during the build
+  - **Solution:** The `wrangler.toml` file has been removed from the repository as it's not needed for dashboard deployments
+  - The build script (`build.js`) is a pure Node.js script that doesn't require Wrangler or authentication
+  - For CLI deployments, use command-line flags instead (see "Deploy via Wrangler CLI" section)
 - **404 errors:** Make sure build output directory is set to `dist`
 - **Assets not loading:** Verify asset paths are relative (e.g., `assets/image.svg`)
 - **Build fails:** Check that `npm run build` works locally first
