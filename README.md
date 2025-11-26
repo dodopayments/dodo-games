@@ -17,6 +17,9 @@ Dodo Games is an engaging collection of playful, custom-built games created by a
 
 <img src="./flappy-dodo.png" alt="Flappy Dodo Screenshot" width="400">
 
+**[Defend the Gateway](/ddos-defense-dodo)** - A tower defense-style arcade game where you protect Dodo Payments' gateway from a DDoS attack. 
+
+<img src="./ddos-defense-dodo.png" alt="Defend the Gateway Screenshot" width="400">
 
 
 ## Local Development
@@ -137,7 +140,8 @@ dist/
 
 After deployment, games will be accessible at:
 - Landing page: `https://games.dodopayments.com/`
-- Dodo Flappy: `https://games.dodopayments.com/flappy-dodo`
+- Flappy Dodo: `https://games.dodopayments.com/flappy-dodo`
+- Defend the Gateway: `https://games.dodopayments.com/ddos-defense-dodo`
 
 ### Adding New Games
 
@@ -158,11 +162,18 @@ dodo-games/
 ├── build.js            # Build script for all games
 ├── wrangler.toml       # Cloudflare Pages configuration
 ├── README.md           # This file
-└── flappy-dodo/        # Game directory
+├── flappy-dodo/        # Game directory
+│   ├── index.html
+│   ├── script.js
+│   ├── style.css
+│   ├── assets/
+│   └── README.md
+└── ddos-defense-dodo/  # Game directory
     ├── index.html
-    ├── script.js
-    ├── style.css
     ├── assets/
+    │   ├── script.js
+    │   ├── style.css
+    │   └── images/
     └── README.md
 ```
 

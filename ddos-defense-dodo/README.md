@@ -1,6 +1,6 @@
 # Defend the Gateway
 
-A tower defense-style arcade game where you protect DoDo Payments' gateway from a DDoS attack. Click or tap incoming bot requests to block them before they overwhelm your system.
+A tower defense-style arcade game where you protect Dodo Payments' gateway from a DDoS attack. Click or tap incoming bot requests to block them before they overwhelm your system.
 
 ## How to Play
 
