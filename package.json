@@ -7,8 +7,16 @@
     "preview": "npx wrangler pages dev dist",
     "deploy": "npm run build && npx wrangler pages deploy dist --project-name=dodo-games"
   },
-  "keywords": ["games", "cloudflare-pages"],
+  "keywords": [
+    "games",
+    "cloudflare-pages"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "fs-extra": "^11.3.2",
+    "glob": "^13.0.0",
+    "terser": "^5.44.1"
+  }
 }
-

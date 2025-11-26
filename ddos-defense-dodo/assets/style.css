@@ -1,0 +1,158 @@
+:root {
+    --brand-lime: #ccff00; /* Matching the DoDo Lime */
+    --brand-dark: #111111;
+    --brand-gray: #222222;
+    --ui-font: 'Courier New', Courier, monospace;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--brand-dark);
+    color: white;
+    font-family: var(--ui-font);
+    touch-action: none; /* Prevent zoom on mobile */
+}
+
+canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* UI OVERLAYS */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: opacity 0.3s;
+}
+
+.hidden {
+    display: none !important;
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 0 0 10px 0;
+    color: var(--brand-lime);
+    text-shadow: 0 0 10px var(--brand-lime);
+}
+
+p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+.btn {
+    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    background: var(--brand-lime);
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-family: var(--ui-font);
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px var(--brand-lime);
+    transition: transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn:hover {
+    background: white;
+}
+
+/* HUD */
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 5;
+    text-shadow: 1px 1px 0 #000;
+}
+
+.stat-box {
+    background: rgba(0,0,0,0.5);
+    padding: 5px 10px;
+    border: 1px solid var(--brand-lime);
+    border-radius: 4px;
+}
+
+/* UPGRADE MENU */
+#upgrade-menu {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 5;
+}
+
+.upgrade-btn {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #555;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-family: var(--ui-font);
+    width: 100px;
+    pointer-events: auto;
+    transition: all 0.2s;
+}
+
+.upgrade-btn.affordable {
+    border-color: var(--brand-lime);
+    color: var(--brand-lime);
+}
+
+.upgrade-btn:active {
+    background: #333;
+}
+
+.upgrade-cost {
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    color: #888;
+}
+
+.upgrade-btn.affordable .upgrade-cost {
+    color: #fff;
+}
+
+/* LOGO WATERMARK */
+#watermark {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.5;
+    width: 50px;
+    z-index: 2;
+}

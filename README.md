@@ -15,7 +15,7 @@ Dodo Games is an engaging collection of playful, custom-built games created by a
 
 **[Flappy Dodo](/flappy-dodo)** - A Flappy Bird-style game with a startup/business theme
 
-<img src="./images/flappy-dodo.png" alt="Flappy Dodo Screenshot" width="400">
+<img src="./flappy-dodo.png" alt="Flappy Dodo Screenshot" width="400">
 
 
 

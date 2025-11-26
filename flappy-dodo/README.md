@@ -15,18 +15,19 @@ Simply open `index.html` in a web browser. No build step required for developmen
 
 ## Building for Production
 
-Run the build script to create a minified production version:
+Run the build script at root of the project to create a minified production version:
 
 ```bash
 node build.js
 ```
 
-This will create a `dist` folder with minified HTML, CSS, and JavaScript files ready for deployment.
+This will create a top-level `dist` folder with minified HTML, CSS, and JavaScript files ready for deployment.
 
 ## Project Structure
 
-- `index.html` - Main game page
-- `script.js` - Game logic and mechanics
-- `style.css` - Game styling
-- `assets/` - Game sprites (dodo logo, dead sprite)
-- `build.js` - Production build script
+- `index.html`              - Main game page
+- `assets/script.js`        - Game logic and mechanics
+- `assets/style.css`        - Game styling
+- `assets/images/{images}`  - Image assets
+
+

@@ -23,8 +23,8 @@ const dodoSprites = {
     dead: new Image()
 };
 
-dodoSprites.normal.src = 'assets/dodo-logo.svg';
-dodoSprites.dead.src = 'assets/dodo-dead.svg';
+dodoSprites.normal.src = 'assets/images/dodo-logo.svg';
+dodoSprites.dead.src = 'assets/images/dodo-dead.svg';
 
 let assetsLoaded = false;
 let loadedCount = 0;

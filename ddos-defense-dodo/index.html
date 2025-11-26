@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Defend the Gateway - DoDo Payments</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="assets/script.js"></script>
+</head>
+<body>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="hud" class="hidden">
+        <div class="stat-box">CORE INTEGRITY: <span id="healthDisplay">100%</span></div>
+        <div class="stat-box">WAVE: <span id="waveDisplay">1</span></div>
+        <div class="stat-box">BANDWIDTH (PTS): <span id="scoreDisplay">0</span></div>
+    </div>
+
+    <div id="upgrade-menu" class="hidden">
+        <button class="upgrade-btn" id="btn-firewall">
+            🔥 Firewall
+            <span class="upgrade-cost">500 pts</span>
+        </button>
+        <button class="upgrade-btn" id="btn-limiter">
+            🚦 Rate Limit
+            <span class="upgrade-cost">800 pts</span>
+        </button>
+        <button class="upgrade-btn" id="btn-heal">
+            ❤️ Reboot
+            <span class="upgrade-cost">300 pts</span>
+        </button>
+    </div>
+
+    <div id="startScreen" class="screen">
+        <img src="assets/images/dodo-logo.png" alt="DoDo" style="width: 80px; margin-bottom: 20px; border-radius: 50%;">
+        <h1>DEFEND THE GATEWAY</h1>
+        <p>Our MoR just got DDoS'ed heavily.<br>We survived, so we made a game about it.</p>
+        <p style="font-size: 0.9rem; color: #aaa;">Click or Tap bots to block packets.<br>Protect the Core.</p>
+        <button class="btn" id="startBtn">INITIATE DEFENSE</button>
+    </div>
+
+    <div id="gameOverScreen" class="screen hidden">
+        <h1 style="color: #ff3333">HTTP 503</h1>
+        <h2>GATEWAY OVERWHELMED</h2>
+        <p>"Even a DoDo can't fly through that much traffic."</p>
+        <br>
+        <div class="stat-box" style="font-size: 1.5rem; border: none;">
+            PACKETS BLOCKED: <span id="finalScore">0</span>
+        </div>
+        <div class="stat-box" style="font-size: 1rem; margin-top: 10px; border: none; color: #888;">
+             HIGH SCORE: <span id="highScore">0</span>
+        </div>
+        <button class="btn" id="rebootBtn">REBOOT SYSTEM</button>
+        <br><br>
+        <button class="upgrade-btn" id="shareBtn" style="width: auto; padding: 10px 20px;">
+            🐦 Share Result
+        </button>
+    </div>
+</body>
+</html>

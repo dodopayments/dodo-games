@@ -3,102 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dodo Games</title>
+    <title>Dodo Games | Viral Arcade</title>
     <style>
+        :root {
+            --primary: #C1FF00; /* Dodo Green */
+            --bg-dark: #050505;
+            --card-bg: #111111;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #0C0C0C 0%, #1a1a1a 100%);
-            color: #fff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 2rem;
+            overflow-x: hidden;
+            position: relative;
         }
-        .container {
-            max-width: 800px;
+
+        /* Background Animation Layer */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            padding: 4rem 2rem;
             text-align: center;
+            z-index: 1;
         }
+
+        /* Hero Section */
+        .hero {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .logo-wrapper {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 50px rgba(193, 255, 0, 0.3);
+            animation: bounce 3s infinite ease-in-out;
+            transition: transform 0.3s ease-out; 
+            cursor: pointer; /* Hints that it's interactive */
+        }
+        
+        /* The Hover Effect */
+        .logo-wrapper:hover {
+            /* We chain two animations here:
+            1. 'spin-entry': Runs once for 0.5s.
+            2. 'hover-pulse': Loops infinitely, starting after a 0.5s delay 
+            */
+            animation: 
+                spin-entry 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                hover-pulse 1.5s ease-in-out infinite 0.5s;
+        }
+
+        .logo-wrapper img {
+            width: 80%;
+            height: auto;
+        }
+
         h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #C1FF00;
-            text-shadow: 0 0 20px rgba(193, 255, 0, 0.5);
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 0.5rem;
         }
+
+        h1 span {
+            color: var(--primary);
+            -webkit-text-stroke: 1px transparent;
+        }
+
         .subtitle {
             font-size: 1.2rem;
-            color: #999;
-            margin-bottom: 3rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto;
         }
+
+        /* Grid Layout */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
+            perspective: 1000px;
         }
+
+        /* Game Card Styles */
         .game-card {
-            background: #1a1a1a;
-            border: 2px solid #333;
-            border-radius: 12px;
-            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 2.5rem;
             text-decoration: none;
-            color: #fff;
-            transition: all 0.3s ease;
+            color: var(--text-main);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: space-between;
+            height: 250px;
+            text-align: left;
         }
+
+        /* Hover Effects */
         .game-card:hover {
-            border-color: #C1FF00;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(193, 255, 0, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        0 0 20px rgba(193, 255, 0, 0.1);
         }
+
+        .game-card:hover h2 {
+            color: var(--primary);
+            transform: translateX(10px);
+        }
+
         .game-card h2 {
-            color: #C1FF00;
+            font-size: 2rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
-            font-size: 1.5rem;
+            transition: transform 0.3s ease;
         }
+
         .game-card p {
-            color: #999;
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .play-btn {
+            margin-top: auto;
+            display: inline-block;
             font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            opacity: 0.8;
         }
-        .coming-soon {
-            opacity: 0.5;
-            cursor: not-allowed;
+
+        .game-card:hover .play-btn {
+            opacity: 1;
+            text-decoration: underline;
         }
-        .coming-soon:hover {
-            transform: none;
-            border-color: #333;
+
+        /* Tags */
+        .tag-last-played {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            display: none; /* Hidden by default */
+            animation: pulse 2s infinite;
+        }
+
+        .tag-new {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #FF4757;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(193, 255, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(193, 255, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(193, 255, 0, 0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .games-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Animation 1: The Fast Spin & Grow */
+        @keyframes spin-entry {
+            0% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 50px rgba(193, 255, 0, 0.3);
+            }
+            100% {
+                /* Rotate 360deg for a full spin, Scale up to 1.2x */
+                transform: scale(1.2) rotate(360deg);
+                /* Intensify the glow */
+                box-shadow: 0 0 80px rgba(193, 255, 0, 0.6);
+            }
+        }
+
+        /* Animation 2: The Steady Pulsate */
+        @keyframes hover-pulse {
+            0% {
+                transform: scale(1.2); /* Start where spin-entry left off */
+                box-shadow: 0 0 80px rgba(193, 255, 0, 0.6);
+            }
+            50% {
+                transform: scale(1.3); /* Grow slightly bigger */
+                box-shadow: 0 0 100px rgba(193, 255, 0, 0.9); /* Max glow */
+            }
+            100% {
+                transform: scale(1.2); /* Return to base hover size */
+                box-shadow: 0 0 80px rgba(193, 255, 0, 0.6);
+            }
         }
     </style>
 </head>
 <body>
+
+    <canvas id="bg-canvas"></canvas>
+
     <div class="container">
-        <h1>DODO GAMES</h1>
-        <p class="subtitle">Play our collection of games</p>
+        <div class="hero">
+            <div class="logo-wrapper">
+                <img src="assets/images/dodo-logo.png" alt="Dodo Logo">
+            </div>
+            <h1>Dodo <span>Games</span></h1>
+            <p class="subtitle">Procrastinate responsibly. Build your empire of high scores while avoiding actual work.</p>
+        </div>
         
         <div class="games-grid">
-            <a href="/flappy-dodo" class="game-card">
-                <h2>Flappy Dodo</h2>
-                <p>Avoid churn. Build MRR.</p>
+            <a href="/flappy-dodo" class="game-card" onclick="saveGame('Flappy Dodo')">
+                <span class="tag-new">Hot</span>
+                <span class="tag-last-played" data-game="Flappy Dodo">RESUME?</span>
+                <div>
+                    <h2>Flappy Dodo</h2>
+                    <p>Navigate the volatile market. Avoid the red pipes of churn. Keep your MRR flying high.</p>
+                </div>
+                <span class="play-btn">Play Now &rarr;</span>
             </a>
-            
-            <!-- Add more games here as they're created -->
-            <!--
-            <a href="/game-2" class="game-card">
-                <h2>Game 2</h2>
-                <p>Coming soon</p>
+
+            <a href="/ddos-defense-dodo" class="game-card" onclick="saveGame('DoDo Defense DoDo')">
+                <span class="tag-last-played" data-game="DoDo Defense DoDo">RESUME?</span>
+                <div>
+                    <h2>DoDo Core Defender</h2>
+                    <p>Protect the DoDo Core from DDOS bots. Use the powers of firewall, rate-limiter and auto-healing infra.</p>
+                </div>
+                <span class="play-btn">Play Now &rarr;</span>
             </a>
-            -->
+
+            <a href="#" class="game-card" style="opacity: 0.5; cursor: default;">
+                <div>
+                    <h2>Dodo Dash</h2>
+                    <p>Run from the compliance auditors. Coming Soon.</p>
+                </div>
+                <span class="play-btn">Locked</span>
+            </a>
         </div>
     </div>
+
+    <script>
+        // --- 1. Local Storage Logic ---
+        
+        function saveGame(gameName) {
+            localStorage.setItem('dodo_last_played', gameName);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const lastPlayed = localStorage.getItem('dodo_last_played');
+            if (lastPlayed) {
+                // Find all tags
+                const tags = document.querySelectorAll('.tag-last-played');
+                tags.forEach(tag => {
+                    if (tag.getAttribute('data-game') === lastPlayed) {
+                        tag.style.display = 'block';
+                    }
+                });
+            }
+        });
+
+        // --- 2. Background Animation Logic ---
+        
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Financial symbols for the rain
+        const chars = '$₹%€£DODO';
+        const fontSize = 14;
+        const columns = width / fontSize;
+        const drops = [];
+
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function draw() {
+            // Semi-transparent black to create trail effect
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = '#C1FF00'; // Dodo Green
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if(drops[i] * fontSize > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(draw, 33);
+    </script>
 </body>
 </html>
-
