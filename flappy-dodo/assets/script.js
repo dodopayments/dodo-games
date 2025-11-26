@@ -1,17 +1,17 @@
-// --- GAME BALANCING CONFIGURATION (Tweak these!) ---
 const CONFIG = {
-    collisionBuffer: 4,   // Pixels of "forgiveness" on collisions (higher = easier)
-    initialSpeed: 3.0,     // Starting horizontal speed (lower = easier)
-    initialGap: 260,       // Starting vertical gap size (higher = easier)
-    gravity: 0.12,         // Gravity force (lower = floatier/easier)
-    jumpStrength: -4.5,    // Jump height
+    desiredFPS: 60,        // Game logic updates per second
+    collisionBuffer: 4,    // Pixels of "forgiveness" on collisions
+    initialSpeed: 6.0,     // Starting horizontal speed
+    initialGap: 260,       // Starting vertical gap size
+    gravity: 0.40,         // Gravity force
+    jumpStrength: -7.5,    // Jump height
 
     // Progressive Difficulty
     rampUpInterval: 5,     // Increase difficulty every X points
-    speedIncrease: 0.25,   // How much speed increases per level
-    gapDecrease: 5,        // How much the gap shrinks per level
+    speedIncrease: 0.50,   // How much speed increases per level
+    gapDecrease: 10,        // How much the gap shrinks per level
     minGap: 130,           // The tightest the gap can ever get
-    maxSpeed: 6.5          // The fastest the game can go
+    maxSpeed: 12.0          // The fastest the game can go
 };
 
 // --- DEV CONFIG ---
@@ -28,6 +28,7 @@ dodoSprites.dead.src = 'assets/images/dodo-dead.svg';
 
 let assetsLoaded = false;
 let loadedCount = 0;
+// Fallback in case onload fails
 setTimeout(() => { if (!assetsLoaded) assetsLoaded = true; }, 1000);
 
 for (let key in dodoSprites) {
@@ -36,7 +37,6 @@ for (let key in dodoSprites) {
         if (loadedCount === 2) assetsLoaded = true;
     };
     dodoSprites[key].onerror = () => {
-        // console.warn("Failed to load " + key);
         loadedCount++;
         if (loadedCount === 2) assetsLoaded = true;
     }
@@ -72,7 +72,6 @@ function playSound(type) {
         gain.gain.linearRampToValueAtTime(0, now + 0.2);
         osc.start(now); osc.stop(now + 0.2);
     } else if (type === 'levelup') {
-        // New Sound for Level Up
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(440, now);
         osc.frequency.linearRampToValueAtTime(880, now + 0.1);
@@ -139,7 +138,7 @@ const bird = {
     x: 120,
     y: 150,
     targetSize: 65,
-    radius: 24,  // Radius for physics
+    radius: 24,
     velocity: 0,
     rotation: 0,
     currentSprite: dodoSprites.normal,
@@ -154,28 +153,22 @@ const bird = {
         this.rotation += (targetRotation - this.rotation) * 0.15;
         ctx.rotate(this.rotation);
 
-        // --- CIRCLE CLIPPING MASK ---
         ctx.beginPath();
-        // Draw a circle at 0,0
         ctx.arc(0, 0, this.targetSize / 2, 0, Math.PI * 2);
-        ctx.clip(); // Clip subsequent drawing to this circle
+        ctx.clip(); 
 
-        // Draw image centered within the clip
         ctx.drawImage(this.currentSprite, -this.targetSize / 2, -this.targetSize / 2, this.targetSize, this.targetSize);
 
-        // Optional: Add a border to the circle to make it pop
         ctx.strokeStyle = "#0C0C0C";
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        ctx.restore(); // Remove clip
+        ctx.restore();
 
-        // --- DEBUG: DRAW HITBOX ---
         if (DEBUG_MODE) {
             ctx.save();
             ctx.translate(this.x, this.y);
             ctx.beginPath();
-            // Draw the actual collision radius (smaller due to buffer)
             ctx.arc(0, 0, this.radius - CONFIG.collisionBuffer, 0, Math.PI * 2);
             ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
@@ -195,8 +188,6 @@ const bird = {
         this.velocity += CONFIG.gravity;
         this.y += this.velocity;
         if (this.velocity > 8) this.velocity = 8;
-
-        // this.currentSprite = dodoSprites.normal; // Removed to allow dead sprite to persist
 
         if (this.y + this.radius >= canvas.height - fg.h) {
             this.y = canvas.height - fg.h - this.radius;
@@ -239,14 +230,17 @@ const pipes = {
     items: [],
     width: 75,
     lastTop: 0,
-    pixelsSinceLastSpawn: 350, // Start ready to spawn
+    pixelsSinceLastSpawn: 350,
 
     draw: function () {
         for (let i = 0; i < this.items.length; i++) {
             let p = this.items[i];
             let currentX = p.x + p.offsetX;
+            // Calculations must match update logic
             let currentTopY = p.top + p.offsetY + p.chompY;
             let currentBottomY = canvas.height - fg.h - p.bottom + p.offsetY - p.chompY;
+            
+            // Add dropY to the drawing coordinate
             if (p.mode === 'drop') currentTopY += p.dropY;
 
             ctx.save();
@@ -281,7 +275,6 @@ const pipes = {
             ctx.fillStyle = capColor;
             ctx.fillRect(currentX - 4, currentTopY - 20, this.width + 8, 20);
 
-            // Teeth (Chomp)
             if (p.mode === 'chomp') {
                 ctx.fillStyle = '#f0f0f0';
                 ctx.beginPath();
@@ -298,7 +291,6 @@ const pipes = {
             ctx.fillStyle = capColor;
             ctx.fillRect(currentX - 4, currentBottomY, this.width + 8, 20);
 
-            // Teeth (Chomp bottom)
             if (p.mode === 'chomp') {
                 ctx.fillStyle = '#f0f0f0';
                 ctx.beginPath();
@@ -318,7 +310,7 @@ const pipes = {
                 ctx.arc(currentX + this.width - 20, eyeY, 8, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.fillStyle = '#0C0C0C';
-                // Tracking Pupils
+                
                 let angle = Math.atan2(bird.y - eyeY, bird.x - (currentX + this.width / 2));
                 ctx.beginPath();
                 ctx.arc(currentX + 20 + Math.cos(angle) * 3, eyeY + Math.sin(angle) * 3, 3, 0, Math.PI * 2);
@@ -326,7 +318,6 @@ const pipes = {
                 ctx.fill();
             }
 
-            // --- DEBUG: HITBOXES ---
             if (DEBUG_MODE) {
                 ctx.strokeStyle = "red";
                 ctx.lineWidth = 1;
@@ -339,7 +330,6 @@ const pipes = {
     },
 
     update: function () {
-        // Spawn Rate depends on speed to keep distance consistent
         let spawnDistance = 350;
         this.pixelsSinceLastSpawn += currentSpeed;
 
@@ -353,22 +343,17 @@ const pipes = {
             let topHeight;
 
             if (this.items.length > 0) {
-                // Subsequent pipes: spawn within safe jump range of last pipe
                 spawnMin = Math.max(minY, this.lastTop - safeJumpRange);
                 spawnMax = Math.min(maxY, this.lastTop + safeJumpRange);
                 topHeight = Math.floor(Math.random() * (spawnMax - spawnMin + 1) + spawnMin);
             } else {
-                // First pipe: center gap around bird's starting position
-                // Bird starts at canvas.height / 2, so position gap center there
                 topHeight = Math.floor(canvas.height / 2 - currentGap / 2);
-                // Clamp to valid range to avoid edge cases
                 topHeight = Math.max(minY, Math.min(maxY, topHeight));
             }
             this.lastTop = topHeight;
 
             let mode = 'normal';
             let r = Math.random();
-            // Special pipes appear more often as score gets higher
             if (score > 5) {
                 if (r > 0.92) mode = 'drop';
                 else if (r > 0.85) mode = 'chomp';
@@ -404,59 +389,50 @@ const pipes = {
             }
 
             if (p.mode === 'drop') {
-                if (p.x - bird.x < 180 && p.x - bird.x > -50 && p.dropSpeed === 0) {
-                    p.dropSpeed = 2;
-                    createFloatingText(p.x, p.top + 80, "CHARGEBACK!", "#e74c3c");
+                // Flash text only once when it enters screen
+                if (p.x - bird.x < 280 && !p.hasWarned) {
+                     p.hasWarned = true;
+                     createFloatingText(p.x, p.top + 80, "CHARGEBACK!", "#e74c3c");
                 }
-                if (p.dropSpeed > 0) {
-                    p.dropSpeed *= 1.05;
-                    p.dropY += p.dropSpeed;
-                }
+                
+                // Continuous Sine wave motion (Jiggle) instead of permanent closure
+                // oscillates +/- 40 pixels
+                p.dropY = Math.sin(frames * 0.1) * 40; 
             }
 
             p.x -= currentSpeed;
 
-            // --- IMPROVED COLLISION LOGIC ---
-            // We subtract the buffer from the bird's hit radius logic for the checks.
+            // --- COLLISION LOGIC ---
             let pLeft = p.x + p.offsetX;
             let pRight = pLeft + this.width;
+            
+            // Calculate top edge including the dynamic dropY
             let pTopEdge = p.top + p.offsetY + p.chompY + (p.mode === 'drop' ? p.dropY : 0);
             let pBottomEdge = canvas.height - fg.h - p.bottom + p.offsetY - p.chompY;
 
-            // For the collision check, we pretend the bird is smaller than it looks (The Buffer)
             let effectiveBirdRadius = bird.radius - CONFIG.collisionBuffer;
 
-            // Check Horizontal overlap
             if (bird.x + effectiveBirdRadius > pLeft && bird.x - effectiveBirdRadius < pRight) {
-                // Check Vertical overlap (Top Pipe OR Bottom Pipe)
                 if ((bird.y - effectiveBirdRadius < pTopEdge) || (bird.y + effectiveBirdRadius > pBottomEdge)) {
                     gameOver();
                 }
             }
 
-            // Scoring & Pass Logic
             if (pLeft + this.width < bird.x && !p.passed) {
                 score++;
                 p.passed = true;
                 playSound('score');
 
-                // --- PROGRESSIVE DIFFICULTY & MESSAGING ---
                 if (score > 0 && score % CONFIG.rampUpInterval === 0) {
-                    // Increase speed, Decrease gap
                     if (currentSpeed < CONFIG.maxSpeed) currentSpeed += CONFIG.speedIncrease;
                     if (currentGap > CONFIG.minGap) currentGap -= CONFIG.gapDecrease;
-
-                    // Play special sound and flash message
                     playSound('levelup');
                     let lvlMsg = quips.levelUp[Math.floor(Math.random() * quips.levelUp.length)];
-                    createFloatingText(bird.x, bird.y - 100, lvlMsg, "#FFF", 40); // Larger text
-
-                    // Visual flare
+                    createFloatingText(bird.x, bird.y - 100, lvlMsg, "#FFF", 40);
                     toggleRain(true);
                     setTimeout(() => toggleRain(false), 3000);
                 }
 
-                // Normal messages
                 let distToTop = Math.abs((bird.y - bird.radius) - pTopEdge);
                 let distToBottom = Math.abs((bird.y + bird.radius) - pBottomEdge);
 
@@ -474,7 +450,7 @@ const pipes = {
                     color = "#ff3333";
                     bird.sweatTimer = 90;
                     playSound('closeCall');
-                } else if (score % CONFIG.rampUpInterval !== 0) { // Don't overwrite level up msg
+                } else if (score % CONFIG.rampUpInterval !== 0) {
                     if (distToTop > 60 && distToBottom > 60 && Math.random() > 0.7) {
                         msg = quips.easy[Math.floor(Math.random() * quips.easy.length)];
                     } else if (Math.random() > 0.7) {
@@ -658,7 +634,9 @@ function startGame() {
     document.getElementById('mrr-display').classList.remove('hidden');
     toggleRain(false);
     bird.y = canvas.height / 2;
-    loop();
+    // Reset loop timing to prevent huge jump
+    lastTime = performance.now();
+    accumulator = 0;
 }
 
 function gameOver() {
@@ -699,13 +677,50 @@ function resetGame() {
     document.getElementById('gameOverScreen').classList.add('hidden');
     document.getElementById('mrr-display').classList.remove('hidden');
     gameState = 'PLAYING';
+    lastTime = performance.now();
+    accumulator = 0;
 }
 
 function updateScoreDisplay() {
     document.getElementById('mrr-display').innerText = `$${score}k MRR`;
 }
 
-function loop() {
+// --- MAIN LOOP WITH FIXED TIMESTEP (Fixes 120Hz/Frame Rate Issues) ---
+let lastTime = 0;
+let accumulator = 0;
+// We define the timestep based on the desired FPS (e.g., 60FPS = ~16.67ms)
+const timeStep = 1000 / CONFIG.desiredFPS;
+
+function loop(timestamp) {
+    if (!lastTime) lastTime = timestamp;
+    let deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+
+    // Cap deltaTime to avoid spiral of death if tab is inactive for long
+    if (deltaTime > 1000) deltaTime = timeStep;
+
+    accumulator += deltaTime;
+
+    // Consume accumulated time in fixed steps
+    while (accumulator >= timeStep) {
+        if (gameState === 'PLAYING') {
+            pipes.update();
+            fg.update();
+            bird.update();
+            updateScoreDisplay();
+            frames++; // Frames now track GAME LOGIC ticks, not render ticks
+        }
+        
+        // Shake decay logic (moved to fixed update)
+        if (shakeDuration > 0) shakeDuration--;
+        
+        // Weather logic also needs to be consistent
+        updateWeather();
+        
+        accumulator -= timeStep;
+    }
+
+    // --- RENDER (As fast as possible) ---
     if (!assetsLoaded) {
         ctx.fillStyle = '#0C0C0C'; ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = '#C1FF00'; ctx.textAlign = 'center'; ctx.font = "30px Impact";
@@ -714,7 +729,6 @@ function loop() {
         return;
     }
 
-    updateWeather();
     drawBackground();
 
     if (shakeDuration > 0) {
@@ -722,7 +736,6 @@ function loop() {
         let dy = (Math.random() - 0.5) * 25;
         ctx.save();
         ctx.translate(dx, dy);
-        shakeDuration--;
     }
 
     pipes.draw();
@@ -730,17 +743,10 @@ function loop() {
     bird.draw();
     handleParticles();
 
-    if (gameState === 'PLAYING') {
-        pipes.update();
-        fg.update();
-        bird.update();
-        updateScoreDisplay();
-        frames++;
-    }
-
-    if (shakeDuration > -1 && shakeDuration < 29) ctx.restore();
+    if (shakeDuration > 0) ctx.restore();
+    
     requestAnimationFrame(loop);
 }
 
 resizeCanvas();
-loop(); 
+requestAnimationFrame(loop);
