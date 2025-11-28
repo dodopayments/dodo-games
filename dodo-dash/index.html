@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodo Dash | Dodo Games</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <a href="/" class="back-btn">← Back to Arcade</a>
+            <h1>Dodo Dash</h1>
+            <div class="score-container">
+                <span>HI <span id="high-score">00000</span></span>
+                <span id="current-score">00000</span>
+            </div>
+        </div>
+        
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="game-over-screen" class="hidden">
+            <h2>GAME OVER</h2>
+            <p>Press SPACE or Tap to Restart</p>
+        </div>
+
+        <div class="controls-hint">
+            <p>[SPACE] or [UP] to Jump | [DOWN] to Duck</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+:root {
+    --primary: #C1FF00;
+    --bg-dark: #050505;
+    --text-main: #ffffff;
+    --text-muted: #888888;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.back-btn {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 12px;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.back-btn:hover {
+    color: var(--primary);
+}
+
+h1 {
+    font-size: 24px;
+    color: var(--primary);
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+.score-container {
+    font-size: 16px;
+    color: var(--text-muted);
+}
+
+#current-score {
+    color: var(--text-main);
+    margin-left: 10px;
+}
+
+canvas {
+    background-color: #111;
+    border-bottom: 2px solid var(--text-muted);
+    width: 100%;
+    max-width: 800px;
+    height: 300px; /* Aspect ratio controlled by JS usually, but CSS helps layout */
+    image-rendering: pixelated;
+}
+
+#game-over-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    display: none;
+}
+
+#game-over-screen.hidden {
+    display: none;
+}
+
+#game-over-screen h2 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+#game-over-screen p {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.controls-hint {
+    margin-top: 20px;
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: sans-serif;
+}

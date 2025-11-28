@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,8 @@
     <title>Dodo Games | Viral Arcade</title>
     <style>
         :root {
-            --primary: #C1FF00; /* Dodo Green */
+            --primary: #C1FF00;
+            /* Dodo Green */
             --bg-dark: #050505;
             --card-bg: #111111;
             --text-main: #ffffff;
@@ -74,12 +76,12 @@
             justify-content: center;
             box-shadow: 0 0 50px rgba(193, 255, 0, 0.3);
             animation: bounce 3s infinite ease-in-out;
-            transition: transform 0.3s ease-out; 
+            transition: transform 0.3s ease-out;
             cursor: pointer;
         }
-        
+
         .logo-wrapper:hover {
-            animation: 
+            animation:
                 spin-entry 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
                 hover-pulse 1.5s ease-in-out infinite 0.5s;
         }
@@ -157,8 +159,8 @@
             border-color: var(--primary);
             transform: translateY(-10px) scale(1.02);
             background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
-                        0 0 20px rgba(193, 255, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(193, 255, 0, 0.1);
         }
 
         .game-card:hover h2 {
@@ -227,7 +229,7 @@
             color: var(--text-main);
             font-size: 1.8rem;
         }
-        
+
         .game-card.special-idea:hover h2 {
             color: #fff;
             transform: none;
@@ -242,7 +244,7 @@
             transition: 0.2s;
             text-decoration: none;
         }
-        
+
         .game-card.special-idea:hover .play-btn {
             background: var(--discord-blurple);
             color: white;
@@ -250,11 +252,25 @@
         }
 
         @keyframes shake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(-15deg); }
-            50% { transform: rotate(0deg); }
-            75% { transform: rotate(15deg); }
-            100% { transform: rotate(0deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-15deg);
+            }
+
+            50% {
+                transform: rotate(0deg);
+            }
+
+            75% {
+                transform: rotate(15deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
         }
 
         /* Tags */
@@ -300,10 +316,10 @@
             cursor: pointer;
             z-index: 100;
             border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             transition: transform 0.2s;
         }
-        
+
         .boss-btn:hover {
             transform: scale(1.1);
         }
@@ -320,7 +336,8 @@
             height: 100vh;
             background: white;
             z-index: 9999;
-            display: none; /* Hidden by default */
+            display: none;
+            /* Hidden by default */
             flex-direction: column;
             color: black;
             font-family: Calibri, Arial, sans-serif;
@@ -359,7 +376,7 @@
             padding: 4px;
             background: white;
         }
-        
+
         .cell-head {
             background: #f3f2f1;
             text-align: center;
@@ -381,35 +398,79 @@
 
         /* Animations */
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(193, 255, 0, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(193, 255, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(193, 255, 0, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(193, 255, 0, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(193, 255, 0, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(193, 255, 0, 0);
+            }
         }
 
         @keyframes spin-entry {
-            0% { transform: scale(1) rotate(0deg); box-shadow: 0 0 50px rgba(193, 255, 0, 0.3); }
-            100% { transform: scale(1.2) rotate(360deg); box-shadow: 0 0 80px rgba(193, 255, 0, 0.6); }
+            0% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 50px rgba(193, 255, 0, 0.3);
+            }
+
+            100% {
+                transform: scale(1.2) rotate(360deg);
+                box-shadow: 0 0 80px rgba(193, 255, 0, 0.6);
+            }
         }
 
         @keyframes hover-pulse {
-            0% { transform: scale(1.2); box-shadow: 0 0 80px rgba(193, 255, 0, 0.6); }
-            50% { transform: scale(1.3); box-shadow: 0 0 100px rgba(193, 255, 0, 0.9); }
-            100% { transform: scale(1.2); box-shadow: 0 0 80px rgba(193, 255, 0, 0.6); }
+            0% {
+                transform: scale(1.2);
+                box-shadow: 0 0 80px rgba(193, 255, 0, 0.6);
+            }
+
+            50% {
+                transform: scale(1.3);
+                box-shadow: 0 0 100px rgba(193, 255, 0, 0.9);
+            }
+
+            100% {
+                transform: scale(1.2);
+                box-shadow: 0 0 80px rgba(193, 255, 0, 0.6);
+            }
         }
 
         /* Responsive */
         @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .games-grid { grid-template-columns: 1fr; }
-            .boss-btn { display: none; } /* Hide boss button on mobile */
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .boss-btn {
+                display: none;
+            }
+
+            /* Hide boss button on mobile */
         }
     </style>
 </head>
+
 <body>
 
     <canvas id="bg-canvas"></canvas>
@@ -423,7 +484,8 @@
             <span>User: Admin</span>
         </div>
         <div class="excel-ribbon">
-            <span>File</span><span>Home</span><span>Insert</span><span>Page Layout</span><span>Formulas</span><span>Data</span>
+            <span>File</span><span>Home</span><span>Insert</span><span>Page
+                Layout</span><span>Formulas</span><span>Data</span>
         </div>
         <div class="excel-grid">
             <div class="cell cell-head"></div>
@@ -440,7 +502,14 @@
 
             <div class="cell cell-head">1</div>
             <div class="cell fake-data" style="font-weight: bold;">EXPENSE REPORT</div>
-            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
 
             <div class="cell cell-head">2</div>
             <div class="cell">Category</div>
@@ -449,7 +518,9 @@
             <div class="cell">Mar</div>
             <div class="cell">Q1 Total</div>
             <div class="cell">Trend</div>
-            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
 
             <div class="cell cell-head">3</div>
             <div class="cell">Server Costs</div>
@@ -458,7 +529,9 @@
             <div class="cell">$11,200</div>
             <div class="cell">$36,740</div>
             <div class="cell" style="color: red;">-2.4%</div>
-            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
 
             <div class="cell cell-head">4</div>
             <div class="cell">API Usage</div>
@@ -467,16 +540,20 @@
             <div class="cell">$5,100</div>
             <div class="cell">$13,300</div>
             <div class="cell" style="color: green;">+12%</div>
-            <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
 
-             <div class="cell cell-head">5</div>
-             <div class="cell">Coffee</div>
-             <div class="cell">$800</div>
-             <div class="cell">$950</div>
-             <div class="cell">$1,200</div>
-             <div class="cell">$2,950</div>
-             <div class="cell" style="color: red;">CRITICAL</div>
-             <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell cell-head">5</div>
+            <div class="cell">Coffee</div>
+            <div class="cell">$800</div>
+            <div class="cell">$950</div>
+            <div class="cell">$1,200</div>
+            <div class="cell">$2,950</div>
+            <div class="cell" style="color: red;">CRITICAL</div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
         </div>
         <div class="exit-hint">(Double click anywhere to return to fun)</div>
     </div>
@@ -487,9 +564,10 @@
                 <img src="assets/images/dodo-logo.png" alt="Dodo Logo">
             </div>
             <h1>Dodo <span>Games</span></h1>
-            <p class="subtitle">Procrastinate responsibly. Build your empire of high scores while avoiding actual work.</p>
+            <p class="subtitle">Procrastinate responsibly. Build your empire of high scores while avoiding actual work.
+            </p>
         </div>
-        
+
         <div class="games-grid">
             <a href="/flappy-dodo" class="game-card" onclick="saveGame('Flappy Dodo')">
                 <span class="tag-new">Hot</span>
@@ -507,7 +585,8 @@
                 <img src="assets/images/ddos-defense-dodo.png" alt="DoDo Core Defender" class="game-card-image">
                 <div>
                     <h2>Gateway Defender Dodo</h2>
-                    <p>Protect the Dodo from DDOS bots. Use the powers of firewall, rate-limiter and auto-healing infra.</p>
+                    <p>Protect the Dodo from DDOS bots. Use the powers of firewall, rate-limiter and auto-healing infra.
+                    </p>
                 </div>
                 <span class="play-btn">Play Now &rarr;</span>
             </a>
@@ -517,7 +596,8 @@
                 <img src="assets/images/payment-invaders-dodo.png" alt="Payment Invaders Dodo" class="game-card-image">
                 <div>
                     <h2>Payment Invader Dodo</h2>
-                    <p>Defend DoDo from waves of chargebacks, fraudsters, and downtime bugs. Shoot them down with "2FA", "KYC Lasers" or "PCI Shields".</p>
+                    <p>Defend DoDo from waves of chargebacks, fraudsters, and downtime bugs. Shoot them down with "2FA",
+                        "KYC Lasers" or "PCI Shields".</p>
                 </div>
                 <span class="play-btn">Play Now &rarr;</span>
             </a>
@@ -527,7 +607,8 @@
                 <img src="assets/images/snake-game-dodo.png" alt="Snake Game Dodo" class="game-card-image">
                 <div>
                     <h2>Snake Game Dodo</h2>
-                    <p>Guide your Transaction Snake through the payment grid... eat payment apples, dodge fraud voids, and power up with PCI shields to keep your payment flow secure.</p>
+                    <p>Guide your Transaction Snake through the payment grid... eat payment apples, dodge fraud voids,
+                        and power up with PCI shields to keep your payment flow secure.</p>
                 </div>
                 <span class="play-btn">Play Now &rarr;</span>
             </a>
@@ -537,7 +618,20 @@
                 <img src="assets/images/checkout-rush-dodo.png" alt="Checkout Rush Dodo" class="game-card-image">
                 <div>
                     <h2>Checkout Rush Dodo</h2>
-                    <p>Try to process as many customer payments as possible before time runs out. Swipe or tap correct payment types (card, crypto, QR, etc.). Add power-ups like "Instant Settlement" or "Chargeback Shield".</p>
+                    <p>Try to process as many customer payments as possible before time runs out. Swipe or tap correct
+                        payment types (card, crypto, QR, etc.). Add power-ups like "Instant Settlement" or "Chargeback
+                        Shield".</p>
+                </div>
+                <span class="play-btn">Play Now &rarr;</span>
+            </a>
+
+            <a href="/dodo-dash" class="game-card" onclick="saveGame('Dodo Dash')">
+                <span class="tag-last-played" data-game="Dodo Dash">RESUME?</span>
+                <img src="assets/images/dodo-dash.png" alt="Dodo Dash" class="game-card-image">
+                <div>
+                    <h2>Dodo Dash</h2>
+                    <p>Run, Dodo, Run! Jump over obstacles and dash through the desert in this classic endless runner.
+                    </p>
                 </div>
                 <span class="play-btn">Play Now &rarr;</span>
             </a>
@@ -592,12 +686,12 @@
         const ctx = canvas.getContext('2d');
 
         let width, height;
-        
+
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }
-        
+
         window.addEventListener('resize', resize);
         resize();
 
@@ -606,7 +700,7 @@
         const columns = width / fontSize;
         const drops = [];
 
-        for(let x = 0; x < columns; x++) {
+        for (let x = 0; x < columns; x++) {
             drops[x] = 1;
         }
 
@@ -617,11 +711,11 @@
             ctx.fillStyle = '#C1FF00'; // Dodo Green
             ctx.font = fontSize + 'px monospace';
 
-            for(let i = 0; i < drops.length; i++) {
+            for (let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-                if(drops[i] * fontSize > height && Math.random() > 0.975) {
+                if (drops[i] * fontSize > height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
                 drops[i]++;
@@ -631,4 +725,5 @@
         setInterval(draw, 33);
     </script>
 </body>
+
 </html>
