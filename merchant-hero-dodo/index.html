@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant Hero | Powered by Dodo Payments</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game-container">
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="start-screen" class="ui-layer">
+        <div style="font-size: 5rem; margin-bottom: 0px;">🦤</div>
+        <h1>Merchant Hero</h1>
+        <p class="tagline">“Trade fair. Fly fast. Dodge fraud.”</p>
+        <p>Pilot through the Payment Galaxy. Blast chargebacks, secure tokens, and keep your integration uptime high.</p>
+        
+        <div class="controls-hint">
+            <span class="key">↑</span> <span class="key">↓</span> Move &nbsp;&nbsp; 
+            <span class="key">SPACE</span> Shoot &nbsp;&nbsp; 
+            <span class="key">SHIFT</span> KYC Shield
+        </div>
+
+        <button id="start-btn">Connect API & Start</button>
+        <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">Powered by Dodo Payments Security</p>
+    </div>
+
+    <div id="hud" class="ui-layer hidden">
+        <div class="hud-left">
+            <div class="hud-panel">
+                <span class="stat-label">PROCESSED VOLUME</span>
+                <span id="score-display" class="stat-value">$0.00</span>
+            </div>
+            <div style="margin-top: 10px; text-align: left;">
+                <span class="stat-label">INTEGRITY</span>
+                <div class="bar-container"><div id="integrity-bar" class="bar-fill"></div></div>
+            </div>
+            <div style="margin-top: 5px; text-align: left;">
+                <span class="stat-label">KYC SHIELD (SHIFT)</span>
+                <div class="bar-container"><div id="shield-bar" class="bar-fill" style="width: 0%"></div></div>
+            </div>
+        </div>
+        
+        <div class="hud-right">
+            <div class="hud-panel" style="text-align: right;">
+                <span class="stat-label">FRAUD RISK</span>
+                <span id="risk-display" class="stat-value" style="color: var(--neon-green)">LOW</span>
+            </div>
+            <div style="margin-top: 10px; text-align: right; font-size: 0.8rem; color: #888;">
+                DODO PAYMENTS<br>SECURE GATEWAY
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <div id="game-over-screen" class="ui-layer hidden">
+        <h1 style="color: var(--neon-pink); -webkit-text-fill-color: var(--neon-pink);">TRANSACTION FAILED</h1>
+        <p>Your merchant account has been overwhelmed by fraud.</p>
+        
+        <div class="hud-panel" style="margin: 20px 0;">
+            <span class="stat-label">FINAL VOLUME PROCESSED</span>
+            <span id="final-score" class="stat-value" style="font-size: 3rem;">$0.00</span>
+            <br><br>
+            <span class="stat-label">HIGH SCORE</span>
+            <span id="high-score" class="stat-value" style="color: var(--neon-yellow)">$0.00</span>
+        </div>
+
+        <button id="restart-btn">Retry Transaction</button>
+        <p style="margin-top: 15px; font-size: 0.9rem;">Tip: Dodo Payments offers 99.9% uptime and advanced fraud protection.</p>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
