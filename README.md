@@ -9,18 +9,21 @@
   </a>
 </p>
 
-Dodo Games is an engaging collection of playful, custom-built games created by and for the Dodo Payments community.
+Dodo Games is an engaging collection of playful, custom-built arcade games created by and for the Dodo Payments community. Procrastinate responsibly while building your empire of high scores!
+
+🎮 **Play now:** [games.dodopayments.com](https://games.dodopayments.com)
 
 ## Games
 
-**[Flappy Dodo](/flappy-dodo)** - A Flappy Bird-style game with a startup/business theme
-
-<img src="./flappy-dodo.png" alt="Flappy Dodo Screenshot" width="400">
-
-**[Defend the Gateway](/ddos-defense-dodo)** - A tower defense-style arcade game where you protect Dodo Payments' gateway from a DDoS attack. 
-
-<img src="./ddos-defense-dodo.png" alt="Defend the Gateway Screenshot" width="400">
-
+| Game | Description |
+|------|-------------|
+| **[Flappy Dodo](https://games.dodopayments.com/flappy-dodo)** | Navigate the volatile market. Avoid the red pipes of churn. Keep your MRR flying high. |
+| **[Gateway Defender](https://games.dodopayments.com/ddos-defense-dodo)** | Protect the Dodo from DDoS bots. Use firewall, rate-limiter and auto-healing infrastructure. |
+| **[Payment Invaders](https://games.dodopayments.com/payment-invaders-dodo)** | Defend your payment gateway from chargebacks, fraudsters, and downtime bugs. Shoot them down! |
+| **[Transaction Snake](https://games.dodopayments.com/snake-game-dodo)** | Guide your payment chain through the grid. Eat payment apples, dodge fraud voids. |
+| **[Checkout Rush](https://games.dodopayments.com/checkout-rush-dodo)** | Process payments before the queue overflows! Match payment types and build combos. |
+| **[Dodo Dash](https://games.dodopayments.com/dodo-dash)** | Run, Dodo, Run! Jump over obstacles and dash through the desert. Classic endless runner. |
+| **[Merchant Hero](https://games.dodopayments.com/merchant-hero-dodo)** | Trade fair. Fly fast. Dodge fraud. Pilot through the Payment Galaxy! |
 
 ## Local Development
 
@@ -39,24 +42,15 @@ open index.html  # macOS
 Run the build script from the root directory to build all games:
 
 ```bash
+npm install
 npm run build
 ```
 
 This will:
-- Minify all HTML, CSS, and JavaScript files
-- Copy assets to the `dist` folder
+- Minify all CSS and JavaScript files
+- Copy all assets to the `dist` folder
+- Include SEO files (sitemap.xml, robots.txt)
 - Prepare everything for Cloudflare Pages deployment
-
-The output will be in the `dist/` directory with the following structure:
-```
-dist/
-├── index.html          # Landing page
-└── flappy-dodo/        # Game directory
-    ├── index.html
-    ├── style.css
-    ├── script.js
-    └── assets/
-```
 
 ## Deploying to Cloudflare Pages
 
@@ -141,15 +135,21 @@ dist/
 After deployment, games will be accessible at:
 - Landing page: `https://games.dodopayments.com/`
 - Flappy Dodo: `https://games.dodopayments.com/flappy-dodo`
-- Defend the Gateway: `https://games.dodopayments.com/ddos-defense-dodo`
+- Gateway Defender: `https://games.dodopayments.com/ddos-defense-dodo`
+- Payment Invaders: `https://games.dodopayments.com/payment-invaders-dodo`
+- Transaction Snake: `https://games.dodopayments.com/snake-game-dodo`
+- Checkout Rush: `https://games.dodopayments.com/checkout-rush-dodo`
+- Dodo Dash: `https://games.dodopayments.com/dodo-dash`
+- Merchant Hero: `https://games.dodopayments.com/merchant-hero-dodo`
 
 ### Adding New Games
 
-1. Create a new folder in the root directory (e.g., `game-2/`)
+1. Create a new folder in the root directory (e.g., `my-new-game/`)
 2. Add your game files (`index.html`, `script.js`, `style.css`, `assets/`, etc.)
 3. Update the root `index.html` to include a link to your new game
-4. Run `npm run build` to include it in the build
-5. Deploy to Cloudflare Pages
+4. Update `sitemap.xml` to include the new game URL
+5. Run `npm run build` to include it in the build
+6. Deploy to Cloudflare Pages
 
 The build script automatically detects any directory with an `index.html` file and includes it in the build.
 
@@ -157,30 +157,51 @@ The build script automatically detects any directory with an `index.html` file a
 
 ```
 dodo-games/
-├── index.html          # Landing page listing all games
-├── package.json        # NPM configuration
-├── build.js            # Build script for all games
-├── wrangler.toml       # Cloudflare Pages configuration
-├── README.md           # This file
-├── flappy-dodo/        # Game directory
-│   ├── index.html
-│   ├── script.js
-│   ├── style.css
-│   ├── assets/
-│   └── README.md
-└── ddos-defense-dodo/  # Game directory
-    ├── index.html
-    ├── assets/
-    │   ├── script.js
-    │   ├── style.css
-    │   └── images/
-    └── README.md
+├── index.html              # Landing page listing all games
+├── package.json            # NPM configuration
+├── build.js                # Build script for all games
+├── robots.txt              # Search engine crawler rules
+├── sitemap.xml             # Sitemap for SEO indexing
+├── assets/                 # Shared assets (favicons, images)
+│   ├── images/
+│   ├── favicon.ico
+│   └── analytics.js
+├── flappy-dodo/            # Flappy Bird-style game
+├── ddos-defense-dodo/      # Tower defense game
+├── payment-invaders-dodo/  # Space Invaders-style shooter
+├── snake-game-dodo/        # Classic snake game
+├── checkout-rush-dodo/     # Fast-paced matching game
+├── dodo-dash/              # Endless runner game
+├── merchant-hero-dodo/     # Space shooter game
+└── dist/                   # Built output (generated)
 ```
+
+## SEO
+
+The project includes SEO optimizations:
+- **Meta tags:** Description, keywords, Open Graph, Twitter Cards on all pages
+- **Structured data:** JSON-LD VideoGame schema for each game
+- **Sitemap:** `sitemap.xml` for search engine indexing
+- **Robots.txt:** Allows all crawlers
+
+After deployment, submit the sitemap to:
+- [Google Search Console](https://search.google.com/search-console)
+- [Bing Webmaster Tools](https://www.bing.com/webmasters)
 
 ## Development Tips
 
 - Each game should be self-contained in its own directory
 - Use relative paths for assets (e.g., `assets/image.svg`)
-- The build script automatically minifies all files
+- The build script automatically minifies CSS and JS files
 - Test locally before deploying
+- All games include shared favicons and analytics from the `assets/` folder
 
+## Contributing
+
+Got a crazy game idea? We'd love to hear it! Join our [Discord](https://discord.gg/bYqAp4ayYh) to contribute or submit ideas.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+## License
+
+This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details.
