@@ -1,0 +1,9 @@
+# Robots.txt for Dodo Games
+# https://games.dodopayments.com
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://games.dodopayments.com/sitemap.xml
+
