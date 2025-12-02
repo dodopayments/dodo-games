@@ -1126,13 +1126,19 @@ function startGame() {
     resizeCanvas();
     updateUI();
     requestAnimationFrame(gameLoop);
+    
+    // Analytics: Track game start
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameStart('Payment Invaders');
+    }
 }
 
 function gameOver() {
     game.state = 'gameOver';
     
     // Update high score
-    if (game.score > game.highScore) {
+    const isNewHighScore = game.score > game.highScore;
+    if (isNewHighScore) {
         game.highScore = game.score;
         localStorage.setItem('paymentInvadersHighScore', game.highScore);
     }
@@ -1146,6 +1152,14 @@ function gameOver() {
     document.getElementById('statFraudsters').textContent = game.stats.fraudsters;
     document.getElementById('statBugs').textContent = game.stats.bugs;
     document.getElementById('statBosses').textContent = game.stats.bosses;
+    
+    // Analytics: Track game over and high score
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameOver('Payment Invaders', game.score, { wave: game.wave, ...game.stats });
+        if (isNewHighScore) {
+            DodoAnalytics.newHighScore('Payment Invaders', game.score);
+        }
+    }
     
     const messages = [
         "Your payment system has been compromised!",

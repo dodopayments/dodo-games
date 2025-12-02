@@ -386,6 +386,11 @@ function startGame() {
     state.lastFrameTime = performance.now();
     initGame();
     requestAnimationFrame(gameLoop);
+    
+    // Analytics: Track game start
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameStart('Transaction Snake');
+    }
 }
 
 function gameOver(reason) {
@@ -398,6 +403,20 @@ function gameOver(reason) {
     // Select relevant tip
     const tipIndex = Math.floor(Math.random() * MO_R_TIPS.length);
     document.getElementById('security-tip').innerText = `"${MO_R_TIPS[tipIndex]}"`;
+    
+    // Check and update high score
+    const isNewHighScore = state.score > state.highScore;
+    if (isNewHighScore) {
+        state.highScore = state.score;
+    }
+    
+    // Analytics: Track game over and high score
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameOver('Transaction Snake', state.score);
+        if (isNewHighScore) {
+            DodoAnalytics.newHighScore('Transaction Snake', state.score);
+        }
+    }
 }
 
 function updateUI() {

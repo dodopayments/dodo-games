@@ -173,6 +173,16 @@ function handleObstacles() {
         ) {
             gameOver = true;
             document.getElementById('game-over-screen').style.display = 'block';
+            
+            // Analytics: Track game over
+            if (typeof DodoAnalytics !== 'undefined') {
+                const finalScore = Math.floor(score);
+                const isNewHighScore = score > highScore;
+                DodoAnalytics.gameOver('Dodo Dash', finalScore);
+                if (isNewHighScore) {
+                    DodoAnalytics.newHighScore('Dodo Dash', finalScore);
+                }
+            }
         }
     }
     obstacles = obstacles.filter(obstacle => !obstacle.markedForDeletion);
@@ -208,6 +218,12 @@ function resetGame() {
     gameSpeed = GAME_SPEED_START;
     gameOver = false;
     document.getElementById('game-over-screen').style.display = 'none';
+    
+    // Analytics: Track game start
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameStart('Dodo Dash');
+    }
+    
     animate();
 }
 

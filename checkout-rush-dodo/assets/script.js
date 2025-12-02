@@ -199,6 +199,11 @@ function initGame() {
     AudioSys.init();
     updateUI();
     
+    // Analytics: Track game start
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameStart('Checkout Rush');
+    }
+    
     document.getElementById('start-screen').classList.add('hidden');
     document.getElementById('game-over-screen').classList.add('hidden');
     
@@ -324,6 +329,14 @@ function endGame() {
     document.getElementById('final-score').innerText = `$${gameState.score.toFixed(2)}`;
     
     document.getElementById('game-over-screen').classList.remove('hidden');
+    
+    // Analytics: Track game over
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameOver('Checkout Rush', gameState.score, { 
+            customersProcessed: gameState.customersProcessed, 
+            maxStreak: gameState.maxStreak 
+        });
+    }
 }
 
 function loop() {

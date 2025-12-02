@@ -508,12 +508,18 @@ function startGame() {
     document.getElementById('hud').classList.remove('hidden');
     state.screen = 'playing';
     initGame();
+    
+    // Analytics: Track game start
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameStart('Merchant Hero');
+    }
 }
 
 function gameOver() {
     state.screen = 'gameover';
     
-    if (state.score > state.highScore) {
+    const isNewHighScore = state.score > state.highScore;
+    if (isNewHighScore) {
         state.highScore = state.score;
         localStorage.setItem('dodoHighscore', state.highScore);
     }
@@ -522,6 +528,14 @@ function gameOver() {
     document.getElementById('game-over-screen').classList.remove('hidden');
     document.getElementById('final-score').innerText = '$' + state.score.toLocaleString('en-US', {minimumFractionDigits: 2});
     document.getElementById('high-score').innerText = '$' + state.highScore.toLocaleString('en-US', {minimumFractionDigits: 2});
+    
+    // Analytics: Track game over and high score
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameOver('Merchant Hero', state.score);
+        if (isNewHighScore) {
+            DodoAnalytics.newHighScore('Merchant Hero', state.score);
+        }
+    }
 }
 
 // --- INITIALIZATION ---

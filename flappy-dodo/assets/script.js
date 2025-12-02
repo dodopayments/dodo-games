@@ -637,6 +637,11 @@ function startGame() {
     // Reset loop timing to prevent huge jump
     lastTime = performance.now();
     accumulator = 0;
+    
+    // Analytics: Track game start
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameStart('Flappy Dodo');
+    }
 }
 
 function gameOver() {
@@ -647,7 +652,8 @@ function gameOver() {
     lastDeathTime = Date.now();
     shakeDuration = 30;
 
-    if (score > bestScore) {
+    const isNewHighScore = score > bestScore;
+    if (isNewHighScore) {
         bestScore = score;
         localStorage.setItem('dodo_best_mrr', bestScore);
     }
@@ -661,6 +667,14 @@ function gameOver() {
 
     document.getElementById('gameOverScreen').classList.remove('hidden');
     document.getElementById('mrr-display').classList.add('hidden');
+    
+    // Analytics: Track game over and high score
+    if (typeof DodoAnalytics !== 'undefined') {
+        DodoAnalytics.gameOver('Flappy Dodo', score);
+        if (isNewHighScore) {
+            DodoAnalytics.newHighScore('Flappy Dodo', score);
+        }
+    }
 }
 
 function resetGame() {

@@ -110,6 +110,11 @@ document.addEventListener("DOMContentLoaded", function() {
             this.state = 'PLAYING';
             this.resetGameData();
             SoundFX.powerup();
+            
+            // Analytics: Track game start
+            if (typeof DodoAnalytics !== 'undefined') {
+                DodoAnalytics.gameStart('Gateway Defender Dodo');
+            }
         }
 
         resetGameData() {
@@ -138,12 +143,21 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('upgrade-menu').classList.add('hidden');
             document.getElementById('finalScore').innerText = this.score;
             
-            if (this.score > this.highScore) {
+            const isNewHighScore = this.score > this.highScore;
+            if (isNewHighScore) {
                 this.highScore = this.score;
                 localStorage.setItem('dodo_highscore', this.highScore);
             }
             document.getElementById('highScore').innerText = this.highScore;
             SoundFX.damage();
+            
+            // Analytics: Track game over and high score
+            if (typeof DodoAnalytics !== 'undefined') {
+                DodoAnalytics.gameOver('Gateway Defender Dodo', this.score, { wave: this.wave });
+                if (isNewHighScore) {
+                    DodoAnalytics.newHighScore('Gateway Defender Dodo', this.score);
+                }
+            }
         }
 
         handleInput(x, y) {
@@ -281,6 +295,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const text = `I defended DoDo Payments from ${this.score} bot requests before the gateway crashed! 🛡️💀 #DefendTheGateway #DoDoPayments`;
             const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
+            
+            // Analytics: Track share
+            if (typeof DodoAnalytics !== 'undefined') {
+                DodoAnalytics.shareScore('Gateway Defender Dodo', 'twitter');
+            }
         }
 
         update() {
