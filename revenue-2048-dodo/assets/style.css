@@ -1,0 +1,295 @@
+:root {
+  --primary: #C1FF00;
+  --bg-dark: #050505;
+  --text: #ffffff;
+  --panel: #121212;
+  --panel-border: #2a2a2a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(circle at 20% 20%, #171717 0%, var(--bg-dark) 55%);
+  color: var(--text);
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  min-height: 100vh;
+  touch-action: manipulation;
+}
+
+.back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  z-index: 100;
+}
+
+.game-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 76px 16px 24px;
+}
+
+.screen {
+  width: min(620px, 100%);
+}
+
+.hidden {
+  display: none;
+}
+
+.card {
+  border: 3px solid #0C0C0C;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 16px;
+  box-shadow: 0 16px 0 #0C0C0C;
+  color: #0C0C0C;
+  padding: 24px;
+  text-align: center;
+}
+
+.card h1,
+.card h2 {
+  margin: 0 0 12px;
+  color: var(--primary);
+  text-transform: uppercase;
+  text-shadow: 2px 2px #0C0C0C;
+}
+
+.card p {
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+button {
+  background: #C1FF00;
+  color: #0C0C0C;
+  border: 3px solid #0C0C0C;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-family: inherit;
+  box-shadow: 4px 4px 0 #0C0C0C;
+  text-transform: uppercase;
+}
+
+button:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.hud {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 14px;
+  align-items: center;
+}
+
+.card-lite {
+  border: 2px solid var(--panel-border);
+  border-radius: 12px;
+  background: #101010;
+}
+
+.hud div {
+  font-size: 0.95rem;
+}
+
+.hud span {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+#newGameButton {
+  padding: 8px 10px;
+  font-size: 0.8rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 8px;
+  touch-action: none;
+  position: relative;
+}
+
+.board-wrap {
+  position: relative;
+}
+
+.cell {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  position: relative;
+}
+
+.tile {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: clamp(0.7rem, 3vw, 1.1rem);
+  transition: transform 100ms ease-out;
+  will-change: transform;
+}
+
+.tile.slide-left {
+  transform: translateX(-10px);
+}
+
+.tile.slide-right {
+  transform: translateX(10px);
+}
+
+.tile.slide-up {
+  transform: translateY(-10px);
+}
+
+.tile.slide-down {
+  transform: translateY(10px);
+}
+
+.tile.new {
+  animation: pop-in 120ms ease-out;
+}
+
+.tile.merge {
+  animation: merge-pop 120ms ease-out;
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes merge-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.tile-dark {
+  background: #2a2a2a;
+  color: #f8f8f8;
+}
+
+.tile-green-1 {
+  background: #1a3a1a;
+  color: #e8ffe0;
+}
+
+.tile-green-2 {
+  background: #2d5a2d;
+  color: #eaffde;
+}
+
+.tile-gold-1 {
+  background: #5a4a00;
+  color: #fff6bf;
+}
+
+.tile-gold-2 {
+  background: #8a7000;
+  color: #fff6bf;
+}
+
+.tile-purple-1 {
+  background: #3a1a5a;
+  color: #f1d8ff;
+}
+
+.tile-purple-2 {
+  background: #6a3a9a;
+  color: #f1d8ff;
+}
+
+.tile-orange-1 {
+  background: #5a2a00;
+  color: #ffe6d1;
+}
+
+.tile-orange-2 {
+  background: #9a5a00;
+  color: #fff0dd;
+}
+
+.tile-unicorn {
+  background: #C1FF00;
+  color: #0C0C0C;
+}
+
+.overlay {
+  position: absolute;
+  inset: 8px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.result-line {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .game-shell {
+    align-items: flex-start;
+    padding-top: 64px;
+  }
+
+  .screen {
+    width: min(420px, 100%);
+  }
+
+  .hud {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #newGameButton {
+    grid-column: span 2;
+  }
+}

@@ -1,0 +1,204 @@
+:root {
+  --primary: #C1FF00;
+  --bg-dark: #050505;
+  --text: #ffffff;
+  --panel: #121212;
+  --panel-border: #2a2a2a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(circle at 20% 20%, #171717 0%, var(--bg-dark) 55%);
+  color: var(--text);
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  min-height: 100vh;
+  touch-action: manipulation;
+}
+
+.back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  z-index: 100;
+}
+
+.game-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 76px 16px 24px;
+}
+
+.screen {
+  width: min(620px, 100%);
+}
+
+.hidden {
+  display: none;
+}
+
+.card {
+  border: 3px solid #0C0C0C;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 16px;
+  box-shadow: 0 16px 0 #0C0C0C;
+  color: #0C0C0C;
+  padding: 24px;
+  text-align: center;
+}
+
+.card h1,
+.card h2 {
+  margin: 0 0 12px;
+  color: var(--primary);
+  text-transform: uppercase;
+  text-shadow: 2px 2px #0C0C0C;
+}
+
+.card p {
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+button {
+  background: #C1FF00;
+  color: #0C0C0C;
+  border: 3px solid #0C0C0C;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-family: inherit;
+  box-shadow: 4px 4px 0 #0C0C0C;
+  text-transform: uppercase;
+}
+
+button:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.hud {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+  margin-bottom: 12px;
+  padding: 14px;
+}
+
+.card-lite {
+  border: 2px solid var(--panel-border);
+  border-radius: 12px;
+  background: #101010;
+}
+
+.hud div {
+  font-size: 0.95rem;
+}
+
+.hud span {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.slot {
+  position: relative;
+  min-height: 100px;
+  border: 2px solid var(--panel-border);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #1a1a1a, #0d0d0d);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.slot-number {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  z-index: 2;
+}
+
+.fraud {
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  bottom: -78px;
+  border-radius: 10px;
+  padding: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  color: #0C0C0C;
+  transform: translateY(18px);
+  transition: transform 150ms ease-out, bottom 160ms ease-out;
+}
+
+.slot.active .fraud {
+  bottom: 7px;
+  transform: translateY(0);
+}
+
+.fraud.stolen-card {
+  background: #69d2e7;
+}
+
+.fraud.fake-id {
+  background: #ffbf69;
+}
+
+.fraud.chargeback {
+  background: #ff7b7b;
+}
+
+.fraud.bot-attack {
+  background: #b0ff70;
+}
+
+.slot.hit {
+  outline: 3px solid var(--primary);
+}
+
+.slot.missed {
+  outline: 3px solid #ff6464;
+}
+
+.result-line {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .game-shell {
+    align-items: flex-start;
+    padding-top: 64px;
+  }
+
+  .screen {
+    width: min(420px, 100%);
+  }
+
+  .slot {
+    min-height: clamp(88px, 25vw, 108px);
+  }
+
+  .fraud {
+    font-size: 0.74rem;
+    padding: 7px;
+  }
+}

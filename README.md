@@ -24,6 +24,14 @@ Dodo Games is an engaging collection of playful, custom-built arcade games creat
 | **[Checkout Rush](https://games.dodopayments.com/checkout-rush-dodo)** | Process payments before the queue overflows! Match payment types and build combos. |
 | **[Dodo Dash](https://games.dodopayments.com/dodo-dash)** | Run, Dodo, Run! Jump over obstacles and dash through the desert. Classic endless runner. |
 | **[Merchant Hero](https://games.dodopayments.com/merchant-hero-dodo)** | Trade fair. Fly fast. Dodge fraud. Pilot through the Payment Galaxy! |
+| **[Fraud Whacker Dodo](https://games.dodopayments.com/fraud-whacker-dodo)** | Block fraudulent transactions before they process! Tap fast, build combos, protect the gateway. |
+| **[Revenue 2048 Dodo](https://games.dodopayments.com/revenue-2048-dodo)** | Slide and merge revenue tiles from $1 to $1B unicorn status! |
+| **[Token Match Dodo](https://games.dodopayments.com/token-match-dodo)** | Flip cards to find matching payment tokens. Race the clock, minimize your moves. |
+| **[Dodo Pong](https://games.dodopayments.com/dodo-pong)** | Bounce payments between merchant and processor. Beat the AI to 11 points! |
+| **[Fraud Sweeper Dodo](https://games.dodopayments.com/fraud-sweeper-dodo)** | Find the hidden fraudulent transactions. Flag the fraud, reveal the safe ones. |
+| **[Firewall Breaker Dodo](https://games.dodopayments.com/firewall-breaker-dodo)** | Break through layers of fraud firewalls. Power up with PCI Shield and 2FA Ball! |
+| **[API Wordle Dodo](https://games.dodopayments.com/api-wordle-dodo)** | Guess the 5-letter payment term in 6 tries. Share your results! |
+| **[Ledger Blocks Dodo](https://games.dodopayments.com/ledger-blocks-dodo)** | Fit transaction blocks into the ledger. Clear rows to settle batches! |
 
 ## Local Development
 

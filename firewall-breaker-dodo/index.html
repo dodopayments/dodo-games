@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Firewall Breaker Dodo - Break through fraud firewalls! A Breakout-style arcade game by Dodo Payments.">
+  <meta name="keywords" content="firewall breaker, breakout game, arkanoid game, dodo games, browser game, fraud firewall">
+  <meta name="author" content="Dodo Payments">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://games.dodopayments.com/firewall-breaker-dodo/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://games.dodopayments.com/firewall-breaker-dodo/">
+  <meta property="og:title" content="Firewall Breaker Dodo | Dodo Games">
+  <meta property="og:description" content="Break through fraud firewalls in this arcade breakout challenge!">
+  <meta property="og:image" content="https://games.dodopayments.com/assets/images/firewall-breaker-dodo.png">
+  <meta property="og:site_name" content="Dodo Games">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://games.dodopayments.com/firewall-breaker-dodo/">
+  <meta name="twitter:title" content="Firewall Breaker Dodo | Dodo Games">
+  <meta name="twitter:description" content="Break through fraud firewalls in this arcade breakout challenge!">
+  <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/firewall-breaker-dodo.png">
+  <script src="../assets/analytics.js"></script>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <title>Firewall Breaker Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Firewall Breaker Dodo",
+    "description": "Break through stacked fraud firewalls with precision paddle control and power-ups.",
+    "url": "https://games.dodopayments.com/firewall-breaker-dodo/",
+    "image": "https://games.dodopayments.com/assets/images/firewall-breaker-dodo.png",
+    "genre": "Arcade",
+    "gamePlatform": "Web Browser",
+    "playMode": "SinglePlayer",
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+  }
+  </script>
+</head>
+<body>
+  <a href="/" class="back-btn">← Back to Arcade</a>
+
+  <main class="game-shell">
+    <section id="startScreen" class="screen card">
+      <h1>Firewall Breaker Dodo</h1>
+      <p>Smash through fraud firewall layers.<br>Move with Arrow keys, mouse, or touch-drag.</p>
+      <button id="startButton" type="button">Start Breach</button>
+    </section>
+
+    <section id="gameScreen" class="screen hidden" aria-live="polite">
+      <header class="hud card-lite">
+        <div>Score <span id="score">0</span></div>
+        <div>Best <span id="bestScore">0</span></div>
+        <div>Lives <span id="lives">3</span></div>
+        <div>Level <span id="level">1/3</span></div>
+      </header>
+      <div class="canvas-wrap card-lite">
+        <canvas id="gameCanvas" aria-label="Firewall Breaker Dodo game canvas"></canvas>
+      </div>
+      <p class="legend">Power-ups: PCI Shield, 2FA Ball, Rate Limiter</p>
+    </section>
+
+    <section id="gameOverScreen" class="screen card hidden">
+      <h2 id="resultTitle">Firewall Breached</h2>
+      <p id="resultMessage">You broke all fraud layers.</p>
+      <p class="result-line">Final Score: <span id="finalScore">0</span></p>
+      <p class="result-line">All-Time High: <span id="overBestScore">0</span></p>
+      <button id="restartButton" type="button">Play Again</button>
+    </section>
+  </main>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>

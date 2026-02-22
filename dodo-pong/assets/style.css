@@ -1,0 +1,154 @@
+:root {
+  --primary: #c1ff00;
+  --bg-dark: #050505;
+  --card: #0f0f0f;
+  --text: #f5f5f5;
+  --muted: #9b9b9b;
+  --line: #232323;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Courier New", Courier, monospace;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 12%, #1b1b1b 0%, transparent 35%),
+    radial-gradient(circle at 86% 88%, #101010 0%, transparent 35%),
+    var(--bg-dark);
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  color: var(--text);
+  text-decoration: none;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: rgba(10, 10, 10, 0.88);
+  padding: 8px 12px;
+  z-index: 20;
+}
+
+.game-shell {
+  width: min(560px, 100%);
+  display: grid;
+  place-items: center;
+  margin-top: 48px;
+}
+
+.screen {
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.card,
+.card-lite {
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
+}
+
+.card {
+  padding: 22px;
+  text-align: center;
+}
+
+h1,
+h2 {
+  margin: 0 0 12px;
+  letter-spacing: 1px;
+}
+
+p {
+  margin: 0 0 18px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  background: #c1ff00;
+  color: #0c0c0c;
+  border: 3px solid #0c0c0c;
+  border-radius: 10px;
+  padding: 10px 18px;
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.hud span {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.canvas-wrap {
+  position: relative;
+  padding: 10px;
+}
+
+#gameCanvas {
+  width: 100%;
+  display: block;
+  background: var(--bg-dark);
+  border-radius: 10px;
+}
+
+.status-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: #fff;
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.result-line {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  .game-shell {
+    margin-top: 52px;
+  }
+
+  .hud {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .back-btn {
+    font-size: 13px;
+    padding: 7px 10px;
+  }
+}

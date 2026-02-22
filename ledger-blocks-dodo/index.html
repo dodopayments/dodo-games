@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Ledger Blocks Dodo - Stack transactions in the ledger! A Tetris-style game by Dodo Payments.">
+  <meta name="keywords" content="ledger blocks, tetris game, falling blocks, free game, arcade game, dodo games, browser game">
+  <meta name="author" content="Dodo Payments">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://games.dodopayments.com/ledger-blocks-dodo/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://games.dodopayments.com/ledger-blocks-dodo/">
+  <meta property="og:title" content="Ledger Blocks Dodo | Dodo Games">
+  <meta property="og:description" content="Stack transactions in the ledger and settle batches with perfect clears!">
+  <meta property="og:image" content="https://games.dodopayments.com/assets/images/ledger-blocks-dodo.png">
+  <meta property="og:site_name" content="Dodo Games">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://games.dodopayments.com/ledger-blocks-dodo/">
+  <meta name="twitter:title" content="Ledger Blocks Dodo | Dodo Games">
+  <meta name="twitter:description" content="Stack transactions in the ledger and settle batches with perfect clears!">
+  <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/ledger-blocks-dodo.png">
+  <script src="../assets/analytics.js"></script>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <title>Ledger Blocks Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Ledger Blocks Dodo",
+    "description": "Fit transactions into the ledger and clear full batches in this Tetris-style game.",
+    "url": "https://games.dodopayments.com/ledger-blocks-dodo/",
+    "image": "https://games.dodopayments.com/assets/images/ledger-blocks-dodo.png",
+    "genre": "Puzzle",
+    "gamePlatform": "Web Browser",
+    "playMode": "SinglePlayer",
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+  }
+  </script>
+</head>
+<body>
+  <a href="/" class="back-btn">← Back to Arcade</a>
+
+  <div id="startScreen" class="screen card">
+    <h1>Ledger Blocks Dodo</h1>
+    <p>Stack transactions to settle batches.<br>Clear rows to earn points!</p>
+    <button id="startBtn" type="button">Start Settling</button>
+  </div>
+
+  <div id="gameScreen" class="screen hidden">
+    <div class="game-layout">
+      <canvas id="gameCanvas"></canvas>
+      <div class="sidebar">
+        <div class="panel">
+          <div class="label">SCORE</div>
+          <div id="score">0</div>
+        </div>
+        <div class="panel">
+          <div class="label">BEST</div>
+          <div id="bestScore">0</div>
+        </div>
+        <div class="panel">
+          <div class="label">LEVEL</div>
+          <div id="level">1</div>
+        </div>
+        <div class="panel">
+          <div class="label">NEXT</div>
+          <canvas id="nextCanvas" width="80" height="80"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobileControls">
+      <button class="ctrl-btn" id="btnLeft" type="button">←</button>
+      <button class="ctrl-btn" id="btnRotate" type="button">↻</button>
+      <button class="ctrl-btn" id="btnRight" type="button">→</button>
+      <button class="ctrl-btn" id="btnSoftDrop" type="button">↓</button>
+      <button class="ctrl-btn" id="btnHardDrop" type="button">↡</button>
+    </div>
+  </div>
+
+  <div id="gameOverScreen" class="screen card hidden">
+    <h2>Ledger Closed</h2>
+    <p>The transactions overflowed!</p>
+    <p>Score: <span id="finalScore">0</span></p>
+    <p>Best: <span id="overBestScore">0</span></p>
+    <button id="restartBtn" type="button">New Ledger</button>
+  </div>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>

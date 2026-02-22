@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="API Wordle Dodo - Guess the payment API term in 6 tries! A Wordle-style game by Dodo Payments.">
+  <meta name="keywords" content="wordle, api game, payment terms, free game, dodo games, browser game">
+  <meta name="author" content="Dodo Payments">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://games.dodopayments.com/api-wordle-dodo/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://games.dodopayments.com/api-wordle-dodo/">
+  <meta property="og:title" content="API Wordle Dodo | Dodo Games">
+  <meta property="og:description" content="Guess the payment API term in 6 tries!">
+  <meta property="og:image" content="https://games.dodopayments.com/assets/images/api-wordle-dodo.png">
+  <meta property="og:site_name" content="Dodo Games">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://games.dodopayments.com/api-wordle-dodo/">
+  <meta name="twitter:title" content="API Wordle Dodo | Dodo Games">
+  <meta name="twitter:description" content="Guess the payment API term in 6 tries!">
+  <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/api-wordle-dodo.png">
+  <script src="../assets/analytics.js"></script>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <title>API Wordle Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "API Wordle Dodo",
+    "description": "Guess the payment API term in six tries in this Wordle-style challenge!",
+    "url": "https://games.dodopayments.com/api-wordle-dodo/",
+    "image": "https://games.dodopayments.com/assets/images/api-wordle-dodo.png",
+    "genre": "Puzzle",
+    "gamePlatform": "Web Browser",
+    "playMode": "SinglePlayer",
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+  }
+  </script>
+</head>
+<body>
+  <a href="/" class="back-btn">← Back to Arcade</a>
+
+  <main class="game-shell">
+    <header class="header card-lite">
+      <h1>API Wordle Dodo</h1>
+      <div class="stats" aria-live="polite">
+        <span>Games <strong id="gamesPlayed">0</strong></span>
+        <span>Win % <strong id="winRate">0</strong></span>
+      </div>
+    </header>
+
+    <section id="gameBoard" class="board" aria-label="Wordle guess board"></section>
+
+    <div id="keyboard">
+      <div class="kb-row" id="kb-row-0"></div>
+      <div class="kb-row" id="kb-row-1"></div>
+      <div class="kb-row" id="kb-row-2"></div>
+    </div>
+  </main>
+
+  <section id="resultOverlay" class="overlay hidden" aria-live="assertive">
+    <div class="card result-card">
+      <h2 id="resultTitle">Nice!</h2>
+      <p id="resultText"></p>
+      <div class="result-actions">
+        <button id="shareBtn" type="button">Share Results</button>
+        <button id="newGameBtn" type="button">New Game</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>

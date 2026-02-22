@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Dodo Pong - Bounce payments between merchant and processor! A classic Pong game by Dodo Payments.">
+  <meta name="keywords" content="dodo pong, pong game, payment game, arcade game, dodo games, browser game">
+  <meta name="author" content="Dodo Payments">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://games.dodopayments.com/dodo-pong/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://games.dodopayments.com/dodo-pong/">
+  <meta property="og:title" content="Dodo Pong | Dodo Games">
+  <meta property="og:description" content="Bounce payments between merchant and processor!">
+  <meta property="og:image" content="https://games.dodopayments.com/assets/images/dodo-pong.png">
+  <meta property="og:site_name" content="Dodo Games">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://games.dodopayments.com/dodo-pong/">
+  <meta name="twitter:title" content="Dodo Pong | Dodo Games">
+  <meta name="twitter:description" content="Bounce payments between merchant and processor!">
+  <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/dodo-pong.png">
+  <script src="../assets/analytics.js"></script>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <title>Dodo Pong | Dodo Games</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Dodo Pong",
+    "description": "Bounce payments between merchant and processor in a vertical Pong showdown.",
+    "url": "https://games.dodopayments.com/dodo-pong/",
+    "image": "https://games.dodopayments.com/assets/images/dodo-pong.png",
+    "genre": "Arcade",
+    "gamePlatform": "Web Browser",
+    "playMode": "SinglePlayer",
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+  }
+  </script>
+</head>
+<body>
+  <a href="/" class="back-btn">← Back to Arcade</a>
+
+  <main class="game-shell">
+    <section id="startScreen" class="screen card">
+      <h1>Dodo Pong</h1>
+      <p>Bounce the payment between merchant and processor.<br>Use A/D or Arrow keys. Touch-drag on mobile.</p>
+      <button id="startButton" type="button">Start Match</button>
+    </section>
+
+    <section id="gameScreen" class="screen hidden" aria-live="polite">
+      <header class="hud card-lite">
+        <div>Merchant <span id="playerScore">0</span></div>
+        <div>Processor <span id="aiScore">0</span></div>
+        <div>Best <span id="bestScore">0</span></div>
+      </header>
+      <div class="canvas-wrap card-lite">
+        <canvas id="gameCanvas" aria-label="Dodo Pong game canvas"></canvas>
+        <div id="statusOverlay" class="status-overlay hidden"></div>
+      </div>
+    </section>
+
+    <section id="gameOverScreen" class="screen card hidden">
+      <h2 id="resultTitle">Match Complete</h2>
+      <p class="result-line">Final: Merchant <span id="finalPlayerScore">0</span> - Processor <span id="finalAiScore">0</span></p>
+      <p class="result-line">All-Time High: <span id="overBestScore">0</span></p>
+      <button id="restartButton" type="button">Play Again</button>
+    </section>
+  </main>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+:root {
+  --primary: #c1ff00;
+  --bg-dark: #050505;
+  --panel: #121212;
+  --text: #f4f4f4;
+  --muted: #9da3af;
+  --correct: #538d4e;
+  --present: #b59f3b;
+  --absent: #3a3a3c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a 0%, var(--bg-dark) 50%, #030303 100%);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 20px 14px 24px;
+  overflow: hidden;
+}
+
+.back-btn {
+  position: fixed;
+  top: 16px;
+  left: 14px;
+  text-decoration: none;
+  color: #0c0c0c;
+  background: var(--primary);
+  border: 3px solid #0c0c0c;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 800;
+  z-index: 5;
+}
+
+.game-shell {
+  width: min(440px, 100%);
+  margin-top: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.card-lite,
+.card {
+  width: 100%;
+  background: rgba(18, 18, 18, 0.94);
+  border: 1px solid #2c2c2c;
+  border-radius: 14px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+}
+
+.header {
+  text-align: center;
+  padding: 14px 16px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  letter-spacing: 0.03em;
+}
+
+.stats {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  color: var(--muted);
+}
+
+.stats strong {
+  color: var(--primary);
+}
+
+.board {
+  display: grid;
+  gap: 7px;
+}
+
+.guess-row {
+  display: flex;
+  gap: 7px;
+}
+
+.tile {
+  width: 52px;
+  height: 52px;
+  border: 2px solid #3a3a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: transform 0.25s;
+  transform-style: preserve-3d;
+  background: #161616;
+}
+
+.tile.filled {
+  border-color: #888;
+  animation: pop 0.1s ease;
+}
+
+.tile.correct {
+  background: var(--correct);
+  border-color: var(--correct);
+  color: #fff;
+}
+
+.tile.present {
+  background: var(--present);
+  border-color: var(--present);
+  color: #fff;
+}
+
+.tile.absent {
+  background: var(--absent);
+  border-color: var(--absent);
+  color: #fff;
+}
+
+.tile.reveal {
+  animation: flip 0.5s ease forwards;
+}
+
+.guess-row.shake {
+  animation: shake 0.3s ease;
+}
+
+#keyboard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.kb-key {
+  height: 56px;
+  min-width: 31px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: #818384;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  user-select: none;
+}
+
+.kb-wide {
+  min-width: 56px;
+  font-size: 0.75rem;
+}
+
+.kb-key.correct {
+  background: var(--correct);
+}
+
+.kb-key.present {
+  background: var(--present);
+}
+
+.kb-key.absent {
+  background: var(--absent);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.result-card {
+  max-width: 340px;
+  padding: 20px;
+  text-align: center;
+}
+
+.result-card h2 {
+  margin: 0;
+}
+
+.result-card p {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.result-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+button {
+  font: inherit;
+}
+
+#shareBtn,
+#newGameBtn {
+  border: 3px solid #0c0c0c;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+#shareBtn {
+  background: var(--primary);
+  color: #0c0c0c;
+}
+
+#newGameBtn {
+  background: #fff;
+  color: #111;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 430px) {
+  body {
+    padding: 8px 8px 6px;
+  }
+
+  .game-shell {
+    margin-top: 52px;
+    gap: 10px;
+  }
+
+  .header {
+    padding: 10px 12px;
+  }
+
+  .stats {
+    margin-top: 4px;
+    gap: 14px;
+  }
+
+  .board {
+    gap: 5px;
+  }
+
+  .guess-row {
+    gap: 5px;
+  }
+
+  .tile {
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
+  }
+
+  .kb-key {
+    min-width: 28px;
+    padding: 0 5px;
+    font-size: 0.78rem;
+    height: 46px;
+  }
+
+  .kb-wide {
+    min-width: 48px;
+  }
+}

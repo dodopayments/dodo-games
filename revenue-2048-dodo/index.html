@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Revenue 2048 Dodo - Merge revenue tiles from $1 to $1B! A 2048-style puzzle game by Dodo Payments.">
+  <meta name="keywords" content="2048, revenue game, puzzle game, dodo games, browser game, merge tiles">
+  <meta name="author" content="Dodo Payments">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://games.dodopayments.com/revenue-2048-dodo/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://games.dodopayments.com/revenue-2048-dodo/">
+  <meta property="og:title" content="Revenue 2048 Dodo | Dodo Games">
+  <meta property="og:description" content="Merge revenue tiles from $1 to $1B and build a Unicorn business.">
+  <meta property="og:image" content="https://games.dodopayments.com/assets/images/revenue-2048-dodo.png">
+  <meta property="og:site_name" content="Dodo Games">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://games.dodopayments.com/revenue-2048-dodo/">
+  <meta name="twitter:title" content="Revenue 2048 Dodo | Dodo Games">
+  <meta name="twitter:description" content="Merge revenue tiles from $1 to $1B and build a Unicorn business.">
+  <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/revenue-2048-dodo.png">
+  <script src="../assets/analytics.js"></script>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <title>Revenue 2048 Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Revenue 2048 Dodo",
+    "description": "Merge revenue tiles from $1 to $1B in a fast, strategic 2048-style puzzle.",
+    "url": "https://games.dodopayments.com/revenue-2048-dodo/",
+    "image": "https://games.dodopayments.com/assets/images/revenue-2048-dodo.png",
+    "genre": "Puzzle",
+    "gamePlatform": "Web Browser",
+    "playMode": "SinglePlayer",
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+  }
+  </script>
+</head>
+<body>
+  <a href="/" class="back-btn">← Back to Arcade</a>
+
+  <main class="game-shell">
+    <section id="startScreen" class="screen card">
+      <h1>Revenue 2048 Dodo</h1>
+      <p>Merge matching revenue tiles from $1 toward $1B.<br>Use arrow keys or swipe to grow your business.</p>
+      <button id="startButton" type="button">Start Scaling</button>
+    </section>
+
+    <section id="gameScreen" class="screen hidden" aria-live="polite">
+      <header class="hud card-lite">
+        <div>Score <span id="score">0</span></div>
+        <div>Best <span id="bestScore">0</span></div>
+        <button id="newGameButton" type="button">New Game</button>
+      </header>
+      <div class="board-wrap">
+        <div id="grid" class="grid" role="grid" aria-label="Revenue 2048 board"></div>
+
+        <section id="winOverlay" class="overlay card hidden" aria-live="assertive">
+          <h2>UNICORN ACHIEVED! 🦄</h2>
+          <p>You reached the $1B tile.</p>
+          <div class="overlay-actions">
+            <button id="keepPlayingButton" type="button">Keep Playing</button>
+            <button id="newGameFromWinButton" type="button">New Game</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="gameOverScreen" class="screen card hidden">
+      <h2>No More Moves</h2>
+      <p>Your growth hit a ceiling. Time to run another sprint.</p>
+      <p class="result-line">Final Score: <span id="finalScore">0</span></p>
+      <p class="result-line">All-Time High: <span id="overBestScore">0</span></p>
+      <button id="restartButton" type="button">Play Again</button>
+    </section>
+  </main>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>

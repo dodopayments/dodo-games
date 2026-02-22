@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Token Match Dodo - Match payment token pairs in this memory card game by Dodo Payments.">
+  <meta name="keywords" content="token match, memory game, payment tokens, free game, dodo games, browser game">
+  <meta name="author" content="Dodo Payments">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://games.dodopayments.com/token-match-dodo/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://games.dodopayments.com/token-match-dodo/">
+  <meta property="og:title" content="Token Match Dodo | Dodo Games">
+  <meta property="og:description" content="Match payment token pairs in this memory card game.">
+  <meta property="og:image" content="https://games.dodopayments.com/assets/images/token-match-dodo.png">
+  <meta property="og:site_name" content="Dodo Games">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://games.dodopayments.com/token-match-dodo/">
+  <meta name="twitter:title" content="Token Match Dodo | Dodo Games">
+  <meta name="twitter:description" content="Match payment token pairs in this memory card game.">
+  <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/token-match-dodo.png">
+  <script src="../assets/analytics.js"></script>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <title>Token Match Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Token Match Dodo",
+    "description": "Match payment token pairs in a fast memory challenge!",
+    "url": "https://games.dodopayments.com/token-match-dodo/",
+    "image": "https://games.dodopayments.com/assets/images/token-match-dodo.png",
+    "genre": "Puzzle",
+    "gamePlatform": "Web Browser",
+    "playMode": "SinglePlayer",
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+  }
+  </script>
+</head>
+<body>
+  <a href="/" class="back-btn">← Back to Arcade</a>
+
+  <main class="game-shell">
+    <section id="startScreen" class="screen card">
+      <h1>Token Match Dodo</h1>
+      <p>Flip cards and match all 8 payment token pairs.<br>Only two cards can be face-up at once.</p>
+      <button id="startButton" type="button">Start Match</button>
+    </section>
+
+    <section id="gameScreen" class="screen hidden" aria-live="polite">
+      <header class="hud card-lite">
+        <div>Time <span id="timer">00:00</span></div>
+        <div>Flips <span id="flips">0</span></div>
+        <div>Score <span id="score">1000</span></div>
+        <div>Best <span id="bestScore">0</span></div>
+      </header>
+      <div id="grid" class="grid" role="grid" aria-label="Payment token memory cards"></div>
+    </section>
+
+    <section id="gameOverScreen" class="screen card hidden">
+      <h2>All Tokens Matched!</h2>
+      <p class="result-line">Time Taken: <span id="finalTime">00:00</span></p>
+      <p class="result-line">Total Flips: <span id="finalFlips">0</span></p>
+      <p class="result-line">Final Score: <span id="finalScore">0</span></p>
+      <p class="result-line">Best Score: <span id="overBestScore">0</span></p>
+      <button id="restartButton" type="button">Play Again</button>
+    </section>
+  </main>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
