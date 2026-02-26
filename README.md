@@ -28,7 +28,6 @@ Dodo Games is an engaging collection of playful, custom-built arcade games creat
 | **[Revenue 2048 Dodo](https://games.dodopayments.com/revenue-2048-dodo)** | Slide and merge revenue tiles from $1 to $1B unicorn status! |
 | **[Token Match Dodo](https://games.dodopayments.com/token-match-dodo)** | Flip cards to find matching payment tokens. Race the clock, minimize your moves. |
 | **[Dodo Pong](https://games.dodopayments.com/dodo-pong)** | Bounce payments between merchant and processor. Beat the AI to 11 points! |
-
 | **[Firewall Breaker Dodo](https://games.dodopayments.com/firewall-breaker-dodo)** | Break through layers of fraud firewalls. Power up with PCI Shield and 2FA Ball! |
 | **[API Wordle Dodo](https://games.dodopayments.com/api-wordle-dodo)** | Guess the 5-letter payment term in 6 tries. Share your results! |
 | **[Ledger Blocks Dodo](https://games.dodopayments.com/ledger-blocks-dodo)** | Fit transaction blocks into the ledger. Clear rows to settle batches! |
