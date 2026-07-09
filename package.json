@@ -5,18 +5,26 @@
   "scripts": {
     "build": "node build.js",
     "preview": "npx wrangler pages dev dist",
-    "deploy": "npm run build && npx wrangler pages deploy dist --project-name=dodo-games"
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name=dodo-games",
+    "serve:dist": "serve dist -l 4173",
+    "test:games": "playwright test tests/games",
+    "test:home": "playwright test tests/home",
+    "test:all": "playwright test"
   },
   "keywords": [
     "games",
     "cloudflare-pages"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "devDependencies": {
+    "@playwright/test": "^1.49.1",
     "clean-css": "^5.3.3",
     "fs-extra": "^11.3.2",
     "glob": "^13.0.0",
+    "lighthouse": "^12.2.1",
+    "serve": "^14.2.4",
+    "sharp": "^0.33.5",
     "terser": "^5.44.1"
   }
 }
