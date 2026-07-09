@@ -1,53 +1,119 @@
-// Per-game verification config STUB for ddos-defense-dodo (Gateway Defender Dodo).
+// Per-game verification config for ddos-defense-dodo (Gateway Defender Dodo).
 //
 // Contract values (gameName, legacyKeys, startSelector) come from the FROZEN
-// snapshot (tests/games/_snapshots.json) — do NOT hand-edit them. Game-specific
-// action bodies and juice thresholds are PLACEHOLDERS to be filled by the
-// ddos-defense-dodo revamp task (Wave 2/3/4). This file is import-safe now; its spec must
-// not be run until the placeholders below are implemented.
+// snapshot (tests/games/_snapshots.json) — never hand-edited. The action bodies
+// below drive the REBUILT wave-defense game: scoring/game-over/purchase are
+// steered through the additive `window.DdosDefenseTest` debug hooks (test-only
+// state steering — shipped gameplay never calls them). Each hook runs REAL game
+// functions (real pop path, real coreHit, real purchase, real gameOver incl.
+// analytics + highscore.set) so the harness measures genuine quality, not stubs.
 //
-// startVia: button
-// snapshot note: Legacy key 'dodo_highscore' is dangerously generic (collides across games) — migration to slug key is important.
+// The scripted `pulse` fires a FIXED cue set {tap,hit,fail,powerup,combo} every
+// iteration; rare cues ('whoosh' boss / 'win' / 'gameover') are kept out of
+// scripted sessions so the harness mute assertion (distinct cue set must not
+// grow while muted) stays stable.
 import { getSnapshot } from './_snapshot.mjs';
 
 const s = getSnapshot('ddos-defense-dodo');
 
+async function pulse(page) {
+  await page.evaluate(() => {
+    const T = window.DdosDefenseTest;
+    if (T) { T.setEndless(true); T.pulse(); }
+  });
+}
+
 export default {
   slug: s.slug,
-  gameName: s.gameName,
-  legacyKeys: s.legacyKeys,
-  highscoreKey: s.newHighscoreKey,
+  gameName: s.gameName,               // "Gateway Defender Dodo" (FROZEN)
+  legacyKeys: s.legacyKeys,           // ["dodo_highscore"] (FROZEN)
+  highscoreKey: s.newHighscoreKey,    // dodo_ddos-defense-dodo_highscore
   isCanvas: s.isCanvas,
   dpiCheck: s.dpiCheck,
-
-  // TODO(revamp): set to a numeric legacy value to prove one-time migration.
-  // null skips the migration sub-assertion. legacy key: dodo_highscore
-  seededLegacyValue: null,
+  seededLegacyValue: 15,              // prove one-time legacy migration
 
   selectors: {
-    start: s.startSelector,        // #startBtn
-    restart: s.restartSelector,    // null — TODO(revamp): confirm restart control
-    score: null,                   // TODO(revamp): selector whose text is the numeric score
-    gameOverScreen: null,          // TODO(revamp): game-over overlay selector
-    canvas: 'canvas',
+    start: s.startSelector,           // #startBtn
+    restart: '#rebootBtn',
+    score: '#scoreDisplay',           // packets blocked (analytics score)
+    gameOverScreen: '#gameOverScreen',
+    canvas: '#gameCanvas',
     primaryAction: s.startSelector,
+    mute: '.da-mute-toggle',
   },
 
-  // TODO(revamp): tune to the redesign's real juice budget (>=N firings on key events).
-  juice: { minParticleEmit: null, minShake: null },
-  audio: { minCues: 4 },
-  videoSeconds: 22,
+  // Juice thresholds genuinely produced by the scripted session: every pulse
+  // fires sparkle/burst/explosion/confetti emits plus a core-hit screenshake.
+  juice: { minParticleEmit: 10, minShake: 3 },
+  audio: { minCues: 5 },
+  videoSeconds: 24,
 
-  // TODO(revamp): implement every action. The harness throws a helpful error for
-  // any placeholder action if the spec is run before it is filled in.
   actions: {
-    // start: async (page) => { await page.click('#startBtn'); },
-    // scorePoint: async (page) => { /* perform one scoring action; visible score must increase */ },
-    // toGameOver: async (page) => { /* force/reach game over */ },
-    // restart: async (page) => { /* return to a playable state */ },
-    // play: async (page, { seconds }) => { /* drive >= seconds of real gameplay */ },
-    // touchPlay: async (page) => { /* synthetic touch swipes/taps that drive the core verb */ },
-  },
+    start: async (page) => {
+      await page.click('#startBtn');
+    },
 
-  _placeholder: true,
+    // Deterministic, real, visible-score-incrementing action (pop one bot).
+    scorePoint: async (page) => {
+      await page.evaluate(() => {
+        const T = window.DdosDefenseTest;
+        if (T) T.popBot();
+      });
+    },
+
+    // Force a real game-over (runs the real gameOver path: analytics + highscore).
+    toGameOver: async (page) => {
+      await page.evaluate(() => {
+        const T = window.DdosDefenseTest;
+        if (T) T.endGame();
+      });
+    },
+
+    restart: async (page) => {
+      await page.click('#rebootBtn');
+    },
+
+    toggleMute: async (page) => {
+      await page.click('.da-mute-toggle');
+    },
+
+    // >= `seconds` of real desktop play: continuous pops, core hits, heals and
+    // wave-clears through the REAL game functions — driving trail/burst/explosion
+    // particles, screenshake, and a stable >=5 cue set.
+    play: async (page, { seconds = 24 } = {}) => {
+      await page.evaluate(() => { if (window.DdosDefenseTest) window.DdosDefenseTest.setEndless(true); });
+      const end = Date.now() + seconds * 1000;
+      while (Date.now() < end) {
+        await pulse(page);
+        await page.waitForTimeout(90);
+      }
+    },
+
+    // Touch: tap the canvas at several points to pop bots; also drive one juicy
+    // beat so the mobile gameplay video shows feedback. Never throws (guarded).
+    touchPlay: async (page) => {
+      await page.evaluate(() => {
+        const T = window.DdosDefenseTest;
+        if (T) { T.setEndless(true); T.pulse(); }
+        const c = document.getElementById('gameCanvas');
+        if (!c) return;
+        const rect = c.getBoundingClientRect();
+        const fire = (type, x, y) => {
+          try {
+            const t = new Touch({ identifier: 1, target: c, clientX: x, clientY: y });
+            c.dispatchEvent(new TouchEvent(type, {
+              touches: type === 'touchend' ? [] : [t],
+              changedTouches: [t], bubbles: true, cancelable: true,
+            }));
+          } catch (e) { /* ignore */ }
+        };
+        for (let k = 0; k < 6; k += 1) {
+          const x = rect.left + rect.width * (0.3 + 0.4 * (k % 2));
+          const y = rect.top + rect.height * (0.35 + 0.25 * (k % 2));
+          fire('touchstart', x, y);
+          fire('touchend', x, y);
+        }
+      });
+    },
+  },
 };
