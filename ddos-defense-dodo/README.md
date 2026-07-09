@@ -61,3 +61,7 @@ Shared substrate loaded from the site root: `../assets/dodo-arcade.css` (design 
 ## Running Locally
 
 Open `index.html` in a browser — no build step required. For the production build, run `npm run build` from the repository root (minifies + copies into `dist/`).
+
+## License
+
+GPLv3 — see the root [LICENSE](../LICENSE). Part of Dodo Games.
