@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="description" content="Payment Invaders - Defend your payment gateway from waves of chargebacks, fraudsters, and downtime bugs. A Space Invaders-style arcade game by Dodo Payments.">
     <meta name="keywords" content="payment invaders, space invaders clone, arcade game, shooter game, dodo games, browser game, payment security game">
     <meta name="author" content="Dodo Payments">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#050505">
     <link rel="canonical" href="https://games.dodopayments.com/payment-invaders-dodo/">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://games.dodopayments.com/payment-invaders-dodo/">
@@ -16,27 +17,27 @@
     <meta property="og:description" content="Defend your payment gateway from chargebacks, fraudsters, and bugs. Shoot them down with 2FA, KYC Lasers and PCI Shields!">
     <meta property="og:image" content="https://games.dodopayments.com/assets/images/payment-invaders-dodo.png">
     <meta property="og:site_name" content="Dodo Games">
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://games.dodopayments.com/payment-invaders-dodo/">
     <meta name="twitter:title" content="Payment Invaders | Dodo Games">
     <meta name="twitter:description" content="Defend your payment gateway from chargebacks and fraudsters!">
     <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/payment-invaders-dodo.png">
-    
+
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
     <link rel="manifest" href="../assets/site.webmanifest">
-    
+
     <!-- Google Analytics -->
     <script src="../assets/analytics.js"></script>
     <title>Payment Invaders | Dodo Games</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/dodo-arcade.css">
     <link rel="stylesheet" href="assets/style.css">
-    
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -48,179 +49,156 @@
         "image": "https://games.dodopayments.com/assets/images/payment-invaders-dodo.png",
         "genre": ["Arcade", "Shooter"],
         "gamePlatform": "Web Browser",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any",
         "playMode": "SinglePlayer",
         "publisher": {
             "@type": "Organization",
             "name": "Dodo Payments"
-        }
+        },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
 </head>
-<body class="scanlines">
-    <!-- Main Menu Overlay -->
-    <div id="menuOverlay" class="overlay">
-        <div class="menu-box">
-            <div class="logo-container">
-                <img src="assets/images/dodo-logo.png" alt="DodoPay Logo" onerror="this.style.display='none'">
-            </div>
-            <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-orange-400 mb-2 neon-text" style="text-shadow: 0 0 30px #a855f7;">
-                PAYMENT INVADERS
-            </h1>
-            <p class="text-pink-400 text-sm mb-6">Powered by DodoPay Security™</p>
-            
-            <div class="bg-purple-900/30 rounded-lg p-4 mb-6 border border-purple-500/30">
-                <p class="text-gray-300 text-sm leading-relaxed">
-                    🛡️ Defend your <span class="text-green-400 font-bold">Payment Gateway</span> from waves of 
-                    <span class="text-red-400">Chargebacks</span>, 
-                    <span class="text-orange-400">Fraudsters</span>, and 
-                    <span class="text-yellow-400">Downtime Bugs</span>!
-                </p>
-            </div>
-            
-            <div class="controls-info text-xs text-gray-400">
-                <div class="control-key">
-                    <span class="key-badge">← →</span>
-                    <span>Move</span>
-                </div>
-                <div class="control-key">
-                    <span class="key-badge">SPACE</span>
-                    <span>2FA Laser</span>
-                </div>
-                <div class="control-key">
-                    <span class="key-badge">Z</span>
-                    <span>KYC Spread</span>
-                </div>
-                <div class="control-key">
-                    <span class="key-badge">X</span>
-                    <span>PCI Shield</span>
-                </div>
-            </div>
-            
-            <button id="startBtn" class="btn-neon mt-6">
-                🚀 Initialize Gateway
-            </button>
-            
-            <div class="mt-6 text-xs text-purple-400">
-                <p>🏆 High Score: <span id="menuHighScore" class="text-green-400 font-bold">0</span></p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Game Over Overlay -->
-    <div id="gameOverOverlay" class="overlay" style="display: none;">
-        <div class="menu-box">
-            <h2 class="text-3xl font-black text-red-500 mb-4 neon-text" style="text-shadow: 0 0 30px #ef4444;">
-                GATEWAY BREACHED!
-            </h2>
-            <p class="text-gray-400 mb-4" id="gameOverMessage">Your payment system has been compromised!</p>
-            
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="bg-purple-900/30 rounded-lg p-4 border border-purple-500/30">
-                    <p class="text-purple-400 text-xs">FINAL SCORE</p>
-                    <p id="finalScore" class="text-3xl font-black text-green-400">0</p>
-                </div>
-                <div class="bg-purple-900/30 rounded-lg p-4 border border-purple-500/30">
-                    <p class="text-purple-400 text-xs">WAVE REACHED</p>
-                    <p id="finalWave" class="text-3xl font-black text-orange-400">1</p>
-                </div>
-            </div>
-            
-            <div class="bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-lg p-4 mb-6 border border-pink-500/30">
-                <p class="text-xs text-gray-400 mb-2">THREATS NEUTRALIZED</p>
-                <div class="flex justify-around text-center">
-                    <div>
-                        <p id="statChargebacks" class="text-xl font-bold text-red-400">0</p>
-                        <p class="text-xs text-gray-500">Chargebacks</p>
-                    </div>
-                    <div>
-                        <p id="statFraudsters" class="text-xl font-bold text-orange-400">0</p>
-                        <p class="text-xs text-gray-500">Fraudsters</p>
-                    </div>
-                    <div>
-                        <p id="statBugs" class="text-xl font-bold text-yellow-400">0</p>
-                        <p class="text-xs text-gray-500">Bugs</p>
-                    </div>
-                    <div>
-                        <p id="statBosses" class="text-xl font-bold text-purple-400">0</p>
-                        <p class="text-xs text-gray-500">Bosses</p>
-                    </div>
-                </div>
-            </div>
-            
-            <button id="restartBtn" class="btn-neon">
-                🔄 Reboot Gateway
-            </button>
-            
-            <p class="text-xs text-pink-400 mt-4">
-                "Stay secure with DodoPay - Your trusted payment partner"
-            </p>
-        </div>
-    </div>
-    
-    <!-- Pause Overlay -->
-    <div id="pauseOverlay" class="overlay" style="display: none;">
-        <div class="menu-box">
-            <h2 class="text-3xl font-black text-yellow-400 mb-4">⏸️ PAUSED</h2>
-            <p class="text-gray-400 mb-6">Gateway operations suspended</p>
-            <button id="resumeBtn" class="btn-neon">
-                ▶️ Resume Operations
-            </button>
-        </div>
-    </div>
-    
+<body>
+    <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
+
     <!-- Game Container -->
     <div class="game-container" id="gameContainer" style="display: none;">
         <!-- Stats Bar -->
         <div class="stats-bar">
             <div class="stat-item">
                 <span class="stat-label">Score</span>
-                <span id="scoreDisplay" class="stat-value">0</span>
+                <span id="scoreDisplay" class="stat-value da-score">0</span>
             </div>
             <div class="stat-item">
                 <span class="stat-label">Wave</span>
-                <span id="waveDisplay" class="stat-value">1</span>
+                <span id="waveDisplay" class="stat-value stat-value--wave">1</span>
             </div>
             <div class="stat-item">
                 <span class="stat-label">Combo</span>
-                <span id="comboDisplay" class="stat-value">x1</span>
+                <span id="comboDisplay" class="stat-value stat-value--combo">x1.0</span>
             </div>
             <div class="stat-item">
                 <span class="stat-label">Lives</span>
                 <span id="livesDisplay" class="stat-value">❤️❤️❤️</span>
             </div>
-            <div class="stat-item">
+            <div class="stat-item stat-item--bar">
                 <span class="stat-label">Shield</span>
                 <div class="power-indicator">
                     <div id="shieldBar" class="power-fill" style="width: 100%;"></div>
                 </div>
             </div>
-            <div class="stat-item">
+            <div class="stat-item stat-item--bar">
                 <span class="stat-label">KYC</span>
                 <div class="power-indicator">
-                    <div id="kycBar" class="power-fill" style="width: 100%; background: linear-gradient(90deg, #f97316, #eab308);"></div>
+                    <div id="kycBar" class="power-fill power-fill--kyc" style="width: 100%;"></div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Game Canvas -->
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        
+        <div class="canvas-frame">
+            <canvas id="gameCanvas" width="800" height="600" aria-label="Payment Invaders game field"></canvas>
+        </div>
+
         <!-- Branding Footer -->
-        <div class="flex items-center gap-4 mt-4 text-purple-400 text-xs">
-            <img src="assets/images/dodo-logo.png" alt="DodoPay" class="w-8 h-8 rounded-full border border-purple-500" onerror="this.style.display='none'">
-            <span>Secured by DodoPay™ | PCI DSS Level 1 Compliant | 99.99% Uptime</span>
+        <p class="pi-footer">Secured by DodoPay™ · PCI DSS Level 1 · 99.99% Uptime</p>
+    </div>
+
+    <!-- Main Menu Overlay -->
+    <div id="menuOverlay" class="overlay da-screen">
+        <div class="menu-box">
+            <p class="da-eyebrow">Powered by DodoPay Security™</p>
+            <h1 class="da-title da-title--hero pi-logo">PAYMENT <span class="da-title__accent">INVADERS</span></h1>
+
+            <p class="pi-intro da-subtitle">
+                🛡️ Defend your <b class="pi-hl">Payment Gateway</b> from waves of
+                <b class="pi-hl pi-hl--red">Chargebacks</b>,
+                <b class="pi-hl pi-hl--orange">Fraudsters</b>, and
+                <b class="pi-hl pi-hl--yellow">Downtime Bugs</b>!
+            </p>
+
+            <div class="controls-info">
+                <div class="control-key"><span class="key-badge">← →</span><span>Move</span></div>
+                <div class="control-key"><span class="key-badge">SPACE</span><span>2FA Laser</span></div>
+                <div class="control-key"><span class="key-badge">Z</span><span>KYC Spread</span></div>
+                <div class="control-key"><span class="key-badge">X</span><span>PCI Shield</span></div>
+            </div>
+
+            <div class="da-screen__actions">
+                <button id="startBtn" type="button" class="da-btn da-btn--primary">🚀 Initialize Gateway</button>
+            </div>
+
+            <p class="pi-hs">🏆 High Score: <span id="menuHighScore" class="pi-hs__val">0</span></p>
         </div>
     </div>
-    
-    <!-- Mobile Controls -->
-    <div class="mobile-controls">
-        <button class="mobile-btn" id="mobileLeft">◀</button>
-        <button class="mobile-btn fire-btn" id="mobileFire">🔥</button>
-        <button class="mobile-btn" id="mobileRight">▶</button>
+
+    <!-- Game Over Overlay -->
+    <div id="gameOverOverlay" class="overlay da-screen" style="display: none;">
+        <div class="menu-box">
+            <p class="da-eyebrow pi-eyebrow--danger">Gateway Breached!</p>
+            <h2 class="da-title">System Compromised</h2>
+            <p class="da-subtitle" id="gameOverMessage">Your payment system has been compromised!</p>
+
+            <div class="pi-result">
+                <div class="pi-result__cell">
+                    <span class="da-stat__label">Final Score</span>
+                    <span class="da-score" id="finalScore">0</span>
+                </div>
+                <div class="pi-result__cell">
+                    <span class="da-stat__label">Wave Reached</span>
+                    <span class="da-stat__value pi-result__wave" id="finalWave">1</span>
+                </div>
+            </div>
+
+            <div class="pi-threats">
+                <p class="pi-threats__title">Threats Neutralized</p>
+                <div class="pi-threats__row">
+                    <div class="pi-threat"><span id="statChargebacks" class="pi-threat__num pi-threat__num--red">0</span><span class="pi-threat__lbl">Chargebacks</span></div>
+                    <div class="pi-threat"><span id="statFraudsters" class="pi-threat__num pi-threat__num--orange">0</span><span class="pi-threat__lbl">Fraudsters</span></div>
+                    <div class="pi-threat"><span id="statBugs" class="pi-threat__num pi-threat__num--yellow">0</span><span class="pi-threat__lbl">Bugs</span></div>
+                    <div class="pi-threat"><span id="statBosses" class="pi-threat__num pi-threat__num--purple">0</span><span class="pi-threat__lbl">Bosses</span></div>
+                </div>
+            </div>
+
+            <div class="da-screen__actions">
+                <button id="restartBtn" type="button" class="da-btn da-btn--primary">🔄 Reboot Gateway</button>
+                <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+            </div>
+
+            <p class="pi-tagline">"Stay secure with DodoPay — your trusted payment partner"</p>
+        </div>
     </div>
-    
+
+    <!-- Pause Overlay -->
+    <div id="pauseOverlay" class="overlay da-screen" style="display: none;">
+        <div class="menu-box menu-box--compact">
+            <p class="da-eyebrow">Paused</p>
+            <h2 class="da-title">Operations Suspended</h2>
+            <div class="da-screen__actions">
+                <button id="resumeBtn" type="button" class="da-btn da-btn--primary">▶️ Resume Operations</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Controls (D-pad left, action cluster right — thumb-zone) -->
+    <div class="mobile-controls" aria-hidden="true">
+        <div class="mobile-pad mobile-pad--move">
+            <button class="mobile-btn" id="mobileLeft" aria-label="Move left">◀</button>
+            <button class="mobile-btn" id="mobileRight" aria-label="Move right">▶</button>
+        </div>
+        <div class="mobile-pad mobile-pad--action">
+            <button class="mobile-btn mobile-btn--sm" id="mobileSpread" aria-label="KYC spread shot">✦</button>
+            <button class="mobile-btn mobile-btn--sm" id="mobileShield" aria-label="PCI shield">🛡️</button>
+            <button class="mobile-btn fire-btn" id="mobileFire" aria-label="Fire 2FA laser">🔥</button>
+        </div>
+    </div>
+
     <!-- Achievement Popups Container -->
-    <div id="achievementContainer"></div>
+    <div id="achievementContainer" class="pi-toasts" aria-live="polite"></div>
+
+    <script src="../assets/dodo-juice.js"></script>
     <script src="assets/script.js"></script>
 </body>
 </html>
