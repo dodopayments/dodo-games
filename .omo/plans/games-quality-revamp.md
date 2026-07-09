@@ -333,18 +333,18 @@ Verify: all card images <100KB (scripted stat check); home Lighthouse re-run pas
 - [x] 9. [Wave 2 / Task 2.3] Revamp `firewall-breaker-dodo`
 - [x] 10. [Wave 2 / Task 2.4] Revamp `ddos-defense-dodo`
 - [x] 11. [Wave 2 / Task 2.5] Revamp `payment-invaders-dodo` (incl. Tailwind CDN removal)
-- [ ] 12. [Wave 3 / Task 3.1] Revamp `ledger-blocks-dodo`
-- [ ] 13. [Wave 3 / Task 3.2] Revamp `revenue-2048-dodo`
-- [ ] 14. [Wave 3 / Task 3.3] Revamp `token-match-dodo`
-- [ ] 15. [Wave 3 / Task 3.4] Revamp `api-wordle-dodo`
-- [ ] 16. [Wave 3 / Task 3.5] Revamp `fraud-whacker-dodo`
-- [ ] 17. [Wave 4 / Task 4.1] Revamp `snake-game-dodo` (incl. persistence fix + Tailwind CDN removal)
-- [ ] 18. [Wave 4 / Task 4.2] Revamp `checkout-rush-dodo` (incl. persistence + Tailwind CDN removal)
-- [ ] 19. [Wave 5 / Task 5.1] Home page full redesign (manifest, search/filter, external CSS/JS, easter eggs preserved)
+- [x] 12. [Wave 3 / Task 3.1] Revamp `ledger-blocks-dodo`
+- [x] 13. [Wave 3 / Task 3.2] Revamp `revenue-2048-dodo`
+- [x] 14. [Wave 3 / Task 3.3] Revamp `token-match-dodo`
+- [x] 15. [Wave 3 / Task 3.4] Revamp `api-wordle-dodo`
+- [x] 16. [Wave 3 / Task 3.5] Revamp `fraud-whacker-dodo`
+- [x] 17. [Wave 4 / Task 4.1] Revamp `snake-game-dodo` (incl. persistence fix + Tailwind CDN removal)
+- [x] 18. [Wave 4 / Task 4.2] Revamp `checkout-rush-dodo` (incl. persistence + Tailwind CDN removal)
+- [x] 19. [Wave 5 / Task 5.1] Home page full redesign (manifest, search/filter, external CSS/JS, easter eggs preserved)
 
 ## Final Verification Wave
 
-- [ ] F1. Regenerate all thumbnails + OG images (WebP, <100KB cards / <300KB OG)
+- [x] F1. Regenerate all thumbnails + OG images (WebP, <100KB cards / <300KB OG)
 - [ ] F2. Global regression suite green against dist/ + docs updates + video review index (`REVIEW.md`)
 - [ ] F3. Cloudflare preview verification + open PR to `main` (merge requires explicit user approval — production deploy)
 
