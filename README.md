@@ -18,19 +18,19 @@ Dodo Games is an engaging collection of playful, custom-built arcade games creat
 | Game | Description |
 |------|-------------|
 | **[Flappy Dodo](https://games.dodopayments.com/flappy-dodo)** | Navigate the volatile market. Avoid the red pipes of churn. Keep your MRR flying high. |
-| **[Gateway Defender](https://games.dodopayments.com/ddos-defense-dodo)** | Protect the Dodo from DDoS bots. Use firewall, rate-limiter and auto-healing infrastructure. |
-| **[Payment Invaders](https://games.dodopayments.com/payment-invaders-dodo)** | Defend your payment gateway from chargebacks, fraudsters, and downtime bugs. Shoot them down! |
-| **[Transaction Snake](https://games.dodopayments.com/snake-game-dodo)** | Guide your payment chain through the grid. Eat payment apples, dodge fraud voids. |
-| **[Checkout Rush](https://games.dodopayments.com/checkout-rush-dodo)** | Process payments before the queue overflows! Match payment types and build combos. |
-| **[Dodo Dash](https://games.dodopayments.com/dodo-dash)** | Run, Dodo, Run! Jump over obstacles and dash through the desert. Classic endless runner. |
-| **[Merchant Hero](https://games.dodopayments.com/merchant-hero-dodo)** | Trade fair. Fly fast. Dodge fraud. Pilot through the Payment Galaxy! |
-| **[Fraud Whacker Dodo](https://games.dodopayments.com/fraud-whacker-dodo)** | Block fraudulent transactions before they process! Tap fast, build combos, protect the gateway. |
-| **[Revenue 2048 Dodo](https://games.dodopayments.com/revenue-2048-dodo)** | Slide and merge revenue tiles from $1 to $1B unicorn status! |
-| **[Token Match Dodo](https://games.dodopayments.com/token-match-dodo)** | Flip cards to find matching payment tokens. Race the clock, minimize your moves. |
-| **[Dodo Pong](https://games.dodopayments.com/dodo-pong)** | Bounce payments between merchant and processor. Beat the AI to 11 points! |
-| **[Firewall Breaker Dodo](https://games.dodopayments.com/firewall-breaker-dodo)** | Break through layers of fraud firewalls. Power up with PCI Shield and 2FA Ball! |
-| **[API Wordle Dodo](https://games.dodopayments.com/api-wordle-dodo)** | Guess the 5-letter payment term in 6 tries. Share your results! |
-| **[Ledger Blocks Dodo](https://games.dodopayments.com/ledger-blocks-dodo)** | Fit transaction blocks into the ledger. Clear rows to settle batches! |
+| **[Gateway Defender](https://games.dodopayments.com/ddos-defense-dodo)** | Survive escalating waves of DDoS bots — tap to pop botnets, bank overkill combos, and spend credits on firewalls, honeypots and CDN shields. |
+| **[Payment Invaders](https://games.dodopayments.com/payment-invaders-dodo)** | Blast waves of chargebacks, fraudsters and downtime bugs with 2FA lasers, KYC spread shots and PCI shields. Shoot them down! |
+| **[Transaction Snake](https://games.dodopayments.com/snake-game-dodo)** | Slither your payment chain through the grid with smooth movement — eat apples, grab golden bonuses, dodge fraud voids, shield up with PCI. |
+| **[Checkout Rush](https://games.dodopayments.com/checkout-rush-dodo)** | Clear the checkout queue before it overflows — match payment types, serve VIPs, chain combos for Instant Settlement, unlock UPI. |
+| **[Dodo Dash](https://games.dodopayments.com/dodo-dash)** | Sprint through a day/night desert — jump chargeback boulders, duck flying invoices, grab coins and magnets, and chase milestone runs. |
+| **[Merchant Hero](https://games.dodopayments.com/merchant-hero-dodo)** | Pilot the Payment Galaxy through named enemy waves and telegraphed mini-bosses — pick payment-infra upgrades between rounds. |
+| **[Fraud Whacker Dodo](https://games.dodopayments.com/fraud-whacker-dodo)** | Whack fraud bots and chargebacks, spare the legit payments, and chain golden-fraud combos into frenzy mode. |
+| **[Revenue 2048 Dodo](https://games.dodopayments.com/revenue-2048-dodo)** | Slide and merge revenue tiles from $1 to $1B — chain multi-merge combos, undo with a Refund, then go endless. |
+| **[Token Match Dodo](https://games.dodopayments.com/token-match-dodo)** | Flip cards to pair payment tokens across three ledger sizes — chain combos, race the clock, spend your one Peek. |
+| **[Dodo Pong](https://games.dodopayments.com/dodo-pong)** | Rally payments past the AI processor to 11 — build combo speed, grab power-ups, and pick your difficulty tier. |
+| **[Firewall Breaker Dodo](https://games.dodopayments.com/firewall-breaker-dodo)** | Smash 9 handcrafted firewall layers — trigger explosive bricks, grab PCI Shield and 2FA Ball, and earn 3 stars per level. |
+| **[API Wordle Dodo](https://games.dodopayments.com/api-wordle-dodo)** | Guess the 5-letter payment term in 6 tries — daily & free-play modes, hard mode, streaks, and 150+ fintech terms. |
+| **[Ledger Blocks Dodo](https://games.dodopayments.com/ledger-blocks-dodo)** | Drop transaction blocks into the ledger — hold pieces, project ghost drops, and clear rows to settle batches. |
 
 ## Local Development
 
