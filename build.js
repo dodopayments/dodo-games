@@ -7,7 +7,7 @@ const glob = require('glob');
 
 const SOURCE_DIR = '.';
 const DIST_DIR = './dist';
-const EXCLUDE_PATTERNS = ['node_modules/**', 'dist/**', 'build.js', 'package*.json'];
+const EXCLUDE_PATTERNS = ['node_modules/**', 'dist/**', 'build.js', 'package*.json', 'tests/**', 'scripts/**', 'playwright.config.*'];
 
 // Initialize Clean CSS
 const cleanCSS = new CleanCSS({
