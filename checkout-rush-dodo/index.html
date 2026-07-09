@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Checkout Rush - Process as many customer payments as possible before time runs out. Match payment types, build combos, and unlock power-ups in this fast-paced arcade game.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Checkout Rush - Process as many customer payments as possible before the queue overflows. Match payment types, build combos, unlock UPI and Instant Settlement in this fast-paced arcade game.">
     <meta name="keywords" content="checkout rush, payment game, arcade game, dodo games, browser game, reaction game, typing game">
     <meta name="author" content="Dodo Payments">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#050505">
     <link rel="canonical" href="https://games.dodopayments.com/checkout-rush-dodo/">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://games.dodopayments.com/checkout-rush-dodo/">
@@ -16,171 +17,161 @@
     <meta property="og:description" content="Process payments before the queue overflows! Match payment types, build combos, unlock Instant Settlement!">
     <meta property="og:image" content="https://games.dodopayments.com/assets/images/checkout-rush-dodo.png">
     <meta property="og:site_name" content="Dodo Games">
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://games.dodopayments.com/checkout-rush-dodo/">
     <meta name="twitter:title" content="Checkout Rush | Dodo Games">
     <meta name="twitter:description" content="Process payments before time runs out! Fast-paced arcade action.">
     <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/checkout-rush-dodo.png">
-    
+
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
     <link rel="manifest" href="../assets/site.webmanifest">
-    
+
     <!-- Google Analytics -->
     <script src="../assets/analytics.js"></script>
     <title>Checkout Rush | Dodo Games</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/dodo-arcade.css">
     <link rel="stylesheet" href="assets/style.css">
-    
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "VideoGame",
         "name": "Checkout Rush",
-        "description": "Process as many customer payments as possible before time runs out. Match payment types and build combos.",
+        "description": "Process as many customer payments as possible before the queue overflows. Match payment types, build combos, unlock UPI and trigger Instant Settlement.",
         "url": "https://games.dodopayments.com/checkout-rush-dodo/",
         "image": "https://games.dodopayments.com/assets/images/checkout-rush-dodo.png",
-        "genre": "Arcade",
+        "genre": ["Arcade", "Action"],
         "gamePlatform": "Web Browser",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any",
         "playMode": "SinglePlayer",
         "publisher": {
             "@type": "Organization",
             "name": "Dodo Payments"
-        }
+        },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
 </head>
-<body class="text-white select-none">
+<body>
+    <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">&#8592;</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-    <!-- Game Container -->
-    <div id="game-container" class="relative w-full h-screen overflow-hidden bg-slate-900">
-        
-        <!-- Canvas Layer -->
-        <canvas id="game-canvas"></canvas>
-        <div class="scanlines"></div>
+    <main class="cr-shell" id="crShell">
 
-        <!-- UI Overlay -->
-        <div class="ui-layer p-4 md:p-8">
-            <!-- Top HUD -->
-            <div class="flex justify-between items-start w-full max-w-4xl mx-auto">
-                <div class="bg-slate-800/80 backdrop-blur border border-slate-600 rounded-lg p-3 shadow-lg">
-                    <div class="text-xs text-slate-400 uppercase tracking-wider">Revenue Processed</div>
-                    <div class="text-2xl font-bold text-green-400" id="score-display">$0.00</div>
-                </div>
+        <!-- HUD -->
+        <header class="da-hud cr-hud" id="hud" hidden>
+            <div class="cr-board" aria-live="polite">
+                <span class="cr-board__chip">
+                    <i class="cr-board__label">Revenue</i>
+                    <b class="cr-board__val da-score" id="score">$0</b>
+                </span>
+                <span class="cr-board__div" aria-hidden="true"></span>
+                <span class="cr-board__chip">
+                    <i class="cr-board__label">Best</i>
+                    <b class="cr-board__val cr-board__val--best" id="bestScore">$0</b>
+                </span>
+                <span class="cr-board__div" aria-hidden="true"></span>
+                <span class="cr-board__chip cr-board__chip--lives">
+                    <i class="cr-board__label">Gateway</i>
+                    <span class="cr-lives" id="lives" aria-label="Gateway integrity"></span>
+                </span>
+                <span class="da-combo-badge cr-combo" id="comboBadge" hidden>COMBO &#215;1</span>
+            </div>
+        </header>
 
-                <div class="bg-slate-800/80 backdrop-blur border border-slate-600 rounded-lg p-3 shadow-lg flex flex-col items-center min-w-[100px]">
-                    <div class="text-xs text-slate-400 uppercase tracking-wider">Market Close</div>
-                    <div class="text-2xl font-bold text-white" id="timer-display">60s</div>
-                </div>
+        <!-- PLAYFIELD -->
+        <section class="cr-stage" id="gameScreen" hidden>
+            <div class="cr-stagebar">
+                <span class="cr-rush" id="rushLabel">Open Hours</span>
+                <span class="cr-settle" id="settleMeter" aria-label="Instant Settlement charge">
+                    <span class="cr-settle__label">Instant Settlement</span>
+                    <span class="cr-settle__track"><span class="cr-settle__fill" id="settleFill"></span></span>
+                    <span class="cr-settle__pips" id="settlePips">0/10</span>
+                </span>
+            </div>
 
-                <div class="bg-slate-800/80 backdrop-blur border border-slate-600 rounded-lg p-3 shadow-lg">
-                    <div class="text-xs text-slate-400 uppercase tracking-wider">Combos</div>
-                    <div class="text-2xl font-bold text-yellow-400" id="streak-display">x0</div>
+            <div class="cr-lobby">
+                <div class="cr-queue" id="queue" role="list" aria-label="Customer queue"></div>
+                <div class="cr-desk" aria-hidden="true">
+                    <div class="cr-desk__top"></div>
+                    <div class="cr-desk__brand">DODO PAY &#183; CHECKOUT</div>
                 </div>
             </div>
 
-            <!-- Bottom Controls (Mobile/Visual Guide) -->
-            <div class="w-full max-w-lg mx-auto mb-4 interactive-layer" id="controls-ui">
-                <div class="grid grid-cols-3 gap-4">
-                    <button id="btn-card" class="group relative bg-blue-600 hover:bg-blue-500 active:bg-blue-700 border-b-4 border-blue-800 active:border-b-0 active:translate-y-1 transition-all rounded-xl p-6 flex flex-col items-center justify-center">
-                        <div class="text-4xl mb-2">💳</div>
-                        <span class="font-bold text-sm">CARD</span>
-                        <div class="absolute -top-2 -right-2 bg-white text-blue-900 text-xs font-bold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">Key: A</div>
-                    </button>
-                    <button id="btn-crypto" class="group relative bg-orange-500 hover:bg-orange-400 active:bg-orange-600 border-b-4 border-orange-700 active:border-b-0 active:translate-y-1 transition-all rounded-xl p-6 flex flex-col items-center justify-center">
-                        <div class="text-4xl mb-2">₿</div>
-                        <span class="font-bold text-sm">CRYPTO</span>
-                        <div class="absolute -top-2 -right-2 bg-white text-orange-900 text-xs font-bold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">Key: S</div>
-                    </button>
-                    <button id="btn-qr" class="group relative bg-purple-600 hover:bg-purple-500 active:bg-purple-700 border-b-4 border-purple-800 active:border-b-0 active:translate-y-1 transition-all rounded-xl p-6 flex flex-col items-center justify-center">
-                        <div class="text-4xl mb-2">📱</div>
-                        <span class="font-bold text-sm">QR PAY</span>
-                        <div class="absolute -top-2 -right-2 bg-white text-purple-900 text-xs font-bold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">Key: D</div>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Start Screen -->
-        <div id="start-screen" class="absolute inset-0 bg-slate-900/95 backdrop-blur-sm z-50 flex flex-col items-center justify-center interactive-layer p-4">
-            <div class="text-center max-w-md w-full">
-                <!-- Dodo Logo Placeholder -->
-                <div class="w-24 h-24 bg-indigo-500 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg shadow-indigo-500/50 overflow-hidden border-4 border-white">
-                    <img src="assets/images/dodo-logo.png" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+PHBhdGggZD0iTTEyIDhhNCA0IDAgMCAxIDQgNHY0Ii8+PHBhdGggZD0iTTE2IDEydjQiLz48cGF0aCBkPSJNOSAxNmg2Ii8+PC9zdmc+'" class="w-full h-full object-cover">
-                </div>
-                
-                <h1 class="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mb-2">CHECKOUT RUSH</h1>
-                <p class="text-slate-400 mb-8 text-lg">Process payments before the queue overflows!</p>
-
-                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 mb-8 text-left space-y-3">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">💳</span>
-                        <span class="text-sm text-slate-300">Tap <strong>Card</strong> for Credit Cards</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">₿</span>
-                        <span class="text-sm text-slate-300">Tap <strong>Crypto</strong> for Bitcoins</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">📱</span>
-                        <span class="text-sm text-slate-300">Tap <strong>QR</strong> for Phone codes</span>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-slate-700 text-xs text-yellow-400 font-bold">
-                        ⚡ POWER UP: Get a 10x Streak for Instant Settlement!
-                    </div>
-                </div>
-
-                <button id="btn-start" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xl rounded-lg shadow-lg shadow-indigo-600/50 transition-all transform hover:scale-105 active:scale-95">
-                    OPEN GATEWAY
+            <div class="cr-pad" id="pad" role="group" aria-label="Payment methods">
+                <button id="btn-card" type="button" class="cr-key cr-key--card" data-type="CARD">
+                    <span class="cr-key__icon" aria-hidden="true">&#128179;</span>
+                    <span class="cr-key__name">Card</span>
+                    <span class="cr-key__hint" aria-hidden="true">A</span>
+                </button>
+                <button id="btn-crypto" type="button" class="cr-key cr-key--crypto" data-type="CRYPTO">
+                    <span class="cr-key__icon" aria-hidden="true">&#8383;</span>
+                    <span class="cr-key__name">Crypto</span>
+                    <span class="cr-key__hint" aria-hidden="true">S</span>
+                </button>
+                <button id="btn-qr" type="button" class="cr-key cr-key--qr" data-type="QR">
+                    <span class="cr-key__icon" aria-hidden="true">&#128241;</span>
+                    <span class="cr-key__name">QR Pay</span>
+                    <span class="cr-key__hint" aria-hidden="true">D</span>
+                </button>
+                <button id="btn-upi" type="button" class="cr-key cr-key--upi" data-type="UPI" hidden>
+                    <span class="cr-key__icon" aria-hidden="true">&#8377;</span>
+                    <span class="cr-key__name">UPI</span>
+                    <span class="cr-key__hint" aria-hidden="true">F</span>
                 </button>
             </div>
-        </div>
+        </section>
 
-        <!-- Game Over Screen -->
-        <div id="game-over-screen" class="hidden absolute inset-0 bg-red-900/90 backdrop-blur-md z-50 flex flex-col items-center justify-center interactive-layer p-4">
-            <h2 class="text-5xl font-black text-white mb-2 tracking-tighter">MARKET CLOSED</h2>
-            <p class="text-red-200 text-xl mb-8">Session Terminated</p>
-            
-            <div class="bg-white text-slate-900 p-8 rounded-lg shadow-2xl max-w-sm w-full mb-8 transform -rotate-2 relative">
-                <!-- Receipt effect -->
-                <div class="absolute top-0 left-0 w-full h-4 bg-gray-200 -mt-2" style="mask-image: radial-gradient(circle, transparent 5px, black 6px); mask-size: 15px 15px; mask-repeat: repeat-x;"></div>
-                
-                <div class="text-center border-b-2 border-dashed border-slate-300 pb-4 mb-4">
-                    <img src="assets/images/dodo-logo.png" onerror="this.style.display='none'" class="h-10 mx-auto mb-2">
-                    <div class="font-bold text-xl uppercase tracking-widest">RECEIPT</div>
-                    <div class="text-xs text-slate-500">Dodo Payments MoR</div>
-                </div>
-                
-                <div class="flex justify-between mb-2">
-                    <span>Processed:</span>
-                    <span class="font-mono font-bold" id="final-count">0</span>
-                </div>
-                <div class="flex justify-between mb-2">
-                    <span>Max Streak:</span>
-                    <span class="font-mono font-bold" id="final-streak">0</span>
-                </div>
-                <div class="flex justify-between text-xl font-bold mt-4 pt-4 border-t-2 border-slate-900">
-                    <span>TOTAL:</span>
-                    <span class="text-green-600" id="final-score">$0.00</span>
-                </div>
-                
-                <div class="absolute bottom-0 left-0 w-full h-4 bg-white -mb-2" style="mask-image: radial-gradient(circle, transparent 5px, black 6px); mask-size: 15px 15px; mask-repeat: repeat-x; transform: rotate(180deg)"></div>
+        <!-- START -->
+        <section id="startScreen" class="da-screen">
+            <p class="da-eyebrow">Dodo Payments Arcade</p>
+            <h1 class="da-title da-title--hero">CHECKOUT <span class="da-title__accent">RUSH</span></h1>
+            <p class="da-subtitle">The queue is filling up. Read the front customer&rsquo;s payment method and tap the matching key before their patience runs out.</p>
+
+            <ul class="cr-legend" aria-label="Payment methods">
+                <li><span class="cr-legend__chip cr-legend__chip--card">&#128179;</span><span class="cr-legend__txt"><b>Card</b><small>key A</small></span></li>
+                <li><span class="cr-legend__chip cr-legend__chip--crypto">&#8383;</span><span class="cr-legend__txt"><b>Crypto</b><small>key S</small></span></li>
+                <li><span class="cr-legend__chip cr-legend__chip--qr">&#128241;</span><span class="cr-legend__txt"><b>QR Pay</b><small>key D</small></span></li>
+                <li><span class="cr-legend__chip cr-legend__chip--upi">&#8377;</span><span class="cr-legend__txt"><b>UPI</b><small>unlocks @30s</small></span></li>
+            </ul>
+
+            <p class="cr-tips"><span class="cr-tips__gold">&#9733; VIP</span> = 3&#215; revenue &#183; <span class="cr-tips__bolt">&#9889; 10-combo</span> = Instant Settlement clears the queue</p>
+
+            <div class="da-screen__actions">
+                <button id="btn-start" type="button" class="da-btn da-btn--primary">Open Gateway</button>
             </div>
+            <p class="cr-controls">Tap a key &nbsp;&#183;&nbsp; or press A / S / D / F</p>
+        </section>
 
-            <div class="flex gap-4">
-                <button id="btn-restart" class="px-8 py-3 bg-white text-slate-900 font-bold text-lg rounded-full hover:bg-gray-200 transition-colors shadow-lg">
-                    Reconcile Again
-                </button>
+        <!-- GAME OVER -->
+        <section id="gameOverScreen" class="da-screen" hidden>
+            <p class="da-eyebrow" id="resultEyebrow">Market Closed</p>
+            <h2 class="da-title" id="resultTitle">Shift Over</h2>
+            <div class="cr-receipt">
+                <div class="cr-receipt__head">
+                    <span class="cr-receipt__brand">DODO PAYMENTS &#183; MoR</span>
+                    <span class="cr-receipt__sub">Settlement Receipt</span>
+                </div>
+                <div class="cr-receipt__row"><span>Customers served</span><b id="finalCount">0</b></div>
+                <div class="cr-receipt__row"><span>Best combo</span><b id="finalCombo">0</b></div>
+                <div class="cr-receipt__row"><span>All-time best</span><b id="overBestScore">$0</b></div>
+                <div class="cr-receipt__row cr-receipt__row--total"><span>Total revenue</span><b id="finalScore">$0</b></div>
             </div>
-        </div>
-    </div>
+            <div class="da-screen__actions">
+                <button id="btn-restart" type="button" class="da-btn da-btn--primary">Reconcile Again</button>
+                <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+            </div>
+        </section>
+    </main>
 
+    <script src="../assets/dodo-juice.js"></script>
     <script src="assets/script.js"></script>
 </body>
 </html>
