@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Ledger Blocks Dodo - Stack transactions in the ledger! A Tetris-style game by Dodo Payments.">
-  <meta name="keywords" content="ledger blocks, tetris game, falling blocks, free game, arcade game, dodo games, browser game">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Ledger Blocks Dodo - Settle transaction blocks into the ledger! Hold pieces, project ghost drops, chain batch settlements and trigger a full-screen BATCH SETTLED celebration in this Tetris-style arcade game by Dodo Payments.">
+  <meta name="keywords" content="ledger blocks, tetris game, falling blocks, free game, arcade game, dodo games, browser game, payment puzzle">
   <meta name="author" content="Dodo Payments">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
   <link rel="canonical" href="https://games.dodopayments.com/ledger-blocks-dodo/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://games.dodopayments.com/ledger-blocks-dodo/">
@@ -26,6 +27,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="../assets/site.webmanifest">
   <title>Ledger Blocks Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="../assets/dodo-arcade.css">
   <link rel="stylesheet" href="assets/style.css">
   <script type="application/ld+json">
   {
@@ -43,54 +45,111 @@
   </script>
 </head>
 <body>
-  <a href="/" class="back-btn">← Back to Arcade</a>
+  <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-  <div id="startScreen" class="screen card">
-    <h1>Ledger Blocks Dodo</h1>
-    <p>Stack transactions to settle batches.<br>Clear rows to earn points!</p>
-    <button id="startBtn" type="button">Start Settling</button>
-  </div>
+  <main class="lb-shell" id="lbShell">
+    <!-- Compact HUD pill (score + level) — sits above the board -->
+    <header class="lb-hud" id="hud" hidden>
+      <div class="lb-hud__bar" aria-live="polite">
+        <span class="lb-hud__chip">
+          <i class="lb-hud__label">Settled</i>
+          <b class="da-score lb-hud__val" id="score">0</b>
+        </span>
+        <span class="lb-hud__chip">
+          <i class="lb-hud__label">Level</i>
+          <b class="lb-hud__val lb-hud__val--lvl" id="level">1</b>
+        </span>
+        <span class="da-combo-badge lb-combo" id="comboBadge" hidden>BATCH ×1</span>
+      </div>
+    </header>
 
-  <div id="gameScreen" class="screen hidden">
-    <div class="game-layout">
-      <canvas id="gameCanvas"></canvas>
-      <div class="sidebar">
-        <div class="panel">
-          <div class="label">SCORE</div>
-          <div id="score">0</div>
+    <!-- Playfield: hold rail · board · next queue rail -->
+    <div class="lb-stage" id="lbStage" hidden>
+      <aside class="lb-rail lb-rail--left">
+        <div class="lb-slot">
+          <span class="lb-slot__label">Hold</span>
+          <canvas id="holdCanvas" class="lb-mini" width="96" height="96" aria-label="Held piece"></canvas>
         </div>
-        <div class="panel">
-          <div class="label">BEST</div>
-          <div id="bestScore">0</div>
+        <dl class="lb-meters" aria-live="polite">
+          <div class="lb-meter">
+            <dt>Lines</dt>
+            <dd id="lines">0</dd>
+          </div>
+          <div class="lb-meter">
+            <dt>Best</dt>
+            <dd id="bestScore">0</dd>
+          </div>
+        </dl>
+      </aside>
+
+      <div class="lb-board-wrap" id="boardWrap">
+        <canvas id="gameCanvas" aria-label="Ledger Blocks playfield"></canvas>
+        <div class="lb-danger" id="dangerOverlay" aria-hidden="true"></div>
+        <div class="lb-celebrate" id="celebrate" aria-hidden="true"><span class="lb-celebrate__text">Batch Settled!</span></div>
+      </div>
+
+      <aside class="lb-rail lb-rail--right">
+        <div class="lb-slot">
+          <span class="lb-slot__label">Next</span>
+          <canvas id="nextCanvas" class="lb-mini lb-mini--tall" width="96" height="240" aria-label="Next pieces"></canvas>
         </div>
-        <div class="panel">
-          <div class="label">LEVEL</div>
-          <div id="level">1</div>
+      </aside>
+    </div>
+
+    <!-- Mobile / touch on-screen controls (fallback to swipe gestures) -->
+    <div class="lb-controls" id="mobileControls" hidden>
+      <button class="lb-ctrl" id="btnLeft" type="button" aria-label="Move left">←</button>
+      <button class="lb-ctrl" id="btnRotate" type="button" aria-label="Rotate">↻</button>
+      <button class="lb-ctrl" id="btnRight" type="button" aria-label="Move right">→</button>
+      <button class="lb-ctrl" id="btnHold" type="button" aria-label="Hold piece">⇄</button>
+      <button class="lb-ctrl" id="btnSoftDrop" type="button" aria-label="Soft drop">↓</button>
+      <button class="lb-ctrl lb-ctrl--hard" id="btnHardDrop" type="button" aria-label="Hard drop">⤓</button>
+    </div>
+
+    <!-- START -->
+    <section id="startScreen" class="da-screen">
+      <p class="da-eyebrow">Dodo Payments Arcade</p>
+      <h1 class="da-title da-title--hero">LEDGER <span class="da-title__accent">BLOCKS</span></h1>
+      <p class="da-subtitle">Settle transaction blocks into the ledger. Hold, ghost-project and hard-drop to clear full rows — land four at once to <strong>settle the batch</strong>.</p>
+      <div class="da-screen__actions">
+        <button id="startBtn" type="button" class="da-btn da-btn--primary">Start Settling</button>
+      </div>
+      <ul class="lb-legend" aria-label="Controls">
+        <li><span class="lb-legend__key">← →</span> move</li>
+        <li><span class="lb-legend__key">↑</span> rotate</li>
+        <li><span class="lb-legend__key">↓</span> soft drop</li>
+        <li><span class="lb-legend__key">Space</span> hard drop</li>
+        <li><span class="lb-legend__key">C / Shift</span> hold</li>
+      </ul>
+      <p class="lb-controls-hint">On mobile: swipe to move · tap to rotate · swipe down to drop</p>
+    </section>
+
+    <!-- GAME OVER -->
+    <section id="gameOverScreen" class="da-screen" hidden>
+      <p class="da-eyebrow" id="overEyebrow">Ledger Closed</p>
+      <h2 class="da-title">Batch Overflow</h2>
+      <div class="lb-result">
+        <div class="lb-result__cell">
+          <span class="da-stat__label">Settled</span>
+          <span class="da-score" id="finalScore">0</span>
         </div>
-        <div class="panel">
-          <div class="label">NEXT</div>
-          <canvas id="nextCanvas" width="80" height="80"></canvas>
+        <span class="lb-result__vs" aria-hidden="true">·</span>
+        <div class="lb-result__cell">
+          <span class="da-stat__label">All-time best</span>
+          <span class="da-stat__value" id="overBestScore">0</span>
         </div>
       </div>
-    </div>
+      <p class="da-subtitle lb-result__meta">
+        Level <strong id="finalLevel">1</strong> · Lines cleared <strong id="finalLines">0</strong>
+      </p>
+      <div class="da-screen__actions">
+        <button id="restartBtn" type="button" class="da-btn da-btn--primary">New Ledger</button>
+        <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+      </div>
+    </section>
+  </main>
 
-    <div id="mobileControls">
-      <button class="ctrl-btn" id="btnLeft" type="button">←</button>
-      <button class="ctrl-btn" id="btnRotate" type="button">↻</button>
-      <button class="ctrl-btn" id="btnRight" type="button">→</button>
-      <button class="ctrl-btn" id="btnSoftDrop" type="button">↓</button>
-      <button class="ctrl-btn" id="btnHardDrop" type="button">↡</button>
-    </div>
-  </div>
-
-  <div id="gameOverScreen" class="screen card hidden">
-    <h2>Ledger Closed</h2>
-    <p>The transactions overflowed!</p>
-    <p>Score: <span id="finalScore">0</span></p>
-    <p>Best: <span id="overBestScore">0</span></p>
-    <button id="restartBtn" type="button">New Ledger</button>
-  </div>
-
+  <script src="../assets/dodo-juice.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>
