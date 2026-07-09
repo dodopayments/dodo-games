@@ -1,114 +1,170 @@
-:root {
-    --primary: #C1FF00;
-    --bg-dark: #050505;
-    --text-main: #ffffff;
-    --text-muted: #888888;
-}
+/* ==========================================================================
+   DODO DASH — game-specific styles (built on assets/dodo-arcade.css tokens)
+   Endless runner · full-viewport landscape stage · DPI-aware canvas
+   ========================================================================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
 }
 
 body {
-    font-family: 'Press Start 2P', cursive;
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: var(--da-font);
+  color: var(--da-text);
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(193, 255, 0, 0.10), transparent 55%),
+    radial-gradient(90% 70% at 50% 120%, rgba(255, 176, 32, 0.08), transparent 55%),
+    var(--dodo-bg);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.game-container {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* --- Stage ---------------------------------------------------------------- */
+.dd-stage {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
 }
 
-.header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 0 20px;
+#gameCanvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #10131b;
+  touch-action: none;
 }
 
-.back-btn {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 12px;
-    font-family: sans-serif;
-    text-transform: uppercase;
-    transition: color 0.3s;
+/* --- HUD: centered scoreboard pill (clears the fixed corner controls) ------ */
+.da-hud[hidden] { display: none; }
+.da-hud { justify-content: center; top: var(--da-space-3); pointer-events: none; }
+
+.dd-board {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--da-space-3);
+  padding: var(--da-space-2) var(--da-space-4);
+  background: rgba(13, 13, 13, 0.82);
+  border: 1px solid var(--da-border);
+  border-radius: var(--da-radius-pill);
+  box-shadow: var(--da-shadow-1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.back-btn:hover {
-    color: var(--primary);
+.dd-board__chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
 }
 
-h1 {
-    font-size: 24px;
-    color: var(--primary);
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+.dd-board__label {
+  font-family: var(--da-font-mono);
+  font-style: normal;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--da-text-muted);
 }
 
-.score-container {
-    font-size: 16px;
-    color: var(--text-muted);
+.dd-board__val {
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-lg);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--dodo-green);
+  text-shadow: 0 0 10px rgba(193, 255, 0, 0.30);
+}
+.dd-board__val--sub { color: var(--da-text); text-shadow: none; font-size: var(--da-fs-md); }
+.dd-board__val--coin { color: var(--da-warn); text-shadow: none; font-size: var(--da-fs-md); }
+.dd-board__val--best { color: var(--da-text-secondary); text-shadow: none; font-size: var(--da-fs-md); }
+
+.dd-board__div { width: 1px; height: 22px; background: var(--da-border); }
+
+.da-combo-badge[hidden] { display: none; }
+.dd-badge { margin-left: 2px; }
+
+/* --- Start-screen legend + controls hint ---------------------------------- */
+.dd-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--da-space-2) var(--da-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 42ch;
+  font-size: var(--da-fs-sm);
+  color: var(--da-text-secondary);
+}
+.dd-legend li { display: inline-flex; align-items: center; gap: var(--da-space-2); }
+.dd-legend__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--c, var(--dodo-green));
+  box-shadow: 0 0 10px var(--c, var(--dodo-green));
 }
 
-#current-score {
-    color: var(--text-main);
-    margin-left: 10px;
+.dd-controls {
+  margin: 0;
+  max-width: 46ch;
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-xs);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: var(--da-text-muted);
 }
 
-canvas {
-    background-color: #111;
-    border-bottom: 2px solid var(--text-muted);
-    width: 100%;
-    max-width: 800px;
-    height: 300px; /* Aspect ratio controlled by JS usually, but CSS helps layout */
-    image-rendering: pixelated;
+/* --- Result panel --------------------------------------------------------- */
+.dd-result {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--da-space-5);
+}
+.dd-result__cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.dd-result__cell .da-score { font-size: var(--da-fs-2xl); }
+.dd-result__cell .da-stat__value { font-size: var(--da-fs-xl); color: var(--da-text-secondary); }
+.dd-result__coin { color: var(--da-warn) !important; }
+.dd-result__meta { font-size: var(--da-fs-sm); }
+.dd-result__meta strong { color: var(--dodo-green); font-family: var(--da-font-mono); }
+
+/* Tighten overlays so they fit small viewports without scrolling */
+.da-screen { gap: var(--da-space-4); padding: var(--da-space-5) var(--da-space-4); }
+
+@media (max-height: 720px) {
+  .da-title--hero { font-size: 2.4rem; }
+  .da-subtitle { font-size: var(--da-fs-md); }
+  .da-screen { gap: var(--da-space-3); }
 }
 
-#game-over-screen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border: 2px solid var(--primary);
-    border-radius: 10px;
-    display: none;
+/* Narrow screens: collapse the back-link to its arrow so the centered
+   scoreboard never collides with the fixed corner controls (mute / back). */
+@media (max-width: 560px) {
+  .da-back-link__text { display: none; }
+  .da-back-link { padding-left: var(--da-space-3); padding-right: var(--da-space-3); }
+  .dd-board { gap: var(--da-space-2); padding: var(--da-space-2) var(--da-space-3); }
+  .dd-board__val { font-size: var(--da-fs-md); }
+  .dd-board__val--sub,
+  .dd-board__val--coin,
+  .dd-board__val--best { font-size: var(--da-fs-sm); }
 }
 
-#game-over-screen.hidden {
-    display: none;
-}
-
-#game-over-screen h2 {
-    color: var(--primary);
-    margin-bottom: 15px;
-    font-size: 24px;
-}
-
-#game-over-screen p {
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.controls-hint {
-    margin-top: 20px;
-    font-size: 10px;
-    color: var(--text-muted);
-    font-family: sans-serif;
+@media (max-width: 400px) {
+  .da-hud { top: var(--da-space-2); }
+  .dd-board { gap: 6px; }
+  .dd-board__label { font-size: 0.5rem; }
+  /* Drop the least-critical chips so the pill stays clear of both 44px
+     corner buttons at 360px. */
+  .dd-board .dd-board__div,
+  .dd-board__chip:nth-child(4) { display: none; }
+  .dd-legend { font-size: var(--da-fs-xs); }
 }
