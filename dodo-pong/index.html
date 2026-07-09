@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Dodo Pong - Bounce payments between merchant and processor! A classic Pong game by Dodo Payments.">
-  <meta name="keywords" content="dodo pong, pong game, payment game, arcade game, dodo games, browser game">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Dodo Pong - Bounce payments between merchant and processor! Build rally combos, grab payment power-ups, and beat the AI processor across three difficulties in this arcade Pong by Dodo Payments.">
+  <meta name="keywords" content="dodo pong, pong game, payment game, arcade game, dodo games, browser game, combo pong">
   <meta name="author" content="Dodo Payments">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
   <link rel="canonical" href="https://games.dodopayments.com/dodo-pong/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://games.dodopayments.com/dodo-pong/">
   <meta property="og:title" content="Dodo Pong | Dodo Games">
-  <meta property="og:description" content="Bounce payments between merchant and processor!">
+  <meta property="og:description" content="Bounce payments between merchant and processor! Build rally combos and grab power-ups to beat the AI.">
   <meta property="og:image" content="https://games.dodopayments.com/assets/images/dodo-pong.png">
   <meta property="og:site_name" content="Dodo Games">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://games.dodopayments.com/dodo-pong/">
   <meta name="twitter:title" content="Dodo Pong | Dodo Games">
-  <meta name="twitter:description" content="Bounce payments between merchant and processor!">
+  <meta name="twitter:description" content="Bounce payments between merchant and processor! Build rally combos and grab power-ups to beat the AI.">
   <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/dodo-pong.png">
   <script src="../assets/analytics.js"></script>
   <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
@@ -26,52 +27,121 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="../assets/site.webmanifest">
   <title>Dodo Pong | Dodo Games</title>
+  <link rel="stylesheet" href="../assets/dodo-arcade.css">
   <link rel="stylesheet" href="assets/style.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "VideoGame",
     "name": "Dodo Pong",
-    "description": "Bounce payments between merchant and processor in a vertical Pong showdown.",
+    "description": "Bounce payments between merchant and processor in a vertical Pong showdown. Build rally combos, trigger payment power-ups, and beat the AI processor across three difficulties.",
     "url": "https://games.dodopayments.com/dodo-pong/",
     "image": "https://games.dodopayments.com/assets/images/dodo-pong.png",
-    "genre": "Arcade",
+    "genre": ["Arcade", "Sports"],
     "gamePlatform": "Web Browser",
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
     "playMode": "SinglePlayer",
-    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
 </head>
 <body>
-  <a href="/" class="back-btn">← Back to Arcade</a>
+  <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-  <main class="game-shell">
-    <section id="startScreen" class="screen card">
-      <h1>Dodo Pong</h1>
-      <p>Bounce the payment between merchant and processor.<br>Use A/D or Arrow keys. Touch-drag on mobile.</p>
-      <button id="startButton" type="button">Start Match</button>
+  <main class="pong-shell" id="pongShell">
+    <canvas id="gameCanvas" aria-label="Dodo Pong game court"></canvas>
+
+    <header class="da-hud" id="hud" hidden>
+      <div class="pong-board" aria-live="polite">
+        <span class="pong-board__chip">
+          <i class="pong-board__label">Merchant</i>
+          <b class="pong-board__val da-score" id="playerScore">0</b>
+        </span>
+        <span class="pong-board__sep" aria-hidden="true">:</span>
+        <span class="pong-board__chip">
+          <i class="pong-board__label">Processor</i>
+          <b class="pong-board__val pong-board__val--ai" id="aiScore">0</b>
+        </span>
+        <span class="pong-board__div" aria-hidden="true"></span>
+        <span class="pong-board__chip">
+          <i class="pong-board__label">Best</i>
+          <b class="pong-board__val pong-board__val--best" id="bestScore">0</b>
+        </span>
+        <span class="da-combo-badge" id="rallyBadge" hidden>RALLY ×1</span>
+      </div>
+    </header>
+
+    <!-- START -->
+    <section id="startScreen" class="da-screen">
+      <p class="da-eyebrow">Dodo Payments Arcade</p>
+      <h1 class="da-title da-title--hero">DODO <span class="da-title__accent">PONG</span></h1>
+      <p class="da-subtitle">Bounce the payment between merchant and processor. Rally to grow your multiplier, punch the ball through power-ups, and settle first to 11.</p>
+
+      <div class="pong-select">
+        <span class="pong-select__label">Choose your processor</span>
+        <div class="pong-seg" id="difficultySelect" role="group" aria-label="Select AI difficulty">
+          <button type="button" class="pong-seg__btn" data-diff="starter">
+            <strong>Starter</strong><small>Relaxed</small>
+          </button>
+          <button type="button" class="pong-seg__btn is-active" data-diff="growth" aria-pressed="true">
+            <strong>Growth</strong><small>Balanced</small>
+          </button>
+          <button type="button" class="pong-seg__btn" data-diff="enterprise">
+            <strong>Enterprise</strong><small>Ruthless</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="da-screen__actions">
+        <button id="startButton" type="button" class="da-btn da-btn--primary">Start Match</button>
+      </div>
+
+      <ul class="pong-legend" aria-label="Power-ups">
+        <li><span class="pong-legend__dot" style="--c:#C1FF00"></span> Batch Settlement · multi-ball</li>
+        <li><span class="pong-legend__dot" style="--c:#4DA3FF"></span> Limit Increase · wider paddle</li>
+        <li><span class="pong-legend__dot" style="--c:#FF5C8A"></span> Smart Routing · curve shot</li>
+      </ul>
+      <p class="pong-controls">Move: drag / A · D / ← →&nbsp;&nbsp;·&nbsp;&nbsp;Pause: P or Esc</p>
     </section>
 
-    <section id="gameScreen" class="screen hidden" aria-live="polite">
-      <header class="hud card-lite">
-        <div>Merchant <span id="playerScore">0</span></div>
-        <div>Processor <span id="aiScore">0</span></div>
-        <div>Best <span id="bestScore">0</span></div>
-      </header>
-      <div class="canvas-wrap card-lite">
-        <canvas id="gameCanvas" aria-label="Dodo Pong game canvas"></canvas>
-        <div id="statusOverlay" class="status-overlay hidden"></div>
+    <!-- PAUSE -->
+    <section id="pauseScreen" class="da-screen" hidden>
+      <p class="da-eyebrow">Paused</p>
+      <h2 class="da-title">Take Five</h2>
+      <div class="da-screen__actions">
+        <button id="resumeButton" type="button" class="da-btn da-btn--primary">Resume</button>
+        <button id="quitButton" type="button" class="da-btn da-btn--ghost">Quit Match</button>
       </div>
     </section>
 
-    <section id="gameOverScreen" class="screen card hidden">
-      <h2 id="resultTitle">Match Complete</h2>
-      <p class="result-line">Final: Merchant <span id="finalPlayerScore">0</span> - Processor <span id="finalAiScore">0</span></p>
-      <p class="result-line">All-Time High: <span id="overBestScore">0</span></p>
-      <button id="restartButton" type="button">Play Again</button>
+    <!-- GAME OVER -->
+    <section id="gameOverScreen" class="da-screen" hidden>
+      <p class="da-eyebrow" id="resultEyebrow">Match Complete</p>
+      <h2 class="da-title" id="resultTitle">Merchant Wins!</h2>
+      <div class="pong-result">
+        <div class="pong-result__cell">
+          <span class="da-stat__label">Merchant</span>
+          <span class="da-score" id="finalPlayerScore">0</span>
+        </div>
+        <span class="pong-result__vs">vs</span>
+        <div class="pong-result__cell">
+          <span class="da-stat__label">Processor</span>
+          <span class="da-stat__value" id="finalAiScore">0</span>
+        </div>
+      </div>
+      <p class="da-subtitle pong-result__meta">
+        Best rally <strong id="finalRally">0</strong> · Settled <strong id="finalSettled">$0</strong> · All-time best <strong id="overBestScore">0</strong>
+      </p>
+      <div class="da-screen__actions">
+        <button id="restartButton" type="button" class="da-btn da-btn--primary">Play Again</button>
+        <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+      </div>
     </section>
   </main>
 
+  <script src="../assets/dodo-juice.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>
