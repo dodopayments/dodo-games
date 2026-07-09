@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DodoJuice — API Fixture</title>
+  <!-- Shared arcade design tokens + components (built by Task 0.2) -->
+  <link rel="stylesheet" href="../../assets/dodo-arcade.css" />
+  <style>
+    /* Self-sufficient fixture styling (works even before dodo-arcade.css exists). */
+    :root { --dodo-green: #C1FF00; --dodo-bg: #050505; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 20px 20px 120px;
+      background: var(--dodo-bg); color: #eaeaea;
+      font: 14px/1.5 "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+    }
+    h1 { color: var(--dodo-green); margin: 0 0 4px; font-size: 22px; }
+    h2 { color: var(--dodo-green); font-size: 14px; text-transform: uppercase; letter-spacing: .08em; margin: 22px 0 8px; border-bottom: 1px solid #222; padding-bottom: 4px; }
+    p.sub { color: #888; margin: 0 0 12px; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    button {
+      cursor: pointer; border: 1px solid #333; border-radius: 8px;
+      background: #141414; color: #eaeaea; padding: 10px 14px; min-height: 44px;
+      font: 600 13px "Space Grotesk", system-ui, sans-serif;
+    }
+    button:hover { border-color: var(--dodo-green); color: var(--dodo-green); }
+    button:active { transform: translateY(1px); }
+    canvas#attach {
+      display: block; width: 100%; max-width: 640px; height: 220px;
+      background: #0b0b0b; border: 1px solid #222; border-radius: 12px;
+    }
+    #flashTarget {
+      width: 100%; max-width: 640px; height: 90px; border-radius: 12px;
+      background: linear-gradient(135deg, #101010, #1a1a1a);
+      border: 1px solid #222; display: flex; align-items: center; justify-content: center;
+      color: #666;
+    }
+    /* Fallback styling for the injected .da-mute-toggle (dodo-arcade.css owns the real one) */
+    .da-mute-toggle {
+      min-width: 44px; min-height: 44px; font-size: 18px; line-height: 1;
+      border-radius: 10px; border: 1px solid #333; background: #141414; cursor: pointer;
+    }
+    #readout {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 100000;
+      background: #0a0a0a; border-top: 2px solid var(--dodo-green);
+      padding: 10px 16px; font: 12px/1.5 "SF Mono", ui-monospace, Menlo, monospace;
+      color: #cfcfcf; display: flex; flex-wrap: wrap; gap: 6px 22px;
+    }
+    #readout b { color: var(--dodo-green); }
+    #readout span { white-space: nowrap; }
+    .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; background: #161616; border: 1px solid #2a2a2a; }
+  </style>
+</head>
+<body>
+  <div style="display:flex;align-items:center;justify-content:space-between;max-width:640px;">
+    <div>
+      <h1>DodoJuice — API Fixture</h1>
+      <p class="sub">Every <code>window.DodoJuice</code> API, wired for manual + Playwright verification.</p>
+    </div>
+    <div id="muteMount"></div>
+  </div>
+
+  <!-- ============================== AUDIO CUES ============================== -->
+  <h2>audio.play(cue) — 10 presets</h2>
+  <div class="row" id="cueRow"></div>
+  <div class="row">
+    <button data-testid="combo-ladder" onclick="comboLadder()">Combo ladder (pitch↑)</button>
+    <button data-testid="mute-toggle" onclick="DodoJuice.audio.setMuted(!DodoJuice.audio.isMuted())">Toggle mute (setMuted)</button>
+  </div>
+
+  <!-- ==================== PARTICLES — ATTACH MODE (canvas) ==================== -->
+  <h2>particles — attach() mode (game-owned canvas)</h2>
+  <p class="sub">Emits into a game canvas; the page loop calls update(dt)+draw(ctx).</p>
+  <canvas id="attach" width="640" height="220"></canvas>
+  <div class="row" id="attachRow" style="margin-top:8px;"></div>
+
+  <!-- ==================== PARTICLES — OVERLAY MODE (DOM) ==================== -->
+  <h2>particles — overlay() mode (auto full-viewport canvas)</h2>
+  <div class="row">
+    <button data-testid="overlay-init" onclick="DodoJuice.particles.overlay()">Create overlay</button>
+    <button data-testid="clear-particles" onclick="DodoJuice.particles.clear()">Clear pool</button>
+  </div>
+  <div class="row" id="overlayRow"></div>
+
+  <!-- ============================== SCREEN FX ============================== -->
+  <h2>shake / flash / floatText</h2>
+  <div id="flashTarget" data-testid="fx-target">shake / flash target</div>
+  <div class="row" style="margin-top:8px;">
+    <button data-testid="shake" onclick="DodoJuice.shake(document.getElementById('flashTarget'), 12, 400)">shake()</button>
+    <button data-testid="shake-canvas" onclick="DodoJuice.shake(document.getElementById('attach'), 10, 400)">shake(canvas)</button>
+    <button data-testid="flash" onclick="DodoJuice.flash(document.getElementById('flashTarget'), '#C1FF00', 240)">flash()</button>
+    <button data-testid="floattext" onclick="floatDemo()">floatText()</button>
+  </div>
+
+  <!-- ============================== HAPTICS ============================== -->
+  <h2>haptics (navigator.vibrate guarded)</h2>
+  <div class="row">
+    <button data-testid="haptic-tap" onclick="DodoJuice.haptics.tap()">haptics.tap()</button>
+    <button data-testid="haptic-success" onclick="DodoJuice.haptics.success()">haptics.success()</button>
+    <button data-testid="haptic-fail" onclick="DodoJuice.haptics.fail()">haptics.fail()</button>
+  </div>
+
+  <!-- ============================== HIGHSCORE ============================== -->
+  <h2>highscore(slug, legacyKeys) — get / set / migration</h2>
+  <div class="row">
+    <button data-testid="hs-seed-legacy" onclick="seedLegacy()">Seed legacy key = 4200</button>
+    <button data-testid="hs-migrate" onclick="migrateHighscore()">Construct highscore (migrate)</button>
+    <button data-testid="hs-set" onclick="hs && hs.set(Math.floor(Math.random()*9000))">set(random)</button>
+    <button data-testid="hs-get" onclick="refresh()">get() / best (readout)</button>
+  </div>
+
+  <!-- ============================== READOUT ============================== -->
+  <div id="readout">
+    <span>particles.count(): <b id="r-count">0</b></span>
+    <span>reducedMotion: <b id="r-rm">?</b></span>
+    <span class="pill">attempted.emit <b id="r-a-emit">0</b></span>
+    <span class="pill">attempted.shake <b id="r-a-shake">0</b></span>
+    <span class="pill">attempted.flash <b id="r-a-flash">0</b></span>
+    <span class="pill">attempted.floatText <b id="r-a-float">0</b></span>
+    <span>ls.dodo_audio_muted: <b id="r-muted">?</b></span>
+    <span>ls.dodo_juicedemo_highscore: <b id="r-hs">?</b></span>
+    <span>ls.legacy_juice_score: <b id="r-legacy">?</b></span>
+    <span>hs.get(): <b id="r-hsget">?</b></span>
+  </div>
+
+  <script src="../../assets/dodo-juice.js"></script>
+  <script>
+    var CUES = ['tap','score','combo','powerup','hit','fail','gameover','win','tick','whoosh'];
+    var PRESETS = ['burst','confetti','trail','sparkle','explosion'];
+    var hs = null;
+
+    /* ---- build cue buttons ---- */
+    (function () {
+      var row = document.getElementById('cueRow');
+      CUES.forEach(function (name) {
+        var b = document.createElement('button');
+        b.textContent = name;
+        b.setAttribute('data-testid', 'cue-' + name);
+        b.onclick = function () { DodoJuice.audio.play(name); };
+        row.appendChild(b);
+      });
+    })();
+
+    /* ---- combo laddering: 6 combo hits with rising pitch ---- */
+    function comboLadder() {
+      for (var i = 0; i < 6; i++) {
+        (function (n) {
+          setTimeout(function () { DodoJuice.audio.play('combo', { pitch: 1 + n * 0.08 }); }, n * 90);
+        })(i);
+      }
+    }
+
+    /* ---- attach-mode canvas + game loop ---- */
+    var cv = document.getElementById('attach');
+    var cx = cv.getContext('2d');
+    DodoJuice.particles.attach(cv, cx);
+    (function build() {
+      var row = document.getElementById('attachRow');
+      PRESETS.forEach(function (p) {
+        var b = document.createElement('button');
+        b.textContent = 'emit ' + p;
+        b.setAttribute('data-testid', 'attach-' + p);
+        b.onclick = function () { DodoJuice.particles.emit(p, cv.width / 2, cv.height / 2, {}); };
+        row.appendChild(b);
+      });
+      var orow = document.getElementById('overlayRow');
+      PRESETS.forEach(function (p) {
+        var b = document.createElement('button');
+        b.textContent = 'emit ' + p;
+        b.setAttribute('data-testid', 'overlay-' + p);
+        b.onclick = function () {
+          var x = window.innerWidth / 2 + (Math.random() * 200 - 100);
+          var y = window.innerHeight / 2 + (Math.random() * 200 - 100);
+          DodoJuice.particles.emit(p, x, y, {});
+        };
+        orow.appendChild(b);
+      });
+    })();
+
+    var last = 0;
+    function loop(ts) {
+      var dt = last ? (ts - last) / 1000 : 0.016;
+      last = ts;
+      DodoJuice.particles.update(dt);
+      cx.clearRect(0, 0, cv.width, cv.height);
+      DodoJuice.particles.draw(cx);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    /* ---- screen FX demos ---- */
+    function floatDemo() {
+      var r = document.getElementById('flashTarget').getBoundingClientRect();
+      DodoJuice.floatText(r.left + r.width / 2, r.top + r.height / 2, '+' + (Math.floor(Math.random() * 900) + 100), { color: '#C1FF00', size: 28 });
+    }
+
+    /* ---- highscore migration demo ---- */
+    function seedLegacy() { localStorage.setItem('legacy_juice_score', '4200'); refresh(); }
+    function migrateHighscore() {
+      hs = DodoJuice.highscore('juicedemo', ['legacy_juice_score', 'old_juice_best']);
+      refresh();
+    }
+
+    /* ---- mute button ---- */
+    DodoJuice.muteButton(document.getElementById('muteMount'));
+
+    /* ---- readout refresh ---- */
+    function txt(id, v) { document.getElementById(id).textContent = v; }
+    function refresh() {
+      txt('r-count', DodoJuice.particles.count());
+      txt('r-rm', DodoJuice.reducedMotion);
+      txt('r-a-emit', DodoJuice._attempted.emit);
+      txt('r-a-shake', DodoJuice._attempted.shake);
+      txt('r-a-flash', DodoJuice._attempted.flash);
+      txt('r-a-float', DodoJuice._attempted.floatText);
+      txt('r-muted', localStorage.getItem('dodo_audio_muted'));
+      txt('r-hs', localStorage.getItem('dodo_juicedemo_highscore'));
+      txt('r-legacy', localStorage.getItem('legacy_juice_score'));
+      txt('r-hsget', hs ? hs.get() + ' (best ' + hs.best + ')' : '—');
+    }
+    setInterval(refresh, 150);
+    refresh();
+  </script>
+</body>
+</html>
