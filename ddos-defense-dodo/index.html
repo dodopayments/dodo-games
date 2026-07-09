@@ -2,28 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Gateway Defender Dodo - Protect the Dodo core from DDoS bots. Use firewall, rate-limiter and auto-healing infrastructure powers in this tower defense arcade game.">
-    <meta name="keywords" content="ddos defense game, gateway defender, tower defense, arcade game, dodo games, browser game, cyber security game">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Gateway Defender Dodo - Survive escalating waves of DDoS bots. Tap to pop botnets, build overkill combos, and spend credits on firewalls, honeypots and CDN shields in this tower-defense arcade game by Dodo Payments.">
+    <meta name="keywords" content="ddos defense game, gateway defender, tower defense, wave defense, arcade game, dodo games, browser game, cyber security game">
     <meta name="author" content="Dodo Payments">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#050505">
     <link rel="canonical" href="https://games.dodopayments.com/ddos-defense-dodo/">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://games.dodopayments.com/ddos-defense-dodo/">
     <meta property="og:title" content="Gateway Defender Dodo | Dodo Games">
-    <meta property="og:description" content="Protect the Dodo from DDoS bots. Use firewall, rate-limiter and auto-healing infrastructure.">
+    <meta property="og:description" content="Survive escalating waves of DDoS bots. Pop botnets, build overkill combos, and deploy firewalls, honeypots and CDN shields.">
     <meta property="og:image" content="https://games.dodopayments.com/assets/images/ddos-defense-dodo.png">
     <meta property="og:site_name" content="Dodo Games">
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://games.dodopayments.com/ddos-defense-dodo/">
     <meta name="twitter:title" content="Gateway Defender Dodo | Dodo Games">
-    <meta name="twitter:description" content="Protect the Dodo from DDoS bots. Tower defense arcade game.">
+    <meta name="twitter:description" content="Survive escalating waves of DDoS bots. Tower-defense arcade game by Dodo Payments.">
     <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/ddos-defense-dodo.png">
-    
+
     <!-- Google Analytics -->
     <script src="../assets/analytics.js"></script>
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
@@ -32,77 +33,146 @@
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
     <link rel="manifest" href="../assets/site.webmanifest">
     <title>Gateway Defender Dodo | Dodo Games</title>
+    <link rel="stylesheet" href="../assets/dodo-arcade.css">
     <link rel="stylesheet" href="assets/style.css">
-    <script src="assets/script.js"></script>
-    
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "VideoGame",
         "name": "Gateway Defender Dodo",
-        "description": "Protect the Dodo core from DDoS bots using firewall, rate-limiter and auto-healing infrastructure.",
+        "description": "Protect the Dodo server core from escalating waves of DDoS bots. Pop botnets, build overkill combos, and deploy firewalls, rate limiters, honeypots and CDN shields between waves.",
         "url": "https://games.dodopayments.com/ddos-defense-dodo/",
         "image": "https://games.dodopayments.com/assets/images/ddos-defense-dodo.png",
         "genre": ["Arcade", "Tower Defense"],
         "gamePlatform": "Web Browser",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any",
         "playMode": "SinglePlayer",
         "publisher": {
             "@type": "Organization",
             "name": "Dodo Payments"
-        }
+        },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
 </head>
 <body>
+    <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-    <canvas id="gameCanvas"></canvas>
+    <main class="dd-shell" id="ddShell">
+        <canvas id="gameCanvas" aria-label="Gateway Defender battlefield"></canvas>
 
-    <div id="hud" class="hidden">
-        <div class="stat-box">CORE INTEGRITY: <span id="healthDisplay">100%</span></div>
-        <div class="stat-box">WAVE: <span id="waveDisplay">1</span></div>
-        <div class="stat-box">BANDWIDTH (PTS): <span id="scoreDisplay">0</span></div>
-    </div>
+        <header class="da-hud" id="hud" hidden>
+            <div class="dd-board" aria-live="polite">
+                <span class="dd-board__chip">
+                    <i class="dd-board__label">Blocked</i>
+                    <b class="dd-board__val" id="scoreDisplay">0</b>
+                </span>
+                <span class="dd-board__chip">
+                    <i class="dd-board__label">Credits</i>
+                    <b class="dd-board__val dd-board__val--credit" id="creditDisplay">0</b>
+                </span>
+                <span class="dd-board__chip">
+                    <i class="dd-board__label">Wave</i>
+                    <b class="dd-board__val dd-board__val--wave" id="waveDisplay">1</b>
+                </span>
+                <span class="dd-board__chip">
+                    <i class="dd-board__label">Core</i>
+                    <b class="dd-board__val dd-board__val--core" id="healthDisplay">100%</b>
+                </span>
+                <span class="da-combo-badge" id="comboBadge" hidden>COMBO ×1</span>
+            </div>
+        </header>
 
-    <div id="upgrade-menu" class="hidden">
-        <button class="upgrade-btn" id="btn-firewall">
-            🔥 Firewall
-            <span class="upgrade-cost">500 pts</span>
-        </button>
-        <button class="upgrade-btn" id="btn-limiter">
-            🚦 Rate Limit
-            <span class="upgrade-cost">800 pts</span>
-        </button>
-        <button class="upgrade-btn" id="btn-heal">
-            ❤️ Reboot
-            <span class="upgrade-cost">300 pts</span>
-        </button>
-    </div>
+        <!-- START -->
+        <section id="startScreen" class="da-screen">
+            <p class="da-eyebrow">Dodo Payments Arcade</p>
+            <h1 class="da-title da-title--hero">GATEWAY <span class="da-title__accent">DEFENDER</span></h1>
+            <p class="da-subtitle">Our MoR just got DDoS'ed. Tap the bots before they reach the server core, bank credits on overkill streaks, and upgrade your defenses between every wave.</p>
+            <div class="da-screen__actions">
+                <button id="startBtn" type="button" class="da-btn da-btn--primary">Initiate Defense</button>
+            </div>
+            <ul class="dd-legend" aria-label="Threat types">
+                <li><span class="dd-legend__dot" style="--c:#FF4757"></span> Bot · one tap</li>
+                <li><span class="dd-legend__dot" style="--c:#FF8A3D"></span> Flooder · fast</li>
+                <li><span class="dd-legend__dot" style="--c:#B84DFF"></span> Botnet · armored</li>
+                <li><span class="dd-legend__dot" style="--c:#FF2D55"></span> Boss · every 5th wave</li>
+            </ul>
+            <p class="dd-controls">Tap / click bots &nbsp;·&nbsp; upgrade at the shop between waves</p>
+        </section>
 
-    <div id="startScreen" class="screen">
-        <img src="assets/images/dodo-logo.png" alt="DoDo" style="width: 80px; margin-bottom: 20px; border-radius: 50%;">
-        <h1>DEFEND THE GATEWAY</h1>
-        <p>Our MoR just got DDoS'ed heavily.<br>We survived, so we made a game about it.</p>
-        <p style="font-size: 0.9rem; color: #aaa;">Click or Tap bots to block packets.<br>Protect the Core.</p>
-        <button class="btn" id="startBtn">INITIATE DEFENSE</button>
-    </div>
+        <!-- SHOP (between waves) -->
+        <section id="shopScreen" class="da-screen" hidden>
+            <p class="da-eyebrow" id="shopEyebrow">Wave 1 cleared</p>
+            <h2 class="da-title">Upgrade Station</h2>
+            <p class="dd-shop-credits">Credits available: <strong id="shopCredits">0</strong></p>
+            <div class="dd-shop" id="shopGrid">
+                <button type="button" class="dd-card" id="buy-firewall">
+                    <span class="dd-card__icon" aria-hidden="true">🔥</span>
+                    <span class="dd-card__name">Firewall Turret</span>
+                    <span class="dd-card__desc">Auto-targets the nearest bot</span>
+                    <span class="dd-card__meta"><span class="dd-card__lvl" data-lvl>Lv 0</span><span class="dd-card__cost" data-cost>500</span></span>
+                </button>
+                <button type="button" class="dd-card" id="buy-limiter">
+                    <span class="dd-card__icon" aria-hidden="true">🚦</span>
+                    <span class="dd-card__name">Rate Limiter</span>
+                    <span class="dd-card__desc">Slows every incoming bot</span>
+                    <span class="dd-card__meta"><span class="dd-card__lvl" data-lvl>Lv 0</span><span class="dd-card__cost" data-cost>600</span></span>
+                </button>
+                <button type="button" class="dd-card" id="buy-honeypot">
+                    <span class="dd-card__icon" aria-hidden="true">🍯</span>
+                    <span class="dd-card__name">Honeypot Decoy</span>
+                    <span class="dd-card__desc">Lures &amp; traps nearby bots</span>
+                    <span class="dd-card__meta"><span class="dd-card__lvl" data-lvl>Lv 0</span><span class="dd-card__cost" data-cost>700</span></span>
+                </button>
+                <button type="button" class="dd-card" id="buy-shield">
+                    <span class="dd-card__icon" aria-hidden="true">🛡️</span>
+                    <span class="dd-card__name">CDN Shield</span>
+                    <span class="dd-card__desc">Absorbs the next hits to core</span>
+                    <span class="dd-card__meta"><span class="dd-card__lvl" data-lvl>Lv 0</span><span class="dd-card__cost" data-cost>650</span></span>
+                </button>
+                <button type="button" class="dd-card dd-card--heal" id="buy-heal">
+                    <span class="dd-card__icon" aria-hidden="true">❤️</span>
+                    <span class="dd-card__name">Reboot Core</span>
+                    <span class="dd-card__desc">Restore +30% integrity</span>
+                    <span class="dd-card__meta"><span class="dd-card__lvl" data-lvl>Repair</span><span class="dd-card__cost" data-cost>300</span></span>
+                </button>
+            </div>
+            <div class="da-screen__actions">
+                <button id="nextWaveBtn" type="button" class="da-btn da-btn--primary">Deploy Defenses →</button>
+            </div>
+        </section>
 
-    <div id="gameOverScreen" class="screen hidden">
-        <h1 style="color: #ff3333">HTTP 503</h1>
-        <h2>GATEWAY OVERWHELMED</h2>
-        <p>"Even a DoDo can't fly through that much traffic."</p>
-        <br>
-        <div class="stat-box" style="font-size: 1.5rem; border: none;">
-            PACKETS BLOCKED: <span id="finalScore">0</span>
-        </div>
-        <div class="stat-box" style="font-size: 1rem; margin-top: 10px; border: none; color: #888;">
-             HIGH SCORE: <span id="highScore">0</span>
-        </div>
-        <button class="btn" id="rebootBtn">REBOOT SYSTEM</button>
-        <br><br>
-        <button class="upgrade-btn" id="shareBtn" style="width: auto; padding: 10px 20px;">
-            🐦 Share Result
-        </button>
-    </div>
+        <!-- GAME OVER -->
+        <section id="gameOverScreen" class="da-screen" hidden>
+            <p class="da-eyebrow" style="color:var(--da-danger)">HTTP 503 · Gateway Down</p>
+            <h2 class="da-title">Gateway Overwhelmed</h2>
+            <p class="da-subtitle">"Even a Dodo can't fly through that much traffic."</p>
+            <div class="dd-result">
+                <div class="dd-result__cell">
+                    <span class="da-stat__label">Packets Blocked</span>
+                    <span class="da-score" id="finalScore">0</span>
+                </div>
+                <div class="dd-result__cell">
+                    <span class="da-stat__label">Wave Reached</span>
+                    <span class="da-stat__value" id="finalWave">1</span>
+                </div>
+                <div class="dd-result__cell">
+                    <span class="da-stat__label">All-time Best</span>
+                    <span class="da-stat__value" id="highScore">0</span>
+                </div>
+            </div>
+            <div class="da-screen__actions">
+                <button id="rebootBtn" type="button" class="da-btn da-btn--primary">Reboot System</button>
+                <button id="shareBtn" type="button" class="da-btn da-btn--ghost">Share Result</button>
+                <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="../assets/dodo-juice.js"></script>
+    <script src="assets/script.js"></script>
 </body>
 </html>

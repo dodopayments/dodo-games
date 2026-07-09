@@ -1,158 +1,250 @@
-:root {
-    --brand-lime: #ccff00; /* Matching the DoDo Lime */
-    --brand-dark: #111111;
-    --brand-gray: #222222;
-    --ui-font: 'Courier New', Courier, monospace;
+/* ==========================================================================
+   GATEWAY DEFENDER DODO — game-specific styles (built on assets/dodo-arcade.css)
+   Premium dark tower-defense skin · prefix: dd-
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    overflow: hidden;
-    background-color: var(--brand-dark);
-    color: white;
-    font-family: var(--ui-font);
-    touch-action: none; /* Prevent zoom on mobile */
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: var(--da-font);
+  color: var(--da-text);
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(193, 255, 0, 0.10), transparent 55%),
+    radial-gradient(90% 80% at 50% 120%, rgba(255, 71, 87, 0.08), transparent 55%),
+    var(--dodo-bg);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
 }
 
-canvas {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+/* --- Stage ---------------------------------------------------------------- */
+.dd-shell {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
 }
 
-/* UI OVERLAYS */
-.screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.85);
-    z-index: 10;
-    text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
-    transition: opacity 0.3s;
+#gameCanvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #070a05;
+  touch-action: none;
 }
 
-.hidden {
-    display: none !important;
+/* --- HUD: centered scoreboard pill (clears the corner controls) ----------- */
+.da-hud[hidden] { display: none; }
+.da-hud { justify-content: center; top: var(--da-space-3); pointer-events: none; }
+
+.dd-board {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--da-space-2) var(--da-space-4);
+  max-width: min(94vw, 620px);
+  padding: var(--da-space-2) var(--da-space-4);
+  background: rgba(13, 13, 13, 0.84);
+  border: 1px solid var(--da-border);
+  border-radius: var(--da-radius-pill);
+  box-shadow: var(--da-shadow-1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-h1 {
-    font-size: 3rem;
-    margin: 0 0 10px 0;
-    color: var(--brand-lime);
-    text-shadow: 0 0 10px var(--brand-lime);
+.dd-board__chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
 }
 
-p {
-    font-size: 1.2rem;
-    max-width: 600px;
-    line-height: 1.5;
+.dd-board__label {
+  font-family: var(--da-font-mono);
+  font-style: normal;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--da-text-muted);
 }
 
-.btn {
-    margin-top: 20px;
-    padding: 15px 40px;
-    font-size: 1.5rem;
-    background: var(--brand-lime);
-    color: black;
-    border: none;
-    cursor: pointer;
-    font-family: var(--ui-font);
-    font-weight: bold;
-    text-transform: uppercase;
-    box-shadow: 0 0 15px var(--brand-lime);
-    transition: transform 0.1s;
+.dd-board__val {
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-lg);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--dodo-green);
+  text-shadow: 0 0 10px rgba(193, 255, 0, 0.30);
+}
+.dd-board__val--credit { color: var(--da-warn); text-shadow: none; }
+.dd-board__val--wave { color: var(--da-text); text-shadow: none; }
+.dd-board__val--core { color: var(--da-success); text-shadow: none; }
+.dd-board__val--core.is-low { color: var(--da-danger); }
+
+.da-combo-badge[hidden] { display: none; }
+#comboBadge { margin-left: 2px; }
+
+/* --- Start-screen bot legend + controls ----------------------------------- */
+.dd-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--da-space-2) var(--da-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 40ch;
+  font-size: var(--da-fs-sm);
+  color: var(--da-text-secondary);
+}
+.dd-legend li { display: inline-flex; align-items: center; gap: var(--da-space-2); }
+.dd-legend__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--c, var(--dodo-green));
+  box-shadow: 0 0 10px var(--c, var(--dodo-green));
 }
 
-.btn:active {
-    transform: scale(0.95);
+.dd-controls {
+  margin: 0;
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-xs);
+  letter-spacing: 0.06em;
+  color: var(--da-text-muted);
 }
 
-.btn:hover {
-    background: white;
+/* --- Shop ----------------------------------------------------------------- */
+.dd-shop-credits {
+  margin: 0;
+  font-size: var(--da-fs-md);
+  color: var(--da-text-secondary);
+}
+.dd-shop-credits strong {
+  font-family: var(--da-font-mono);
+  font-weight: 800;
+  color: var(--da-warn);
 }
 
-/* HUD */
-#hud {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 15px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none;
-    z-index: 5;
-    text-shadow: 1px 1px 0 #000;
+.dd-shop {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
+  gap: var(--da-space-3);
+  width: min(94vw, 520px);
 }
 
-.stat-box {
-    background: rgba(0,0,0,0.5);
-    padding: 5px 10px;
-    border: 1px solid var(--brand-lime);
-    border-radius: 4px;
+.dd-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 44px;
+  padding: var(--da-space-3);
+  text-align: left;
+  color: var(--da-text);
+  background: var(--da-surface-2);
+  border: 1px solid var(--da-border-strong);
+  border-radius: var(--da-radius-md);
+  cursor: pointer;
+  transition: transform var(--da-dur-fast) var(--da-ease),
+    border-color var(--da-dur) var(--da-ease),
+    box-shadow var(--da-dur) var(--da-ease),
+    background var(--da-dur) var(--da-ease);
+}
+.dd-card:hover { transform: translateY(-2px); background: var(--da-surface-3); }
+.dd-card:focus-visible { outline: 2px solid var(--dodo-green); outline-offset: 3px; }
+
+.dd-card.is-affordable {
+  border-color: var(--dodo-green-line);
+  box-shadow: var(--da-glow-sm);
+}
+.dd-card.is-maxed,
+.dd-card.is-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-/* UPGRADE MENU */
-#upgrade-menu {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    z-index: 5;
+.dd-card__icon { font-size: 1.4rem; line-height: 1; }
+.dd-card__name { font-size: var(--da-fs-md); font-weight: 800; letter-spacing: 0.01em; }
+.dd-card__desc { font-size: 0.72rem; color: var(--da-text-muted); line-height: 1.3; }
+.dd-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--da-space-2);
+  width: 100%;
+  margin-top: 4px;
+}
+.dd-card__lvl {
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--da-text-secondary);
+}
+.dd-card__cost {
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-sm);
+  font-weight: 800;
+  color: var(--da-warn);
+}
+.dd-card__cost::before { content: "◈ "; opacity: 0.7; }
+.dd-card.is-affordable .dd-card__cost { color: var(--dodo-green); }
+.dd-card.is-maxed .dd-card__cost,
+.dd-card.is-maxed .dd-card__lvl { color: var(--da-text-muted); }
+
+.dd-card--heal { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: var(--da-space-3); }
+.dd-card--heal .dd-card__meta { width: auto; margin-top: 0; margin-left: auto; }
+.dd-card--heal .dd-card__desc { flex: 1; }
+
+/* --- Result panel --------------------------------------------------------- */
+.dd-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--da-space-5);
+}
+.dd-result__cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.dd-result__cell .da-score { font-size: var(--da-fs-3xl); }
+.dd-result__cell .da-stat__value { font-size: var(--da-fs-2xl); color: var(--da-text-secondary); }
+
+/* --- Overlay sizing ------------------------------------------------------- */
+.da-screen { gap: var(--da-space-4); padding: var(--da-space-5) var(--da-space-4); }
+
+@media (max-height: 760px) {
+  .da-title--hero { font-size: 2.4rem; }
+  .da-subtitle { font-size: var(--da-fs-md); }
+  .da-screen { gap: var(--da-space-3); }
 }
 
-.upgrade-btn {
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid #555;
-    color: #fff;
-    padding: 10px;
-    cursor: pointer;
-    text-align: center;
-    font-family: var(--ui-font);
-    width: 100px;
-    pointer-events: auto;
-    transition: all 0.2s;
+/* Narrow screens: drop the HUD below the fixed corner controls and collapse
+   the back-link text so nothing ever collides (the pilot's known bug). */
+@media (max-width: 560px) {
+  .da-back-link__text { display: none; }
+  .da-back-link { padding-left: var(--da-space-3); padding-right: var(--da-space-3); }
+  .da-hud { top: 60px; }
+  .dd-board { gap: var(--da-space-1) var(--da-space-3); padding: var(--da-space-2) var(--da-space-3); }
+  .dd-board__val { font-size: var(--da-fs-md); }
+  .dd-board__label { font-size: 0.5rem; }
+  .dd-shop { grid-template-columns: 1fr 1fr; }
 }
 
-.upgrade-btn.affordable {
-    border-color: var(--brand-lime);
-    color: var(--brand-lime);
-}
-
-.upgrade-btn:active {
-    background: #333;
-}
-
-.upgrade-cost {
-    display: block;
-    font-size: 0.8rem;
-    margin-top: 5px;
-    color: #888;
-}
-
-.upgrade-btn.affordable .upgrade-cost {
-    color: #fff;
-}
-
-/* LOGO WATERMARK */
-#watermark {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    opacity: 0.5;
-    width: 50px;
-    z-index: 2;
+@media (max-width: 400px) {
+  .dd-board { gap: 6px var(--da-space-2); }
+  .dd-legend { font-size: var(--da-fs-xs); }
+  .dd-card__desc { display: none; }
 }
