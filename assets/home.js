@@ -105,10 +105,10 @@
     badges.appendChild(resumeBadge);
 
     var img = el('img');
-    img.src = 'assets/images/' + game.slug + '.png';
+    img.src = 'assets/images/' + game.slug + '.webp';
     img.alt = game.title;
     img.width = 600;
-    img.height = 338;
+    img.height = 315;
     img.loading = 'lazy';
     img.decoding = 'async';
 
@@ -193,10 +193,10 @@
     if (media) {
       while (media.firstChild) media.removeChild(media.firstChild);
       var img = el('img');
-      img.src = 'assets/images/' + g.slug + '.png';
+      img.src = 'assets/images/' + g.slug + '.webp';
       img.alt = g.title;
-      img.width = 640;
-      img.height = 360;
+      img.width = 600;
+      img.height = 315;
       img.loading = 'lazy';
       img.decoding = 'async';
       media.appendChild(img);
