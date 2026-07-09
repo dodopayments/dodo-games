@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Token Match Dodo - Match payment token pairs in this memory card game by Dodo Payments.">
-  <meta name="keywords" content="token match, memory game, payment tokens, free game, dodo games, browser game">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Token Match Dodo - Flip cards to pair payment tokens in this memory game by Dodo Payments. Chain combos, race the clock, and use your one Peek across three ledger sizes.">
+  <meta name="keywords" content="token match, memory game, payment tokens, combo game, free game, dodo games, browser game">
   <meta name="author" content="Dodo Payments">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
   <link rel="canonical" href="https://games.dodopayments.com/token-match-dodo/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://games.dodopayments.com/token-match-dodo/">
   <meta property="og:title" content="Token Match Dodo | Dodo Games">
-  <meta property="og:description" content="Match payment token pairs in this memory card game.">
+  <meta property="og:description" content="Match payment token pairs in this memory card game. Chain combos and beat your best across three ledger sizes.">
   <meta property="og:image" content="https://games.dodopayments.com/assets/images/token-match-dodo.png">
   <meta property="og:site_name" content="Dodo Games">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://games.dodopayments.com/token-match-dodo/">
   <meta name="twitter:title" content="Token Match Dodo | Dodo Games">
-  <meta name="twitter:description" content="Match payment token pairs in this memory card game.">
+  <meta name="twitter:description" content="Match payment token pairs in this memory card game. Chain combos and beat your best across three ledger sizes.">
   <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/token-match-dodo.png">
   <script src="../assets/analytics.js"></script>
   <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
@@ -26,52 +27,131 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="../assets/site.webmanifest">
   <title>Token Match Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="../assets/dodo-arcade.css">
   <link rel="stylesheet" href="assets/style.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "VideoGame",
     "name": "Token Match Dodo",
-    "description": "Match payment token pairs in a fast memory challenge!",
+    "description": "Flip cards to pair payment tokens in a fast memory challenge. Chain combo multipliers, spend your one Peek wisely, and race the clock across three ledger sizes.",
     "url": "https://games.dodopayments.com/token-match-dodo/",
     "image": "https://games.dodopayments.com/assets/images/token-match-dodo.png",
-    "genre": "Puzzle",
+    "genre": ["Puzzle", "Arcade"],
     "gamePlatform": "Web Browser",
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
     "playMode": "SinglePlayer",
-    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
 </head>
 <body>
-  <a href="/" class="back-btn">← Back to Arcade</a>
+  <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-  <main class="game-shell">
-    <section id="startScreen" class="screen card">
-      <h1>Token Match Dodo</h1>
-      <p>Flip cards and match all 8 payment token pairs.<br>Only two cards can be face-up at once.</p>
-      <button id="startButton" type="button">Start Match</button>
-    </section>
-
-    <section id="gameScreen" class="screen hidden" aria-live="polite">
-      <header class="hud card-lite">
-        <div>Time <span id="timer">00:00</span></div>
-        <div>Flips <span id="flips">0</span></div>
-        <div>Score <span id="score">1000</span></div>
-        <div>Best <span id="bestScore">0</span></div>
+  <main class="tm-shell" id="tmShell">
+    <!-- PLAY LAYER (base) -->
+    <section id="gameScreen" class="tm-play" hidden aria-live="polite">
+      <header class="tm-hud">
+        <div class="tm-stat tm-stat--score">
+          <span class="tm-stat__label">Score</span>
+          <span class="da-score" id="score">0</span>
+        </div>
+        <div class="tm-stat">
+          <span class="tm-stat__label">Moves</span>
+          <span class="tm-stat__value" id="moves">0</span>
+        </div>
+        <div class="tm-stat">
+          <span class="tm-stat__label">Time</span>
+          <span class="tm-stat__value" id="timer">00:00</span>
+        </div>
+        <div class="tm-stat">
+          <span class="tm-stat__label">Best</span>
+          <span class="tm-stat__value" id="bestScore">0</span>
+        </div>
+        <span class="da-combo-badge" id="comboBadge" hidden>COMBO ×1</span>
       </header>
-      <div id="grid" class="grid" role="grid" aria-label="Payment token memory cards"></div>
+
+      <div class="tm-board-wrap">
+        <div id="grid" class="tm-board" role="grid" aria-label="Payment token memory cards"></div>
+      </div>
+
+      <div class="tm-controls">
+        <span class="tm-controls__hint" id="diffPill">Growth · 4 × 4</span>
+        <button id="peekButton" type="button" class="da-btn da-btn--ghost tm-peek" aria-label="Peek at all cards once">
+          <svg class="tm-peek__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5C5.5 5 1.8 11.1 1.6 11.5a1 1 0 0 0 0 1C1.8 12.9 5.5 19 12 19s10.2-6.1 10.4-6.5a1 1 0 0 0 0-1C22.2 11.1 18.5 5 12 5Zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9Z" fill="currentColor"/>
+            <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
+          </svg>
+          <span>Peek</span>
+          <small class="tm-peek__cost">−<span id="peekCost">200</span></small>
+        </button>
+      </div>
     </section>
 
-    <section id="gameOverScreen" class="screen card hidden">
-      <h2>All Tokens Matched!</h2>
-      <p class="result-line">Time Taken: <span id="finalTime">00:00</span></p>
-      <p class="result-line">Total Flips: <span id="finalFlips">0</span></p>
-      <p class="result-line">Final Score: <span id="finalScore">0</span></p>
-      <p class="result-line">Best Score: <span id="overBestScore">0</span></p>
-      <button id="restartButton" type="button">Play Again</button>
+    <!-- START -->
+    <section id="startScreen" class="da-screen">
+      <p class="da-eyebrow">Dodo Payments Arcade</p>
+      <h1 class="da-title da-title--hero">TOKEN <span class="da-title__accent">MATCH</span></h1>
+      <p class="da-subtitle">Flip the vault and pair every payment token. Chain matches for combo multipliers — but you only get one Peek.</p>
+
+      <div class="tm-select">
+        <span class="tm-select__label">Choose your ledger</span>
+        <div class="tm-seg" id="difficultySelect" role="group" aria-label="Select ledger size">
+          <button type="button" class="tm-seg__btn" data-diff="starter" aria-pressed="false">
+            <strong>Starter</strong><small>4 × 3</small>
+          </button>
+          <button type="button" class="tm-seg__btn is-active" data-diff="growth" aria-pressed="true">
+            <strong>Growth</strong><small>4 × 4</small>
+          </button>
+          <button type="button" class="tm-seg__btn" data-diff="enterprise" aria-pressed="false">
+            <strong>Enterprise</strong><small>6 × 4</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="da-screen__actions">
+        <button id="startButton" type="button" class="da-btn da-btn--primary">Start Match</button>
+      </div>
+
+      <p class="tm-best-line">
+        Best <span id="startDiffLabel">Growth</span> <strong id="startDiffBest">0</strong>
+        &nbsp;·&nbsp; All-time <strong id="startBest">0</strong>
+      </p>
+      <p class="tm-controls-hint">Tap two cards to find a pair · one Peek per game</p>
+    </section>
+
+    <!-- WIN / GAME OVER -->
+    <section id="gameOverScreen" class="da-screen" hidden>
+      <p class="da-eyebrow" id="resultEyebrow">Ledger Balanced</p>
+      <h2 class="da-title" id="resultTitle">All Tokens Matched!</h2>
+
+      <div class="tm-result">
+        <div class="tm-result__score">
+          <span class="da-stat__label">Final Score</span>
+          <span class="da-score" id="finalScore">0</span>
+        </div>
+        <div class="tm-result__grid">
+          <div><span class="da-stat__label">Moves</span><b id="finalMoves">0</b></div>
+          <div><span class="da-stat__label">Time</span><b id="finalTime">00:00</b></div>
+          <div><span class="da-stat__label">Best Combo</span><b id="finalCombo">×0</b></div>
+        </div>
+      </div>
+
+      <p class="da-subtitle tm-result__meta">
+        Best <span id="overDiffLabel">Growth</span> <strong id="overDiffBest">0</strong>
+        &nbsp;·&nbsp; All-time <strong id="overBestScore">0</strong>
+      </p>
+
+      <div class="da-screen__actions">
+        <button id="restartButton" type="button" class="da-btn da-btn--primary">Play Again</button>
+        <button id="menuButton" type="button" class="da-btn da-btn--ghost">Change Ledger</button>
+      </div>
     </section>
   </main>
 
+  <script src="../assets/dodo-juice.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>
