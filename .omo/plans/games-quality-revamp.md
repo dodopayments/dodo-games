@@ -327,7 +327,7 @@ Verify: all card images <100KB (scripted stat check); home Lighthouse re-run pas
 - [x] 3. [Wave 0 / Task 0.3] Build `assets/dodo-juice.js` (audio synth, particles, shake, haptics, reduced-motion, highscore migration + fixture spec)
 - [x] 4. [Wave 0 / Task 0.4] Build Playwright verification harness + frozen per-game snapshots + package.json updates (devDeps, test scripts, license GPL-3.0)
 - [x] 5. [Wave 0 / Task 0.5] Standardize `dodo-dash/` + `merchant-hero-dodo/` to Pattern A structure
-- [ ] 6. [Wave 1 / Task 1.0] PILOT — full revamp of `dodo-pong` + GATE (full assertion set + rubric ≥4/5 + gameplay videos)
+- [x] 6. [Wave 1 / Task 1.0] PILOT — full revamp of `dodo-pong` + GATE (full assertion set + rubric ≥4/5 + gameplay videos)
 - [ ] 7. [Wave 2 / Task 2.1] Revamp `dodo-dash`
 - [ ] 8. [Wave 2 / Task 2.2] Revamp `merchant-hero-dodo`
 - [ ] 9. [Wave 2 / Task 2.3] Revamp `firewall-breaker-dodo`
