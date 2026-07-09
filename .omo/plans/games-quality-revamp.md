@@ -328,11 +328,11 @@ Verify: all card images <100KB (scripted stat check); home Lighthouse re-run pas
 - [x] 4. [Wave 0 / Task 0.4] Build Playwright verification harness + frozen per-game snapshots + package.json updates (devDeps, test scripts, license GPL-3.0)
 - [x] 5. [Wave 0 / Task 0.5] Standardize `dodo-dash/` + `merchant-hero-dodo/` to Pattern A structure
 - [x] 6. [Wave 1 / Task 1.0] PILOT — full revamp of `dodo-pong` + GATE (full assertion set + rubric ≥4/5 + gameplay videos)
-- [ ] 7. [Wave 2 / Task 2.1] Revamp `dodo-dash`
-- [ ] 8. [Wave 2 / Task 2.2] Revamp `merchant-hero-dodo`
-- [ ] 9. [Wave 2 / Task 2.3] Revamp `firewall-breaker-dodo`
-- [ ] 10. [Wave 2 / Task 2.4] Revamp `ddos-defense-dodo`
-- [ ] 11. [Wave 2 / Task 2.5] Revamp `payment-invaders-dodo` (incl. Tailwind CDN removal)
+- [x] 7. [Wave 2 / Task 2.1] Revamp `dodo-dash`
+- [x] 8. [Wave 2 / Task 2.2] Revamp `merchant-hero-dodo`
+- [x] 9. [Wave 2 / Task 2.3] Revamp `firewall-breaker-dodo`
+- [x] 10. [Wave 2 / Task 2.4] Revamp `ddos-defense-dodo`
+- [x] 11. [Wave 2 / Task 2.5] Revamp `payment-invaders-dodo` (incl. Tailwind CDN removal)
 - [ ] 12. [Wave 3 / Task 3.1] Revamp `ledger-blocks-dodo`
 - [ ] 13. [Wave 3 / Task 3.2] Revamp `revenue-2048-dodo`
 - [ ] 14. [Wave 3 / Task 3.3] Revamp `token-match-dodo`
