@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Fraud Whacker Dodo - Whack fraudulent transactions before they process! A fast-paced arcade game by Dodo Payments.">
-  <meta name="keywords" content="fraud whacker, whack a mole, free game, arcade game, dodo games, browser game">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Fraud Whacker Dodo - Whack fraud bots and chargebacks before they clear, spare the legit transactions, and chase golden fraud combos in this fast-paced arcade whack-a-mole by Dodo Payments.">
+  <meta name="keywords" content="fraud whacker, whack a mole, payment game, arcade game, dodo games, browser game, combo game">
   <meta name="author" content="Dodo Payments">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
   <link rel="canonical" href="https://games.dodopayments.com/fraud-whacker-dodo/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://games.dodopayments.com/fraud-whacker-dodo/">
   <meta property="og:title" content="Fraud Whacker Dodo | Dodo Games">
-  <meta property="og:description" content="Whack fraudulent transactions before they process!">
+  <meta property="og:description" content="Whack fraud bots and chargebacks before they clear — spare the legit payments and chase golden combos!">
   <meta property="og:image" content="https://games.dodopayments.com/assets/images/fraud-whacker-dodo.png">
   <meta property="og:site_name" content="Dodo Games">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://games.dodopayments.com/fraud-whacker-dodo/">
   <meta name="twitter:title" content="Fraud Whacker Dodo | Dodo Games">
-  <meta name="twitter:description" content="Whack fraudulent transactions before they process!">
+  <meta name="twitter:description" content="Whack fraud bots and chargebacks before they clear — spare the legit payments and chase golden combos!">
   <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/fraud-whacker-dodo.png">
   <script src="../assets/analytics.js"></script>
   <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
@@ -26,51 +27,104 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="../assets/site.webmanifest">
   <title>Fraud Whacker Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="../assets/dodo-arcade.css">
   <link rel="stylesheet" href="assets/style.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "VideoGame",
     "name": "Fraud Whacker Dodo",
-    "description": "Whack fraudulent transactions before they process through the payment gateway!",
+    "description": "Whack fraud bots and chargebacks before they clear through the payment gateway, spare the legit transactions, and chase golden fraud combos and frenzy swarms in this arcade whack-a-mole.",
     "url": "https://games.dodopayments.com/fraud-whacker-dodo/",
     "image": "https://games.dodopayments.com/assets/images/fraud-whacker-dodo.png",
-    "genre": "Arcade",
+    "genre": ["Arcade", "Action"],
     "gamePlatform": "Web Browser",
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
     "playMode": "SinglePlayer",
-    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
 </head>
 <body>
-  <a href="/" class="back-btn">← Back to Arcade</a>
+  <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-  <main class="game-shell">
-    <section id="startScreen" class="screen card">
-      <h1>Fraud Whacker Dodo</h1>
-      <p>Block fraudulent transactions before they process through.<br>Use mouse, touch, or keys 1-9.</p>
-      <button id="startButton" type="button">Start Blocking</button>
+  <main class="fw-shell" id="fwShell">
+    <div class="fw-frenzy-tint" id="frenzyTint" aria-hidden="true"></div>
+
+    <!-- HUD -->
+    <header class="da-hud fw-hud" id="hud" hidden>
+      <div class="fw-board" aria-live="polite">
+        <span class="fw-board__chip">
+          <i class="fw-board__label">Score</i>
+          <b class="fw-board__val da-score" id="score">0</b>
+        </span>
+        <span class="fw-board__div" aria-hidden="true"></span>
+        <span class="fw-board__chip">
+          <i class="fw-board__label">Best</i>
+          <b class="fw-board__val fw-board__val--best" id="bestScore">0</b>
+        </span>
+        <span class="fw-board__div" aria-hidden="true"></span>
+        <span class="fw-board__chip fw-board__chip--lives">
+          <i class="fw-board__label">Lives</i>
+          <span class="fw-lives" id="lives" aria-label="Lives remaining"></span>
+        </span>
+        <span class="da-combo-badge fw-combo" id="comboBadge" hidden>COMBO ×1</span>
+      </div>
+    </header>
+
+    <!-- PLAYFIELD -->
+    <section class="fw-stage" id="gameScreen" hidden>
+      <div class="fw-grid" id="grid" role="grid" aria-label="Fraud terminal grid"></div>
     </section>
 
-    <section id="gameScreen" class="screen hidden" aria-live="polite">
-      <header class="hud card-lite">
-        <div>Score <span id="score">0</span></div>
-        <div>Best <span id="bestScore">0</span></div>
-        <div>Lives <span id="lives">5</span></div>
-        <div>Combo <span id="combo">x1</span></div>
-      </header>
-      <div id="grid" class="grid" role="grid" aria-label="Fraud terminal grid"></div>
+    <!-- START -->
+    <section id="startScreen" class="da-screen">
+      <p class="da-eyebrow">Dodo Payments Arcade</p>
+      <h1 class="da-title da-title--hero">FRAUD <span class="da-title__accent">WHACKER</span></h1>
+      <p class="da-subtitle">Bots and chargebacks are popping up across the gateway. Whack the fraud, spare the legit, and build combos before your defenses fall.</p>
+
+      <ul class="fw-legend" aria-label="Target guide">
+        <li><span class="fw-legend__chip fw-legend__chip--fraud">🤖</span><span class="fw-legend__txt"><b>Fraud bot</b><small>whack it</small></span></li>
+        <li><span class="fw-legend__chip fw-legend__chip--golden">✦</span><span class="fw-legend__txt"><b>Golden fraud</b><small>2× &amp; fast</small></span></li>
+        <li><span class="fw-legend__chip fw-legend__chip--decoy">⚠</span><span class="fw-legend__txt"><b>Chargeback</b><small>whack fast!</small></span></li>
+        <li><span class="fw-legend__chip fw-legend__chip--legit">✓</span><span class="fw-legend__txt"><b>Legit pay</b><small>don't whack</small></span></li>
+      </ul>
+
+      <div class="da-screen__actions">
+        <button id="startButton" type="button" class="da-btn da-btn--primary">Start Shift</button>
+      </div>
+      <p class="fw-controls">Tap / click a hole &nbsp;·&nbsp; or press keys 1–9</p>
     </section>
 
-    <section id="gameOverScreen" class="screen card hidden">
-      <h2>Gateway Breached</h2>
-      <p>Too many fraudulent transactions slipped through.</p>
-      <p class="result-line">Final Score: <span id="finalScore">0</span></p>
-      <p class="result-line">All-Time High: <span id="overBestScore">0</span></p>
-      <button id="restartButton" type="button">Play Again</button>
+    <!-- GAME OVER -->
+    <section id="gameOverScreen" class="da-screen" hidden>
+      <p class="da-eyebrow" id="resultEyebrow">Gateway Breached</p>
+      <h2 class="da-title" id="resultTitle">Shift Over</h2>
+      <div class="fw-result">
+        <div class="fw-result__cell">
+          <span class="da-stat__label">Score</span>
+          <span class="da-score" id="finalScore">0</span>
+        </div>
+        <div class="fw-result__cell">
+          <span class="da-stat__label">Best Combo</span>
+          <span class="da-stat__value" id="finalCombo">0</span>
+        </div>
+        <div class="fw-result__cell">
+          <span class="da-stat__label">All-time</span>
+          <span class="da-stat__value" id="overBestScore">0</span>
+        </div>
+      </div>
+      <p class="da-subtitle fw-result__meta" id="resultMeta">Fraud blocked: <strong id="finalBlocked">0</strong></p>
+      <div class="da-screen__actions">
+        <button id="restartButton" type="button" class="da-btn da-btn--primary">Play Again</button>
+        <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+      </div>
     </section>
   </main>
 
+  <script src="../assets/dodo-juice.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>

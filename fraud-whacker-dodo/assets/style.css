@@ -1,204 +1,420 @@
-:root {
-  --primary: #C1FF00;
-  --bg-dark: #050505;
-  --text: #ffffff;
-  --panel: #121212;
-  --panel-border: #2a2a2a;
-}
+/* ==========================================================================
+   FRAUD WHACKER DODO — game-specific styles (built on assets/dodo-arcade.css)
+   Premium dark arcade-cabinet whack-a-mole. DOM sprites, CSS-transform juice.
+   ========================================================================== */
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
 
 body {
-  background: radial-gradient(circle at 20% 20%, #171717 0%, var(--bg-dark) 55%);
-  color: var(--text);
-  font-family: 'Courier New', monospace;
-  margin: 0;
-  min-height: 100vh;
-  touch-action: manipulation;
+  min-height: 100dvh;
+  font-family: var(--da-font);
+  color: var(--da-text);
+  background:
+    radial-gradient(120% 90% at 50% -8%, rgba(193, 255, 0, 0.10), transparent 52%),
+    radial-gradient(90% 80% at 50% 120%, rgba(255, 71, 87, 0.08), transparent 55%),
+    var(--dodo-bg);
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
 }
 
-.back-btn {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  color: var(--primary);
-  text-decoration: none;
-  font-size: 0.85rem;
-  z-index: 100;
-}
-
-.game-shell {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 76px 16px 24px;
-}
-
-.screen {
-  width: min(620px, 100%);
-}
-
-.hidden {
-  display: none;
-}
-
-.card {
-  border: 3px solid #0C0C0C;
-  background: rgba(255, 255, 255, 0.94);
-  border-radius: 16px;
-  box-shadow: 0 16px 0 #0C0C0C;
-  color: #0C0C0C;
-  padding: 24px;
-  text-align: center;
-}
-
-.card h1,
-.card h2 {
-  margin: 0 0 12px;
-  color: var(--primary);
-  text-transform: uppercase;
-  text-shadow: 2px 2px #0C0C0C;
-}
-
-.card p {
-  font-weight: 700;
-  margin: 0 0 16px;
-}
-
-button {
-  background: #C1FF00;
-  color: #0C0C0C;
-  border: 3px solid #0C0C0C;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 12px 24px;
-  font-size: 1rem;
-  border-radius: 8px;
-  font-family: inherit;
-  box-shadow: 4px 4px 0 #0C0C0C;
-  text-transform: uppercase;
-}
-
-button:active {
-  transform: translate(4px, 4px);
-  box-shadow: none;
-}
-
-.hud {
+/* --- Stage --------------------------------------------------------------- */
+.fw-shell {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 16px;
-  margin-bottom: 12px;
-  padding: 14px;
+  place-items: center;
+  width: 100%;
+  min-height: 100dvh;
+  padding: clamp(64px, 14vh, 96px) var(--da-space-4) var(--da-space-5);
+  overflow: hidden;
 }
 
-.card-lite {
-  border: 2px solid var(--panel-border);
-  border-radius: 12px;
-  background: #101010;
+/* Frenzy full-screen tint */
+.fw-frenzy-tint {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255, 71, 87, 0.22), transparent 55%),
+    radial-gradient(120% 90% at 50% 100%, rgba(255, 176, 32, 0.20), transparent 55%);
+  transition: opacity var(--da-dur) var(--da-ease);
+}
+.fw-shell.is-frenzy .fw-frenzy-tint {
+  opacity: 1;
+  animation: fw-frenzy-pulse 0.7s ease-in-out infinite;
 }
 
-.hud div {
-  font-size: 0.95rem;
+/* --- HUD ----------------------------------------------------------------- */
+.da-hud.fw-hud { justify-content: center; top: var(--da-space-3); pointer-events: none; }
+.da-hud.fw-hud[hidden] { display: none; }
+
+.fw-board {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--da-space-3);
+  padding: var(--da-space-2) var(--da-space-4);
+  background: rgba(13, 13, 13, 0.82);
+  border: 1px solid var(--da-border);
+  border-radius: var(--da-radius-pill);
+  box-shadow: var(--da-shadow-1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.hud span {
-  color: var(--primary);
+.fw-board__chip { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; line-height: 1; }
+
+.fw-board__label {
+  font-family: var(--da-font-mono);
+  font-style: normal;
+  font-size: 0.56rem;
   font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--da-text-muted);
 }
 
-.grid {
+.fw-board__val {
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-lg);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--dodo-green);
+  text-shadow: 0 0 10px rgba(193, 255, 0, 0.30);
+}
+.fw-board__val--best { color: var(--da-text); text-shadow: none; font-size: var(--da-fs-md); }
+.fw-board__div { width: 1px; height: 24px; background: var(--da-border); }
+
+/* Lives — shield icons */
+.fw-lives {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 1.25rem;
+  --fw-shield-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1.5 3 4.8V11c0 5.4 3.9 9.9 9 11 5.1-1.1 9-5.6 9-11V4.8z"/></svg>');
+}
+.fw-shield {
+  width: 15px; height: 17px;
+  display: inline-block;
+  background: var(--da-success);
+  -webkit-mask: var(--fw-shield-mask) center/contain no-repeat;
+  mask: var(--fw-shield-mask) center/contain no-repeat;
+  filter: drop-shadow(0 0 4px rgba(46, 213, 115, 0.6));
+  transition: transform var(--da-dur) var(--da-ease), opacity var(--da-dur) var(--da-ease);
+}
+.fw-shield--lost {
+  background: var(--da-border-strong);
+  filter: none;
+  opacity: 0.5;
+  transform: scale(0.82);
+}
+
+.da-combo-badge.fw-combo[hidden] { display: none; }
+.fw-combo { margin-left: 2px; }
+
+/* --- Playfield: arcade cabinet ------------------------------------------- */
+.fw-stage[hidden] { display: none; }
+.fw-stage {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.fw-grid {
+  --fw-cabinet: #141414;
+  --fw-cabinet-2: #0c0c0c;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: clamp(10px, 3.2vw, 20px);
+  width: min(520px, 94vw);
+  padding: clamp(14px, 4vw, 26px);
+  border-radius: var(--da-radius-lg);
+  background:
+    linear-gradient(180deg, #191919, #0e0e0e);
+  border: 1px solid var(--da-border-strong);
+  box-shadow: var(--da-shadow-3), inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 60px rgba(193, 255, 0, 0.06);
 }
 
-.slot {
+/* --- Hole ---------------------------------------------------------------- */
+.fw-hole {
   position: relative;
-  min-height: 100px;
-  border: 2px solid var(--panel-border);
-  border-radius: 12px;
-  background: linear-gradient(180deg, #1a1a1a, #0d0d0d);
+  aspect-ratio: 1 / 1;
+  min-height: 88px;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background:
+    radial-gradient(120% 80% at 50% 12%, #1f1f1f, #101010 70%);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6), inset 0 -2px 4px rgba(255, 255, 255, 0.03);
   overflow: hidden;
-  isolation: isolate;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: box-shadow var(--da-dur) var(--da-ease);
+}
+.fw-hole:focus-visible { outline: 2px solid var(--dodo-green); outline-offset: 2px; }
+
+/* the dark elliptical pit at the base of the cell */
+.fw-hole__pit {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 9%;
+  height: 42%;
+  border-radius: 50%;
+  background:
+    radial-gradient(60% 90% at 50% 25%, #000 0%, #060606 60%, #0d0d0d 100%);
+  box-shadow: inset 0 6px 10px rgba(0, 0, 0, 0.85), 0 2px 0 rgba(255, 255, 255, 0.03);
 }
 
-.slot-number {
+/* clip stage: the sprite rises inside this, clipped below by the cell overflow */
+.fw-hole__stage {
   position: absolute;
-  right: 6px;
-  top: 6px;
-  font-size: 0.75rem;
-  opacity: 0.7;
+  left: 6%;
+  right: 6%;
+  bottom: 15%;
+  top: 6%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* front rim — the lip the character emerges from behind */
+.fw-hole__rim {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 9%;
+  height: 24%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(28, 28, 28, 0.05), #141414 45%, #0b0b0b);
+  box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.5), inset 0 2px 2px rgba(255, 255, 255, 0.05);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* --- Target sprite ------------------------------------------------------- */
+.fw-target {
+  position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 82%;
+  aspect-ratio: 1 / 1.08;
+  border-radius: 16px 16px 12px 12px;
+  transform: translateY(122%) scale(0.6);
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: transform 0.16s ease-in, opacity 0.14s ease-in;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.25);
 }
 
-.fraud {
+/* rise with overshoot */
+.fw-hole.is-up .fw-target {
+  transform: translateY(6%) scale(1);
+  opacity: 1;
+  transition: transform 0.30s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.16s ease-out;
+}
+
+/* whacked squash + fade */
+.fw-hole.is-hit .fw-target {
+  transform: translateY(16%) scaleX(1.28) scaleY(0.5);
+  opacity: 0;
+  transition: transform 0.2s ease-out, opacity 0.22s ease-out;
+}
+
+.fw-target__icon {
+  font-size: clamp(1.5rem, 8vw, 2.3rem);
+  line-height: 1;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+}
+.fw-target__label {
+  font-family: var(--da-font-mono);
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(5, 5, 5, 0.72);
+}
+
+/* type palettes */
+.fw-target--fraud {
+  background: linear-gradient(180deg, #ff6b78, #e0323f);
+}
+.fw-target--golden {
+  background: linear-gradient(180deg, #ffe27a, #f5a623);
+  box-shadow: 0 4px 14px rgba(245, 166, 35, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  animation: fw-golden-shine 1.1s ease-in-out infinite;
+}
+.fw-target--decoy {
+  background: linear-gradient(180deg, #ffcf6b, #ff9f1c);
+}
+.fw-target--decoy.is-armed { animation: fw-decoy-warn 0.5s ease-in-out infinite; }
+.fw-target--legit {
+  background: linear-gradient(180deg, #7cc4ff, #3d8bdb);
+}
+.fw-target--legit .fw-target__label { color: rgba(255, 255, 255, 0.9); }
+
+/* decoy fuse bar — depletes over its live window */
+.fw-target__fuse {
   position: absolute;
-  left: 7px;
-  right: 7px;
-  bottom: -78px;
-  border-radius: 10px;
-  padding: 8px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-align: center;
-  color: #0C0C0C;
-  transform: translateY(18px);
-  transition: transform 150ms ease-out, bottom 160ms ease-out;
+  left: 12%;
+  right: 12%;
+  bottom: 7%;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(5, 5, 5, 0.28);
+  overflow: hidden;
+  display: none;
+}
+.fw-target--decoy .fw-target__fuse { display: block; }
+.fw-target__fuse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background: #ff2d2d;
+  transform-origin: left center;
+  transform: scaleX(1);
+}
+.fw-hole.is-up .fw-target--decoy .fw-target__fuse::after {
+  animation: fw-fuse linear forwards;
+  animation-duration: var(--fw-fuse-ms, 1600ms);
 }
 
-.slot.active .fraud {
-  bottom: 7px;
-  transform: translateY(0);
+/* --- Start-screen legend -------------------------------------------------- */
+.fw-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--da-space-2) var(--da-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 32ch;
+  font-size: var(--da-fs-sm);
+  color: var(--da-text-secondary);
+  text-align: left;
+}
+.fw-legend li { display: inline-flex; align-items: center; gap: var(--da-space-2); }
+.fw-legend__txt { display: flex; flex-direction: column; line-height: 1.18; min-width: 0; }
+.fw-legend b { color: var(--da-text); font-weight: 700; font-size: var(--da-fs-sm); }
+.fw-legend small {
+  font-family: var(--da-font-mono);
+  font-size: 0.68rem;
+  color: var(--da-text-muted);
+}
+.fw-legend__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  flex: 0 0 auto;
+  color: #050505;
+}
+.fw-legend__chip--fraud { background: linear-gradient(180deg, #ff6b78, #e0323f); }
+.fw-legend__chip--golden { background: linear-gradient(180deg, #ffe27a, #f5a623); }
+.fw-legend__chip--decoy { background: linear-gradient(180deg, #ffcf6b, #ff9f1c); }
+.fw-legend__chip--legit { background: linear-gradient(180deg, #7cc4ff, #3d8bdb); color: #fff; }
+
+.fw-controls {
+  margin: 0;
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-xs);
+  letter-spacing: 0.06em;
+  color: var(--da-text-muted);
 }
 
-.fraud.stolen-card {
-  background: #69d2e7;
+/* --- Result panel -------------------------------------------------------- */
+.fw-result {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--da-space-5);
+}
+.fw-result__cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.fw-result__cell .da-score { font-size: var(--da-fs-2xl); }
+.fw-result__meta { font-size: var(--da-fs-sm); }
+.fw-result__meta strong { color: var(--dodo-green); font-family: var(--da-font-mono); }
+
+/* Overlays fit tiny viewports */
+.da-screen { gap: var(--da-space-4); padding: var(--da-space-5) var(--da-space-4); }
+
+/* --- Tap splash (hammer feel) -------------------------------------------- */
+.fw-splash {
+  position: fixed;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  border: 3px solid rgba(193, 255, 0, 0.9);
+  box-shadow: 0 0 14px rgba(193, 255, 0, 0.5);
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.9;
+  transform: scale(0.3);
+  animation: fw-splash 0.42s var(--da-ease) forwards;
+}
+@keyframes fw-splash {
+  to { transform: scale(1.5); opacity: 0; }
 }
 
-.fraud.fake-id {
-  background: #ffbf69;
+/* --- Keyframes ----------------------------------------------------------- */
+@keyframes fw-fuse { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+@keyframes fw-golden-shine {
+  0%, 100% { box-shadow: 0 4px 14px rgba(245, 166, 35, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.5); }
+  50% { box-shadow: 0 4px 22px rgba(255, 210, 63, 0.85), inset 0 2px 6px rgba(255, 255, 255, 0.75); }
+}
+@keyframes fw-decoy-warn {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.25) saturate(1.3); }
+}
+@keyframes fw-frenzy-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
 }
 
-.fraud.chargeback {
-  background: #ff7b7b;
+/* --- Responsive ---------------------------------------------------------- */
+@media (max-width: 540px) {
+  .da-back-link__text { display: none; }
+  .da-back-link { padding-left: var(--da-space-3); padding-right: var(--da-space-3); }
+  .fw-board { gap: var(--da-space-2); padding: var(--da-space-2) var(--da-space-3); }
+  .fw-board__val { font-size: var(--da-fs-md); }
 }
 
-.fraud.bot-attack {
-  background: #b0ff70;
+@media (max-width: 400px) {
+  .fw-grid { gap: 9px; padding: 13px; }
+  .fw-hole { min-height: 82px; border-radius: 13px; }
+  .fw-board { gap: 8px; }
+  .fw-board__label { font-size: 0.5rem; }
+  .fw-legend { font-size: var(--da-fs-xs); gap: 6px var(--da-space-3); }
 }
 
-.slot.hit {
-  outline: 3px solid var(--primary);
+@media (max-height: 720px) {
+  .da-title--hero { font-size: 2.4rem; }
+  .da-subtitle { font-size: var(--da-fs-md); }
+  .da-screen { gap: var(--da-space-3); }
 }
 
-.slot.missed {
-  outline: 3px solid #ff6464;
-}
-
-.result-line {
-  font-size: 1.1rem;
-}
-
-@media (max-width: 600px) {
-  .game-shell {
-    align-items: flex-start;
-    padding-top: 64px;
+/* --- Reduced motion: keep readability, drop decorative overshoot --------- */
+@media (prefers-reduced-motion: reduce) {
+  .fw-target,
+  .fw-hole.is-up .fw-target,
+  .fw-hole.is-hit .fw-target {
+    transition: opacity 0.12s linear;
   }
-
-  .screen {
-    width: min(420px, 100%);
-  }
-
-  .slot {
-    min-height: clamp(88px, 25vw, 108px);
-  }
-
-  .fraud {
-    font-size: 0.74rem;
-    padding: 7px;
-  }
+  .fw-target--golden,
+  .fw-target--decoy.is-armed,
+  .fw-shell.is-frenzy .fw-frenzy-tint { animation: none; }
+  .fw-hole.is-up .fw-target--decoy .fw-target__fuse::after { animation: fw-fuse linear forwards; }
 }
