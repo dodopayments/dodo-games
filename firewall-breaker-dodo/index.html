@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Firewall Breaker Dodo - Break through fraud firewalls! A Breakout-style arcade game by Dodo Payments.">
-  <meta name="keywords" content="firewall breaker, breakout game, arkanoid game, dodo games, browser game, fraud firewall">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Firewall Breaker Dodo - Smash through 9 handcrafted layers of fraud firewalls in this arcade Breakout by Dodo Payments. Chain combos, trigger explosive bricks, grab PCI Shield, 2FA Ball and Rate Limiter power-ups, and earn 3 stars per level.">
+  <meta name="keywords" content="firewall breaker, breakout game, arkanoid game, dodo games, browser game, fraud firewall, combo breakout">
   <meta name="author" content="Dodo Payments">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
   <link rel="canonical" href="https://games.dodopayments.com/firewall-breaker-dodo/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://games.dodopayments.com/firewall-breaker-dodo/">
   <meta property="og:title" content="Firewall Breaker Dodo | Dodo Games">
-  <meta property="og:description" content="Break through fraud firewalls in this arcade breakout challenge!">
+  <meta property="og:description" content="Smash through 9 layers of fraud firewalls. Chain combos, blow up explosive bricks, and power up with PCI Shield and 2FA Ball!">
   <meta property="og:image" content="https://games.dodopayments.com/assets/images/firewall-breaker-dodo.png">
   <meta property="og:site_name" content="Dodo Games">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://games.dodopayments.com/firewall-breaker-dodo/">
   <meta name="twitter:title" content="Firewall Breaker Dodo | Dodo Games">
-  <meta name="twitter:description" content="Break through fraud firewalls in this arcade breakout challenge!">
+  <meta name="twitter:description" content="Smash through 9 layers of fraud firewalls. Chain combos, blow up explosive bricks, and power up with PCI Shield and 2FA Ball!">
   <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/firewall-breaker-dodo.png">
   <script src="../assets/analytics.js"></script>
   <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
@@ -26,54 +27,121 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="../assets/site.webmanifest">
   <title>Firewall Breaker Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="../assets/dodo-arcade.css">
   <link rel="stylesheet" href="assets/style.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "VideoGame",
     "name": "Firewall Breaker Dodo",
-    "description": "Break through stacked fraud firewalls with precision paddle control and power-ups.",
+    "description": "Smash through 9 handcrafted layers of fraud firewalls with precision paddle control. Chain brick-break combos, trigger explosive chain reactions, shatter shielded bricks, and grab PCI Shield, 2FA Ball and Rate Limiter power-ups. Earn up to 3 stars per level.",
     "url": "https://games.dodopayments.com/firewall-breaker-dodo/",
     "image": "https://games.dodopayments.com/assets/images/firewall-breaker-dodo.png",
-    "genre": "Arcade",
+    "genre": ["Arcade", "Action"],
     "gamePlatform": "Web Browser",
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
     "playMode": "SinglePlayer",
-    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
 </head>
 <body>
-  <a href="/" class="back-btn">← Back to Arcade</a>
+  <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-  <main class="game-shell">
-    <section id="startScreen" class="screen card">
-      <h1>Firewall Breaker Dodo</h1>
-      <p>Smash through fraud firewall layers.<br>Move with Arrow keys, mouse, or touch-drag.</p>
-      <button id="startButton" type="button">Start Breach</button>
-    </section>
+  <main class="fb-stage" id="fbStage">
+    <canvas id="gameCanvas" aria-label="Firewall Breaker Dodo game court"></canvas>
 
-    <section id="gameScreen" class="screen hidden" aria-live="polite">
-      <header class="hud card-lite">
-        <div>Score <span id="score">0</span></div>
-        <div>Best <span id="bestScore">0</span></div>
-        <div>Lives <span id="lives">3</span></div>
-        <div>Level <span id="level">1/3</span></div>
-      </header>
-      <div class="canvas-wrap card-lite">
-        <canvas id="gameCanvas" aria-label="Firewall Breaker Dodo game canvas"></canvas>
+    <header class="da-hud" id="hud" hidden>
+      <div class="fb-board" aria-live="polite">
+        <span class="fb-board__chip">
+          <i class="fb-board__label">Score</i>
+          <b class="fb-board__val da-score" id="score">0</b>
+        </span>
+        <span class="fb-board__chip">
+          <i class="fb-board__label">Best</i>
+          <b class="fb-board__val fb-board__val--best" id="bestScore">0</b>
+        </span>
+        <span class="fb-board__div" aria-hidden="true"></span>
+        <span class="fb-board__chip">
+          <i class="fb-board__label">Layer</i>
+          <b class="fb-board__val fb-board__val--sub" id="level">1/9</b>
+        </span>
+        <span class="fb-board__chip fb-board__chip--lives">
+          <i class="fb-board__label">Shields</i>
+          <span class="fb-lives" id="lives" role="img" aria-label="Shields remaining"></span>
+        </span>
+        <span class="da-combo-badge fb-combo" id="comboBadge" hidden>COMBO ×2</span>
       </div>
-      <p class="legend">Power-ups: PCI Shield, 2FA Ball, Rate Limiter</p>
+    </header>
+
+    <!-- LEVEL INTRO CARD -->
+    <div class="fb-intro" id="levelIntro" hidden aria-hidden="true">
+      <p class="fb-intro__eyebrow" id="introEyebrow">Layer 1 / 9</p>
+      <h2 class="fb-intro__title" id="introTitle">Perimeter Scan</h2>
+      <p class="fb-intro__sub" id="introSub">Basic fraud filters online.</p>
+    </div>
+
+    <!-- START -->
+    <section id="startScreen" class="da-screen">
+      <p class="da-eyebrow">Dodo Payments Arcade</p>
+      <h1 class="da-title da-title--hero">FIREWALL <span class="da-title__accent">BREAKER</span></h1>
+      <p class="da-subtitle">Breach 9 handcrafted layers of fraud firewalls. Chain breaks without touching the paddle to stack combo multipliers, blow open explosive nodes, and shatter shielded bricks.</p>
+
+      <div class="da-screen__actions">
+        <button id="startButton" type="button" class="da-btn da-btn--primary">Start Breach</button>
+      </div>
+
+      <ul class="fb-legend" aria-label="Brick &amp; power-up guide">
+        <li><span class="fb-legend__dot" style="--c:#FF4757"></span> Critical fraud · 3 hits</li>
+        <li><span class="fb-legend__dot" style="--c:#4DA3FF"></span> Shielded · break shield first</li>
+        <li><span class="fb-legend__dot" style="--c:#FFB020"></span> Explosive · chains to neighbors</li>
+        <li><span class="fb-legend__dot" style="--c:#C1FF00"></span> Power-ups drop from bricks</li>
+      </ul>
+      <p class="fb-controls">Move: drag / A · D / ← →&nbsp;&nbsp;·&nbsp;&nbsp;Pause: P or Esc</p>
     </section>
 
-    <section id="gameOverScreen" class="screen card hidden">
-      <h2 id="resultTitle">Firewall Breached</h2>
-      <p id="resultMessage">You broke all fraud layers.</p>
-      <p class="result-line">Final Score: <span id="finalScore">0</span></p>
-      <p class="result-line">All-Time High: <span id="overBestScore">0</span></p>
-      <button id="restartButton" type="button">Play Again</button>
+    <!-- PAUSE -->
+    <section id="pauseScreen" class="da-screen" hidden>
+      <p class="da-eyebrow">Paused</p>
+      <h2 class="da-title">Firewall Held</h2>
+      <div class="da-screen__actions">
+        <button id="resumeButton" type="button" class="da-btn da-btn--primary">Resume</button>
+        <button id="quitButton" type="button" class="da-btn da-btn--ghost">Quit Breach</button>
+      </div>
+    </section>
+
+    <!-- GAME OVER -->
+    <section id="gameOverScreen" class="da-screen" hidden>
+      <p class="da-eyebrow" id="resultEyebrow">Breach Report</p>
+      <h2 class="da-title" id="resultTitle">Firewall Breached!</h2>
+      <div class="fb-stars" id="resultStars" aria-label="Level stars"></div>
+      <div class="fb-result">
+        <div class="fb-result__cell">
+          <span class="da-stat__label">Score</span>
+          <span class="da-score" id="finalScore">0</span>
+        </div>
+        <div class="fb-result__cell">
+          <span class="da-stat__label">Best Combo</span>
+          <span class="da-stat__value fb-result__combo" id="finalCombo">0</span>
+        </div>
+        <div class="fb-result__cell">
+          <span class="da-stat__label">Layer</span>
+          <span class="da-stat__value" id="finalLevel">1</span>
+        </div>
+      </div>
+      <p class="da-subtitle fb-result__meta">
+        All-time best <strong id="overBestScore">0</strong> · Stars earned <strong id="overStars">0</strong>/27
+      </p>
+      <div class="da-screen__actions">
+        <button id="restartButton" type="button" class="da-btn da-btn--primary">Play Again</button>
+        <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+      </div>
     </section>
   </main>
 
+  <script src="../assets/dodo-juice.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>
