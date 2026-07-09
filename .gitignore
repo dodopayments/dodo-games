@@ -6,3 +6,7 @@ dist/
 .env.local
 wrangler.toml
 .sisyphus
+.omo/evidence/games-quality-revamp/_playwright-artifacts/
+.omo/evidence/games-quality-revamp/_report/
+test-results/
+playwright-report/
