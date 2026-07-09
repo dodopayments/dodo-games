@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="API Wordle Dodo - Guess the payment API term in 6 tries! A Wordle-style game by Dodo Payments.">
   <meta name="keywords" content="wordle, api game, payment terms, free game, dodo games, browser game">
   <meta name="author" content="Dodo Payments">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
   <link rel="canonical" href="https://games.dodopayments.com/api-wordle-dodo/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://games.dodopayments.com/api-wordle-dodo/">
@@ -26,6 +27,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="../assets/site.webmanifest">
   <title>API Wordle Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="../assets/dodo-arcade.css">
   <link rel="stylesheet" href="assets/style.css">
   <script type="application/ld+json">
   {
@@ -43,16 +45,40 @@
   </script>
 </head>
 <body>
-  <a href="/" class="back-btn">← Back to Arcade</a>
+  <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
   <main class="game-shell">
-    <header class="header card-lite">
-      <h1>API Wordle Dodo</h1>
-      <div class="stats" aria-live="polite">
-        <span>Games <strong id="gamesPlayed">0</strong></span>
-        <span>Win % <strong id="winRate">0</strong></span>
+    <div class="wordle-topbar">
+      <div class="wordle-modes" role="group" aria-label="Game mode">
+        <button id="modeDaily" type="button" class="wordle-mode__btn is-active" aria-pressed="true">Daily</button>
+        <button id="modeFree" type="button" class="wordle-mode__btn" aria-pressed="false">Free Play</button>
       </div>
+      <button id="hardToggle" type="button" class="wordle-hard" aria-pressed="false" aria-label="Toggle hard mode">Hard</button>
+    </div>
+
+    <header class="wordle-head">
+      <h1>API Wordle <span class="accent">Dodo</span></h1>
+      <span class="wordle-tag" id="modeTag" aria-live="polite">Daily</span>
     </header>
+
+    <section class="wordle-stats" aria-label="Your statistics" aria-live="polite">
+      <div class="wordle-stat wordle-stat--streak">
+        <span class="wordle-stat__label">Streak</span>
+        <strong class="wordle-stat__value" id="statStreak">0</strong>
+      </div>
+      <div class="wordle-stat">
+        <span class="wordle-stat__label">Max</span>
+        <strong class="wordle-stat__value" id="statMax">0</strong>
+      </div>
+      <div class="wordle-stat">
+        <span class="wordle-stat__label">Games</span>
+        <strong class="wordle-stat__value" id="statGames">0</strong>
+      </div>
+      <div class="wordle-stat">
+        <span class="wordle-stat__label">Win %</span>
+        <strong class="wordle-stat__value" id="statWin">0</strong>
+      </div>
+    </section>
 
     <section id="gameBoard" class="board" aria-label="Wordle guess board"></section>
 
@@ -63,17 +89,22 @@
     </div>
   </main>
 
+  <div id="toast" class="da-toast" role="status" hidden></div>
+
   <section id="resultOverlay" class="overlay hidden" aria-live="assertive">
-    <div class="card result-card">
+    <div class="result-card">
+      <p class="result-card__eyebrow" id="resultEyebrow">Settled</p>
       <h2 id="resultTitle">Nice!</h2>
       <p id="resultText"></p>
+      <p class="result-term" id="resultTerm"></p>
       <div class="result-actions">
-        <button id="shareBtn" type="button">Share Results</button>
-        <button id="newGameBtn" type="button">New Game</button>
+        <button id="shareBtn" type="button" class="da-btn da-btn--ghost">Share Results</button>
+        <button id="newGameBtn" type="button" class="da-btn da-btn--primary">New Game</button>
       </div>
     </div>
   </section>
 
+  <script src="../assets/dodo-juice.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>
