@@ -1,0 +1,687 @@
+/* ==========================================================================
+   DODO ARCADE — shared design tokens + UI components
+   Vanilla CSS · dark theme only · mobile-first · prefix: da-
+   Loaded by every Dodo game via <link rel="stylesheet" href="../assets/dodo-arcade.css">
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS
+   -------------------------------------------------------------------------- */
+:root {
+  /* Brand */
+  --dodo-green: #C1FF00;
+  --dodo-green-dim: #9ACC00;
+  --dodo-green-soft: rgba(193, 255, 0, 0.14);
+  --dodo-green-line: rgba(193, 255, 0, 0.35);
+  --dodo-bg: #050505;
+
+  /* Surface scale (elevation) */
+  --da-surface-1: #0D0D0D;
+  --da-surface-2: #141414;
+  --da-surface-3: #1C1C1C;
+  --da-border: #2A2A2A;
+  --da-border-strong: #3A3A3A;
+
+  /* Text scale (all AA-verified on --dodo-bg) */
+  --da-text: #FFFFFF;
+  --da-text-secondary: #B8B8B8;
+  --da-text-muted: #909090;
+  --da-text-inverse: #050505;
+
+  /* State colors */
+  --da-danger: #FF4757;
+  --da-warn: #FFB020;
+  --da-success: #2ED573;
+  --da-info: #4DA3FF;
+
+  /* Typography */
+  --da-font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --da-font-mono: ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  --da-fs-xs: 0.75rem;
+  --da-fs-sm: 0.875rem;
+  --da-fs-md: 1rem;
+  --da-fs-lg: 1.25rem;
+  --da-fs-xl: 1.75rem;
+  --da-fs-2xl: 2.5rem;
+  --da-fs-3xl: 3.5rem;
+
+  /* Radius scale */
+  --da-radius-sm: 6px;
+  --da-radius-md: 12px;
+  --da-radius-lg: 20px;
+  --da-radius-pill: 999px;
+
+  /* Spacing scale (4px base) */
+  --da-space-1: 4px;
+  --da-space-2: 8px;
+  --da-space-3: 12px;
+  --da-space-4: 16px;
+  --da-space-5: 24px;
+  --da-space-6: 32px;
+  --da-space-7: 48px;
+  --da-space-8: 64px;
+
+  /* Elevation shadows */
+  --da-shadow-1: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --da-shadow-2: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --da-shadow-3: 0 20px 48px rgba(0, 0, 0, 0.6);
+
+  /* Green glow scale — brand signature */
+  --da-glow-sm: 0 0 12px rgba(193, 255, 0, 0.25);
+  --da-glow-md: 0 0 24px rgba(193, 255, 0, 0.40);
+  --da-glow-lg: 0 0 48px rgba(193, 255, 0, 0.55);
+
+  /* Z-index scale */
+  --da-z-hud: 20;
+  --da-z-overlay: 40;
+  --da-z-modal: 60;
+  --da-z-toast: 80;
+  --da-z-mute: 90;
+
+  /* Motion */
+  --da-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --da-dur-fast: 120ms;
+  --da-dur: 240ms;
+  --da-dur-slow: 400ms;
+}
+
+/* Scoped box model — never touches non-da game markup */
+[class^="da-"],
+[class*=" da-"],
+[class^="da-"] *,
+[class*=" da-"] * {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. TYPOGRAPHY HELPERS
+   -------------------------------------------------------------------------- */
+.da-eyebrow {
+  margin: 0;
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-sm);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dodo-green);
+}
+
+.da-title {
+  margin: 0;
+  font-family: var(--da-font);
+  font-size: var(--da-fs-2xl);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--da-text);
+}
+
+.da-title--hero {
+  font-size: var(--da-fs-3xl);
+}
+
+.da-title__accent {
+  color: var(--dodo-green);
+}
+
+.da-subtitle {
+  margin: 0;
+  max-width: 42ch;
+  font-size: var(--da-fs-lg);
+  line-height: 1.5;
+  color: var(--da-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   3. SCREEN — fullscreen start / game-over / pause overlay
+   -------------------------------------------------------------------------- */
+.da-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--da-space-5);
+  padding: var(--da-space-6) var(--da-space-5);
+  text-align: center;
+  background: radial-gradient(120% 120% at 50% 0%, rgba(193, 255, 0, 0.06), transparent 55%),
+    rgba(5, 5, 5, 0.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: var(--da-z-overlay);
+  animation: da-fade-in var(--da-dur) var(--da-ease) both;
+}
+
+.da-screen[hidden] {
+  display: none;
+}
+
+.da-screen__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--da-space-3);
+  justify-content: center;
+}
+
+/* --------------------------------------------------------------------------
+   4. BUTTONS
+   -------------------------------------------------------------------------- */
+.da-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--da-space-2);
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--da-space-3) var(--da-space-5);
+  font-family: var(--da-font);
+  font-size: var(--da-fs-md);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--da-text);
+  background: var(--da-surface-2);
+  border: 1px solid var(--da-border-strong);
+  border-radius: var(--da-radius-md);
+  cursor: pointer;
+  transition: transform var(--da-dur-fast) var(--da-ease),
+    box-shadow var(--da-dur) var(--da-ease),
+    background var(--da-dur) var(--da-ease),
+    border-color var(--da-dur) var(--da-ease);
+}
+
+.da-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--dodo-green-line);
+  background: var(--da-surface-3);
+}
+
+.da-btn:active {
+  transform: translateY(0);
+}
+
+.da-btn:focus-visible {
+  outline: 2px solid var(--dodo-green);
+  outline-offset: 3px;
+}
+
+.da-btn[disabled],
+.da-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.da-btn--primary {
+  color: var(--da-text-inverse);
+  background: var(--dodo-green);
+  border-color: var(--dodo-green);
+  box-shadow: var(--da-glow-sm);
+}
+
+.da-btn--primary:hover {
+  background: var(--dodo-green);
+  border-color: var(--dodo-green);
+  box-shadow: var(--da-glow-md);
+}
+
+.da-btn--ghost {
+  background: transparent;
+  border-color: var(--da-border);
+}
+
+.da-btn--danger {
+  color: var(--da-text);
+  background: transparent;
+  border-color: var(--da-danger);
+}
+
+.da-btn--danger:hover {
+  background: rgba(255, 71, 87, 0.14);
+  border-color: var(--da-danger);
+}
+
+/* --------------------------------------------------------------------------
+   5. HUD — in-game top stats bar
+   -------------------------------------------------------------------------- */
+.da-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--da-space-3);
+  padding: var(--da-space-3) var(--da-space-4);
+  z-index: var(--da-z-hud);
+  pointer-events: none;
+}
+
+.da-hud__group {
+  display: flex;
+  align-items: center;
+  gap: var(--da-space-4);
+}
+
+.da-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--da-space-2) var(--da-space-3);
+  background: rgba(13, 13, 13, 0.72);
+  border: 1px solid var(--da-border);
+  border-radius: var(--da-radius-md);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.da-stat__label {
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--da-text-muted);
+}
+
+.da-stat__value {
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-lg);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--da-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   6. SCORE — with pop animation
+   -------------------------------------------------------------------------- */
+.da-score {
+  display: inline-block;
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-xl);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--dodo-green);
+  text-shadow: 0 0 12px rgba(193, 255, 0, 0.35);
+  font-variant-numeric: tabular-nums;
+}
+
+.da-score--pop {
+  animation: da-pop var(--da-dur) var(--da-ease);
+}
+
+/* --------------------------------------------------------------------------
+   7. COMBO BADGE — escalating tiers
+   -------------------------------------------------------------------------- */
+.da-combo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--da-space-1);
+  padding: var(--da-space-1) var(--da-space-3);
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-sm);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--da-text);
+  background: var(--da-surface-3);
+  border: 1px solid var(--da-border-strong);
+  border-radius: var(--da-radius-pill);
+}
+
+.da-combo-badge--t1 {
+  color: var(--da-text-inverse);
+  background: var(--dodo-green-dim);
+  border-color: var(--dodo-green-dim);
+}
+
+.da-combo-badge--t2 {
+  color: var(--da-text-inverse);
+  background: var(--dodo-green);
+  border-color: var(--dodo-green);
+  box-shadow: var(--da-glow-sm);
+}
+
+.da-combo-badge--t3 {
+  color: var(--da-text-inverse);
+  background: var(--dodo-green);
+  border-color: #fff;
+  box-shadow: var(--da-glow-md);
+  animation: da-pulse 1s var(--da-ease) infinite;
+}
+
+/* --------------------------------------------------------------------------
+   8. MODAL
+   -------------------------------------------------------------------------- */
+.da-modal {
+  width: min(92vw, 420px);
+  padding: var(--da-space-6);
+  text-align: center;
+  background: var(--da-surface-1);
+  border: 1px solid var(--da-border-strong);
+  border-radius: var(--da-radius-lg);
+  box-shadow: var(--da-shadow-3), var(--da-glow-sm);
+  animation: da-pop var(--da-dur) var(--da-ease);
+}
+
+.da-modal__title {
+  margin: 0 0 var(--da-space-3);
+  font-size: var(--da-fs-xl);
+  font-weight: 900;
+  color: var(--da-text);
+}
+
+.da-modal__body {
+  margin: 0 0 var(--da-space-5);
+  font-size: var(--da-fs-md);
+  line-height: 1.55;
+  color: var(--da-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   9. TOAST
+   -------------------------------------------------------------------------- */
+.da-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--da-space-3);
+  max-width: min(92vw, 360px);
+  padding: var(--da-space-3) var(--da-space-4);
+  font-size: var(--da-fs-sm);
+  font-weight: 600;
+  color: var(--da-text);
+  background: var(--da-surface-2);
+  border: 1px solid var(--da-border-strong);
+  border-left: 3px solid var(--dodo-green);
+  border-radius: var(--da-radius-md);
+  box-shadow: var(--da-shadow-2);
+  z-index: var(--da-z-toast);
+  animation: da-slide-in var(--da-dur) var(--da-ease) both;
+}
+
+.da-toast--danger {
+  border-left-color: var(--da-danger);
+}
+
+.da-toast--success {
+  border-left-color: var(--da-success);
+}
+
+/* --------------------------------------------------------------------------
+   10. MUTE TOGGLE — fixed icon button
+   -------------------------------------------------------------------------- */
+.da-mute-toggle {
+  position: fixed;
+  top: var(--da-space-4);
+  right: var(--da-space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--da-text);
+  background: rgba(13, 13, 13, 0.72);
+  border: 1px solid var(--da-border-strong);
+  border-radius: var(--da-radius-pill);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: var(--da-z-mute);
+  transition: transform var(--da-dur-fast) var(--da-ease),
+    border-color var(--da-dur) var(--da-ease),
+    box-shadow var(--da-dur) var(--da-ease);
+}
+
+.da-mute-toggle:hover {
+  transform: scale(1.08);
+  border-color: var(--dodo-green-line);
+  box-shadow: var(--da-glow-sm);
+}
+
+.da-mute-toggle:focus-visible {
+  outline: 2px solid var(--dodo-green);
+  outline-offset: 3px;
+}
+
+.da-mute-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.da-mute-toggle .da-mute-toggle__off {
+  display: none;
+}
+
+.da-mute-toggle[aria-pressed="true"] {
+  color: var(--da-text-muted);
+}
+
+.da-mute-toggle[aria-pressed="true"] .da-mute-toggle__on {
+  display: none;
+}
+
+.da-mute-toggle[aria-pressed="true"] .da-mute-toggle__off {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   11. BACK LINK — return to arcade
+   -------------------------------------------------------------------------- */
+.da-back-link {
+  position: fixed;
+  top: var(--da-space-4);
+  left: var(--da-space-4);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--da-space-2);
+  min-height: 44px;
+  padding: var(--da-space-2) var(--da-space-4);
+  font-size: var(--da-fs-sm);
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--da-text-secondary);
+  background: rgba(13, 13, 13, 0.72);
+  border: 1px solid var(--da-border);
+  border-radius: var(--da-radius-pill);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: var(--da-z-mute);
+  transition: color var(--da-dur) var(--da-ease),
+    border-color var(--da-dur) var(--da-ease),
+    transform var(--da-dur-fast) var(--da-ease);
+}
+
+.da-back-link:hover {
+  color: var(--dodo-green);
+  border-color: var(--dodo-green-line);
+  transform: translateX(-2px);
+}
+
+.da-back-link:focus-visible {
+  outline: 2px solid var(--dodo-green);
+  outline-offset: 3px;
+}
+
+.da-back-link__arrow {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   12. FLOATING TEXT — score/quip pop-ups
+   -------------------------------------------------------------------------- */
+.da-float {
+  position: absolute;
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-lg);
+  font-weight: 800;
+  color: var(--dodo-green);
+  text-shadow: 0 0 8px rgba(193, 255, 0, 0.4);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: da-float-up 1.2s var(--da-ease) forwards;
+}
+
+/* --------------------------------------------------------------------------
+   13. KEYFRAMES
+   -------------------------------------------------------------------------- */
+@keyframes da-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes da-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.28);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes da-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes da-flash {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+  40% {
+    background-color: var(--dodo-green-soft);
+  }
+}
+
+@keyframes da-float-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.7);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-64px) scale(1);
+  }
+}
+
+@keyframes da-pulse {
+  0%,
+  100% {
+    box-shadow: var(--da-glow-sm);
+  }
+  50% {
+    box-shadow: var(--da-glow-lg);
+  }
+}
+
+@keyframes da-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Utility hooks — add/remove in JS to re-fire */
+.da-anim-pop {
+  animation: da-pop var(--da-dur) var(--da-ease);
+}
+.da-anim-shake {
+  animation: da-shake var(--da-dur-slow) var(--da-ease);
+}
+.da-anim-flash {
+  animation: da-flash var(--da-dur-slow) var(--da-ease);
+}
+.da-anim-float {
+  animation: da-float-up 1.2s var(--da-ease) forwards;
+}
+.da-anim-pulse {
+  animation: da-pulse 1s var(--da-ease) infinite;
+}
+.da-anim-slide {
+  animation: da-slide-in var(--da-dur) var(--da-ease) both;
+}
+
+/* --------------------------------------------------------------------------
+   14. RESPONSIVE — mobile-first scale-ups
+   -------------------------------------------------------------------------- */
+@media (min-width: 720px) {
+  :root {
+    --da-fs-2xl: 3rem;
+    --da-fs-3xl: 4.5rem;
+  }
+
+  .da-hud {
+    padding: var(--da-space-4) var(--da-space-6);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   15. REDUCED MOTION — disable decorative animation + transition
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .da-screen,
+  .da-modal,
+  .da-toast,
+  .da-score--pop,
+  .da-combo-badge--t3,
+  .da-float,
+  .da-anim-pop,
+  .da-anim-shake,
+  .da-anim-flash,
+  .da-anim-float,
+  .da-anim-pulse,
+  .da-anim-slide {
+    animation: none !important;
+  }
+
+  .da-btn,
+  .da-mute-toggle,
+  .da-back-link {
+    transition: none !important;
+  }
+
+  .da-btn:hover,
+  .da-mute-toggle:hover,
+  .da-back-link:hover {
+    transform: none;
+  }
+}

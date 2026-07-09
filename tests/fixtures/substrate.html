@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dodo Arcade — Substrate Fixture</title>
+  <link rel="stylesheet" href="../../assets/dodo-arcade.css">
+  <style>
+    /* Fixture-only page scaffold (uses shared tokens; not part of the substrate) */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: var(--da-space-8) var(--da-space-5) var(--da-space-8);
+      font-family: var(--da-font);
+      color: var(--da-text);
+      background: var(--dodo-bg);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--da-space-7);
+    }
+
+    .page__head {
+      display: flex;
+      flex-direction: column;
+      gap: var(--da-space-3);
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--da-space-4);
+    }
+
+    .section__title {
+      margin: 0;
+      font-size: var(--da-fs-lg);
+      font-weight: 800;
+      color: var(--da-text);
+      border-bottom: 1px solid var(--da-border);
+      padding-bottom: var(--da-space-2);
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--da-space-4);
+    }
+
+    /* Bounded relative stage so overlay components (screen/hud) are visible inline */
+    .stage {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      background: var(--da-surface-1);
+      border: 1px solid var(--da-border);
+      border-radius: var(--da-radius-lg);
+      overflow: hidden;
+    }
+
+    .stage--modal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--da-space-5);
+    }
+
+    .stage__playfield {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--da-text-muted);
+      font-family: var(--da-font-mono);
+      font-size: var(--da-fs-sm);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Local demo positioning overrides so fixed components stay inside the stage */
+    .stage .da-mute-toggle,
+    .stage .da-back-link {
+      position: absolute;
+    }
+
+    .anim-target {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 120px;
+      height: 120px;
+      font-family: var(--da-font-mono);
+      font-weight: 800;
+      color: var(--da-text-inverse);
+      background: var(--dodo-green);
+      border-radius: var(--da-radius-md);
+      box-shadow: var(--da-glow-sm);
+    }
+
+    .anim-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--da-space-5);
+      min-height: 160px;
+      padding: var(--da-space-5);
+      background: var(--da-surface-1);
+      border: 1px solid var(--da-border);
+      border-radius: var(--da-radius-lg);
+    }
+
+    .note {
+      margin: 0;
+      font-size: var(--da-fs-sm);
+      color: var(--da-text-muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="page__head">
+      <p class="da-eyebrow">Dodo Arcade · Design Substrate</p>
+      <h1 class="da-title da-title--hero">Component <span class="da-title__accent">Fixture</span></h1>
+      <p class="da-subtitle">Every shared <code>.da-</code> component and keyframe rendered on the dark
+        arcade theme. Used for visual, a11y, and animation verification.</p>
+    </header>
+
+    <!-- TYPOGRAPHY -->
+    <section aria-labelledby="s-type">
+      <h2 class="section__title" id="s-type">Typography</h2>
+      <p class="da-eyebrow">Eyebrow label</p>
+      <p class="da-title">Section Title</p>
+      <p class="da-title da-title--hero">Hero <span class="da-title__accent">Title</span></p>
+      <p class="da-subtitle">A supporting subtitle in the secondary text tone for readable, calm copy.</p>
+    </section>
+
+    <!-- BUTTONS -->
+    <section aria-labelledby="s-btn">
+      <h2 class="section__title" id="s-btn">Buttons</h2>
+      <div class="row" role="group" aria-label="Button variants">
+        <button type="button" class="da-btn da-btn--primary">Play</button>
+        <button type="button" class="da-btn">Secondary</button>
+        <button type="button" class="da-btn da-btn--ghost">Ghost</button>
+        <button type="button" class="da-btn da-btn--danger">Quit</button>
+        <button type="button" class="da-btn" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <!-- SCREEN + HUD -->
+    <section aria-labelledby="s-screen">
+      <h2 class="section__title" id="s-screen">Screen overlay &amp; HUD</h2>
+      <div class="stage" role="img" aria-label="In-game stage showing HUD and a start screen overlay">
+        <div class="stage__playfield">playfield</div>
+
+        <div class="da-hud">
+          <div class="da-hud__group">
+            <div class="da-stat">
+              <span class="da-stat__label">Score</span>
+              <span class="da-stat__value">1,240</span>
+            </div>
+            <div class="da-stat">
+              <span class="da-stat__label">Best</span>
+              <span class="da-stat__value">9,880</span>
+            </div>
+          </div>
+          <div class="da-hud__group">
+            <span class="da-combo-badge da-combo-badge--t2">x8 Combo</span>
+          </div>
+        </div>
+
+        <a class="da-back-link" href="/" aria-label="Back to Arcade home">
+          <span class="da-back-link__arrow" aria-hidden="true">&larr;</span> Back to Arcade
+        </a>
+
+        <button type="button" class="da-mute-toggle" aria-pressed="false" aria-label="Mute audio">
+          <svg class="da-mute-toggle__on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4z"/>
+          </svg>
+          <svg class="da-mute-toggle__off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm16.6 3l2.1-2.1-1.4-1.4L18.2 10 16 7.8l-1.4 1.4L16.8 12l-2.2 2.2 1.4 1.4L18.2 14l2.1 2.1 1.4-1.4z"/>
+          </svg>
+        </button>
+
+        <div class="da-screen" aria-label="Start screen">
+          <p class="da-eyebrow">Dodo Pong</p>
+          <h2 class="da-title">Ready to <span class="da-title__accent">Play?</span></h2>
+          <p class="da-subtitle">Bounce payments between merchant and processor. First to 11 wins.</p>
+          <div class="da-screen__actions">
+            <button type="button" class="da-btn da-btn--primary">Start Game</button>
+            <button type="button" class="da-btn da-btn--ghost">How to Play</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCORE -->
+    <section aria-labelledby="s-score">
+      <h2 class="section__title" id="s-score">Score display</h2>
+      <div class="row">
+        <span class="da-score" id="scoreDemo" aria-live="polite">2,048</span>
+        <button type="button" class="da-btn" data-pop="scoreDemo">Pop score</button>
+      </div>
+    </section>
+
+    <!-- COMBO BADGES -->
+    <section aria-labelledby="s-combo">
+      <h2 class="section__title" id="s-combo">Combo badges</h2>
+      <div class="row" role="group" aria-label="Combo tiers">
+        <span class="da-combo-badge">Base</span>
+        <span class="da-combo-badge da-combo-badge--t1">Tier 1 · x2</span>
+        <span class="da-combo-badge da-combo-badge--t2">Tier 2 · x4</span>
+        <span class="da-combo-badge da-combo-badge--t3">Tier 3 · x8</span>
+      </div>
+    </section>
+
+    <!-- MODAL -->
+    <section aria-labelledby="s-modal">
+      <h2 class="section__title" id="s-modal">Modal</h2>
+      <div class="stage stage--modal">
+        <div class="da-modal" role="dialog" aria-labelledby="modalTitle" aria-modal="false">
+          <h3 class="da-modal__title" id="modalTitle">Game Over</h3>
+          <p class="da-modal__body">You settled <strong>1,240</strong> transactions. A new personal best!</p>
+          <div class="da-screen__actions">
+            <button type="button" class="da-btn da-btn--primary">Play Again</button>
+            <button type="button" class="da-btn da-btn--ghost">Share</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOASTS -->
+    <section aria-labelledby="s-toast">
+      <h2 class="section__title" id="s-toast">Toasts</h2>
+      <div class="row" role="status" aria-live="polite">
+        <span class="da-toast">Power-up ready: Smart Routing</span>
+        <span class="da-toast da-toast--success">New high score saved</span>
+        <span class="da-toast da-toast--danger">Connection lost — retrying</span>
+      </div>
+    </section>
+
+    <!-- KEYFRAMES PLAYGROUND -->
+    <section aria-labelledby="s-anim">
+      <h2 class="section__title" id="s-anim">Keyframes</h2>
+      <p class="note">Each button re-fires its animation on the target below.</p>
+      <div class="row" role="group" aria-label="Animation triggers">
+        <button type="button" class="da-btn" data-anim="da-anim-pop">da-pop</button>
+        <button type="button" class="da-btn" data-anim="da-anim-shake">da-shake</button>
+        <button type="button" class="da-btn" data-anim="da-anim-flash">da-flash</button>
+        <button type="button" class="da-btn" data-anim="da-anim-float">da-float-up</button>
+        <button type="button" class="da-btn" data-anim="da-anim-pulse">da-pulse</button>
+        <button type="button" class="da-btn" data-anim="da-anim-slide">da-slide-in</button>
+      </div>
+      <div class="anim-stage">
+        <div class="anim-target" id="animTarget">DODO</div>
+        <p class="note" id="animLabel" aria-live="polite">Idle</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Fixture-only: toggle animation classes so keyframes can be re-fired on demand.
+    (function () {
+      var target = document.getElementById('animTarget');
+      var label = document.getElementById('animLabel');
+      var animClasses = ['da-anim-pop', 'da-anim-shake', 'da-anim-flash', 'da-anim-float', 'da-anim-pulse', 'da-anim-slide'];
+
+      function clearAnims(el) {
+        animClasses.forEach(function (c) { el.classList.remove(c); });
+      }
+
+      document.querySelectorAll('[data-anim]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var cls = btn.getAttribute('data-anim');
+          clearAnims(target);
+          void target.offsetWidth; // force reflow to restart the animation
+          target.classList.add(cls);
+          label.textContent = cls;
+        });
+      });
+
+      // Finite animations self-clear on end so they can re-fire; da-pulse is infinite.
+      target.addEventListener('animationend', function (e) {
+        if (e.target !== target) return;
+        clearAnims(target);
+        label.textContent = 'Idle';
+      });
+
+      // Score pop demo
+      document.querySelectorAll('[data-pop]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var el = document.getElementById(btn.getAttribute('data-pop'));
+          el.classList.remove('da-score--pop');
+          void el.offsetWidth;
+          el.classList.add('da-score--pop');
+        });
+      });
+
+      // Mute toggle demo
+      var mute = document.querySelector('.da-mute-toggle');
+      if (mute) {
+        mute.addEventListener('click', function () {
+          var on = mute.getAttribute('aria-pressed') === 'true';
+          mute.setAttribute('aria-pressed', String(!on));
+          mute.setAttribute('aria-label', on ? 'Mute audio' : 'Unmute audio');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
