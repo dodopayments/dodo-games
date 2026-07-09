@@ -345,7 +345,7 @@ Verify: all card images <100KB (scripted stat check); home Lighthouse re-run pas
 ## Final Verification Wave
 
 - [x] F1. Regenerate all thumbnails + OG images (WebP, <100KB cards / <300KB OG)
-- [ ] F2. Global regression suite green against dist/ + docs updates + video review index (`REVIEW.md`)
+- [x] F2. Global regression suite green against dist/ + docs updates + video review index (`REVIEW.md`)
 - [ ] F3. Cloudflare preview verification + open PR to `main` (merge requires explicit user approval — production deploy)
 
 ## Task Summary
