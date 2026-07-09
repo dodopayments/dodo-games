@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="description" content="Revenue 2048 Dodo - Merge revenue tiles from $1 to $1B! A 2048-style puzzle game by Dodo Payments.">
   <meta name="keywords" content="2048, revenue game, puzzle game, dodo games, browser game, merge tiles">
   <meta name="author" content="Dodo Payments">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
   <link rel="canonical" href="https://games.dodopayments.com/revenue-2048-dodo/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://games.dodopayments.com/revenue-2048-dodo/">
@@ -26,6 +27,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="../assets/site.webmanifest">
   <title>Revenue 2048 Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="../assets/dodo-arcade.css">
   <link rel="stylesheet" href="assets/style.css">
   <script type="application/ld+json">
   {
@@ -37,50 +39,96 @@
     "image": "https://games.dodopayments.com/assets/images/revenue-2048-dodo.png",
     "genre": "Puzzle",
     "gamePlatform": "Web Browser",
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
     "playMode": "SinglePlayer",
-    "publisher": { "@type": "Organization", "name": "Dodo Payments" }
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
 </head>
 <body>
-  <a href="/" class="back-btn">← Back to Arcade</a>
+  <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-  <main class="game-shell">
-    <section id="startScreen" class="screen card">
-      <h1>Revenue 2048 Dodo</h1>
-      <p>Merge matching revenue tiles from $1 toward $1B.<br>Use arrow keys or swipe to grow your business.</p>
-      <button id="startButton" type="button">Start Scaling</button>
-    </section>
-
-    <section id="gameScreen" class="screen hidden" aria-live="polite">
-      <header class="hud card-lite">
-        <div>Score <span id="score">0</span></div>
-        <div>Best <span id="bestScore">0</span></div>
-        <button id="newGameButton" type="button">New Game</button>
+  <main class="r2048-shell" id="shell">
+    <!-- IN-GAME VIEW -->
+    <section id="gameScreen" class="r2048-stage hidden" aria-live="polite">
+      <header class="da-hud r2048-hud">
+        <div class="r2048-hud__scores">
+          <div class="da-stat">
+            <span class="da-stat__label">Revenue</span>
+            <span class="da-stat__value da-score" id="score">0</span>
+          </div>
+          <div class="da-stat">
+            <span class="da-stat__label">Best</span>
+            <span class="da-stat__value" id="bestScore">0</span>
+          </div>
+          <span class="da-combo-badge r2048-combo" id="comboBadge" hidden>COMBO</span>
+        </div>
+        <div class="r2048-hud__actions">
+          <button id="undoButton" type="button" class="da-btn da-btn--ghost r2048-refund" disabled>
+            <span aria-hidden="true">↺</span> Refund
+          </button>
+          <button id="newGameButton" type="button" class="da-btn da-btn--ghost r2048-new">New Game</button>
+        </div>
       </header>
+
       <div class="board-wrap">
         <div id="grid" class="grid" role="grid" aria-label="Revenue 2048 board"></div>
 
-        <section id="winOverlay" class="overlay card hidden" aria-live="assertive">
-          <h2>UNICORN ACHIEVED! 🦄</h2>
-          <p>You reached the $1B tile.</p>
-          <div class="overlay-actions">
-            <button id="keepPlayingButton" type="button">Keep Playing</button>
-            <button id="newGameFromWinButton" type="button">New Game</button>
+        <!-- MILESTONE / ENDLESS OVERLAY -->
+        <section id="winOverlay" class="da-screen r2048-overlay hidden" aria-live="assertive">
+          <p class="da-eyebrow">Unicorn Status</p>
+          <h2 class="da-title">$1B ACHIEVED 🦄</h2>
+          <p class="da-subtitle">You scaled a revenue tile all the way to a billion. Keep compounding for a high score, or start a fresh raise.</p>
+          <div class="da-screen__actions">
+            <button id="keepPlayingButton" type="button" class="da-btn da-btn--primary">Keep Scaling</button>
+            <button id="newGameFromWinButton" type="button" class="da-btn da-btn--ghost">New Game</button>
           </div>
         </section>
       </div>
+
+      <p class="r2048-controls">Move: swipe or arrow keys&nbsp;&nbsp;·&nbsp;&nbsp;Undo: one Refund per run</p>
     </section>
 
-    <section id="gameOverScreen" class="screen card hidden">
-      <h2>No More Moves</h2>
-      <p>Your growth hit a ceiling. Time to run another sprint.</p>
-      <p class="result-line">Final Score: <span id="finalScore">0</span></p>
-      <p class="result-line">All-Time High: <span id="overBestScore">0</span></p>
-      <button id="restartButton" type="button">Play Again</button>
+    <!-- START -->
+    <section id="startScreen" class="da-screen r2048-screen">
+      <p class="da-eyebrow">Dodo Payments Arcade</p>
+      <h1 class="da-title da-title--hero">REVENUE <span class="da-title__accent">2048</span></h1>
+      <p class="da-subtitle">Merge matching revenue tiles from $1 toward a $1B unicorn. Chain merges for combo bonuses — and bank one Refund per run when a move goes sideways.</p>
+      <div class="da-screen__actions">
+        <button id="startButton" type="button" class="da-btn da-btn--primary">Start Scaling</button>
+      </div>
+      <ul class="r2048-legend" aria-label="How to play">
+        <li><span class="r2048-legend__dot" style="--c:#2ED573"></span> Merge equal tiles to compound revenue</li>
+        <li><span class="r2048-legend__dot" style="--c:#FFB020"></span> Multi-merge in one move = combo bonus</li>
+        <li><span class="r2048-legend__dot" style="--c:#C1FF00"></span> Hit $1K · $1M · $1B for milestone payouts</li>
+      </ul>
+    </section>
+
+    <!-- GAME OVER -->
+    <section id="gameOverScreen" class="da-screen r2048-screen hidden">
+      <p class="da-eyebrow">Runway Depleted</p>
+      <h2 class="da-title">No More Moves</h2>
+      <div class="r2048-result">
+        <div class="r2048-result__cell">
+          <span class="da-stat__label">Final Revenue</span>
+          <span class="da-score" id="finalScore">0</span>
+        </div>
+        <span class="r2048-result__div" aria-hidden="true"></span>
+        <div class="r2048-result__cell">
+          <span class="da-stat__label">All-Time Best</span>
+          <span class="da-stat__value" id="overBestScore">0</span>
+        </div>
+      </div>
+      <div class="da-screen__actions">
+        <button id="restartButton" type="button" class="da-btn da-btn--primary">Play Again</button>
+        <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+      </div>
     </section>
   </main>
 
+  <script src="../assets/dodo-juice.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>
