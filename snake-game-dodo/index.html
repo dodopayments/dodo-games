@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="description" content="Transaction Snake - Guide your payment chain through the grid, eat payment apples, dodge fraud voids, and power up with PCI shields. A Snake arcade game by Dodo Payments.">
     <meta name="keywords" content="snake game, transaction snake, arcade game, dodo games, browser game, payment game, classic snake">
     <meta name="author" content="Dodo Payments">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#050505">
     <link rel="canonical" href="https://games.dodopayments.com/snake-game-dodo/">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://games.dodopayments.com/snake-game-dodo/">
@@ -16,27 +17,27 @@
     <meta property="og:description" content="Guide your payment chain through the grid. Eat payment apples, dodge fraud voids, power up with PCI shields.">
     <meta property="og:image" content="https://games.dodopayments.com/assets/images/snake-game-dodo.png">
     <meta property="og:site_name" content="Dodo Games">
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://games.dodopayments.com/snake-game-dodo/">
     <meta name="twitter:title" content="Transaction Snake | Dodo Games">
     <meta name="twitter:description" content="Classic snake game with a payment twist. Collect payments, avoid fraud!">
     <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/snake-game-dodo.png">
-    
+
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
     <link rel="manifest" href="../assets/site.webmanifest">
-    
+
     <!-- Google Analytics -->
     <script src="../assets/analytics.js"></script>
     <title>Transaction Snake | Dodo Games</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/dodo-arcade.css">
     <link rel="stylesheet" href="assets/style.css">
-    
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -46,103 +47,102 @@
         "description": "Guide your payment chain through the grid. Eat payment apples, dodge fraud voids, power up with PCI shields.",
         "url": "https://games.dodopayments.com/snake-game-dodo/",
         "image": "https://games.dodopayments.com/assets/images/snake-game-dodo.png",
-        "genre": "Arcade",
+        "genre": ["Arcade", "Strategy"],
         "gamePlatform": "Web Browser",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any",
         "playMode": "SinglePlayer",
         "publisher": {
             "@type": "Organization",
             "name": "Dodo Payments"
-        }
+        },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
 </head>
-<body class="h-screen w-screen flex flex-col items-center justify-center text-slate-200 cyber-grid relative">
+<body>
+    <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
 
-    <div class="scanline"></div>
+    <main class="snake-shell" id="snakeShell">
+        <div class="snake-scanline" aria-hidden="true"></div>
 
-    <!-- UI: Header -->
-    <div class="absolute top-4 w-full px-6 flex justify-between items-center max-w-2xl z-20">
-        <div class="flex items-center gap-3">
-            <div id="header-logo" class="w-10 h-10 bg-cyan-900 rounded-lg flex items-center justify-center border border-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]">
-                <!-- JS will inject Dodo logo here if available, or fallback -->
-                <span class="text-xl">🦤</span>
+        <!-- HUD -->
+        <header class="da-hud snake-hud" id="hud" hidden>
+            <div class="snake-hud__cluster">
+                <span class="snake-stat">
+                    <i class="snake-stat__label">Volume</i>
+                    <b class="snake-stat__val da-score" id="score-value">0</b>
+                </span>
+                <span class="snake-stat">
+                    <i class="snake-stat__label">Level</i>
+                    <b class="snake-stat__val snake-stat__val--lvl" id="level-value">1</b>
+                </span>
+                <span class="snake-stat">
+                    <i class="snake-stat__label">Best</i>
+                    <b class="snake-stat__val snake-stat__val--best" id="best-value">0</b>
+                </span>
             </div>
-            <div>
-                <h1 class="text-lg font-bold text-cyan-400 tracking-tighter">MO-R DEFENSE</h1>
-                <div class="text-xs text-slate-400">SECURE TRANSACTION PROTOCOL</div>
-            </div>
+            <span class="da-combo-badge" id="combo-badge" hidden>CHAIN ×1</span>
+        </header>
+
+        <!-- Playfield -->
+        <div class="snake-stage" id="snakeStage">
+            <canvas id="gameCanvas" aria-label="Transaction Snake grid"></canvas>
+
+            <!-- Start Screen -->
+            <section id="start-screen" class="da-screen">
+                <p class="da-eyebrow">Dodo Payments Arcade</p>
+                <h1 class="da-title da-title--hero">TRANSACTION <span class="da-title__accent">SNAKE</span></h1>
+                <p class="da-subtitle">Route the payment chain across the grid. Collect payments to scale volume, survive fraud voids, and grab PCI shields to punch through threats. Every 10 payments levels you up.</p>
+
+                <ul class="snake-legend" aria-label="Legend">
+                    <li><span class="snake-legend__dot" style="--c:var(--dodo-green)"></span> Payment · +volume</li>
+                    <li><span class="snake-legend__dot" style="--c:#FFD23F"></span> Golden · 5× bonus</li>
+                    <li><span class="snake-legend__dot" style="--c:#FF4757"></span> Fraud void · avoid</li>
+                    <li><span class="snake-legend__dot" style="--c:#4DA3FF"></span> PCI shield · immune</li>
+                </ul>
+
+                <div class="da-screen__actions">
+                    <button id="start-btn" type="button" class="da-btn da-btn--primary">Initiate Protocol</button>
+                </div>
+                <p class="snake-controls">Move: swipe / D-pad / arrows · WASD&nbsp;&nbsp;·&nbsp;&nbsp;Pause: P</p>
+            </section>
+
+            <!-- Game Over Screen -->
+            <section id="game-over-screen" class="da-screen" hidden>
+                <p class="da-eyebrow snake-over__eyebrow" id="death-reason">Transaction Failed</p>
+                <h2 class="da-title">Chain <span class="da-title__accent snake-over__accent">Severed</span></h2>
+
+                <div class="snake-over__scores">
+                    <div class="snake-over__cell">
+                        <span class="da-stat__label">Processed Volume</span>
+                        <span class="da-score snake-over__final" id="final-score">$0</span>
+                    </div>
+                    <div class="snake-over__cell">
+                        <span class="da-stat__label">All-Time Best</span>
+                        <span class="da-stat__value" id="over-best">$0</span>
+                    </div>
+                </div>
+
+                <p class="snake-tip"><span class="snake-tip__k">Security advisory</span> <span id="security-tip">Always validate inputs.</span></p>
+
+                <div class="da-screen__actions">
+                    <button id="restart-btn" type="button" class="da-btn da-btn--primary">Retry Protocol</button>
+                    <a href="/" class="da-btn da-btn--ghost">Arcade</a>
+                </div>
+            </section>
         </div>
-        <div class="text-right">
-            <div class="text-xs text-slate-400">PROCESSED VOL</div>
-            <div class="text-xl font-bold text-green-400" id="score-display">$0.00</div>
+
+        <!-- On-screen D-pad (mobile parity, >=44px targets) -->
+        <div class="snake-dpad" id="dpad" role="group" aria-label="Direction pad">
+            <button type="button" class="snake-dpad__btn snake-dpad__btn--up" data-dir="up" aria-label="Up">▲</button>
+            <button type="button" class="snake-dpad__btn snake-dpad__btn--left" data-dir="left" aria-label="Left">◀</button>
+            <button type="button" class="snake-dpad__btn snake-dpad__btn--right" data-dir="right" aria-label="Right">▶</button>
+            <button type="button" class="snake-dpad__btn snake-dpad__btn--down" data-dir="down" aria-label="Down">▼</button>
         </div>
-    </div>
+    </main>
 
-    <!-- UI: Shield Status -->
-    <div id="shield-status" class="absolute top-20 text-yellow-400 font-bold tracking-widest opacity-0 transition-opacity duration-300 z-20 flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.056A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd" /></svg>
-        PCI SHIELD ACTIVE
-    </div>
-
-    <!-- Canvas Container -->
-    <div class="relative z-10 p-1 rounded-xl bg-slate-800 border border-slate-700">
-        <canvas id="gameCanvas" width="600" height="600" class="bg-slate-900 rounded-lg block cursor-crosshair"></canvas>
-        
-        <!-- Start Screen Overlay -->
-        <div id="start-screen" class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center text-center p-8 z-30">
-            <div class="mb-6 animate-pulse">
-                <span class="text-6xl">🐍</span>
-            </div>
-            <h2 class="text-3xl font-bold text-white mb-2 text-neon-blue">TRANSACTION SNAKE</h2>
-            <p class="text-slate-400 mb-8 max-w-md text-sm">
-                Guide the MoR packet chain. Collect <span class="text-green-400 font-bold">Payments ($)</span> to scale revenue. Avoid <span class="text-red-400 font-bold">Fraud Voids</span> and crashes.
-            </p>
-            
-            <div class="grid grid-cols-2 gap-4 text-xs text-left bg-slate-800 p-4 rounded-lg mb-8 border border-slate-700">
-                <div class="flex items-center gap-2"><div class="w-3 h-3 bg-green-500 rounded-sm"></div> Payment (Growth)</div>
-                <div class="flex items-center gap-2"><div class="w-3 h-3 bg-red-500 rounded-sm"></div> Fraud (Crash)</div>
-                <div class="flex items-center gap-2"><div class="w-3 h-3 bg-yellow-500 rounded-full"></div> PCI Shield (Immune)</div>
-                <div class="flex items-center gap-2"><div class="w-3 h-3 bg-cyan-500 rounded-sm"></div> Player Head</div>
-            </div>
-
-            <button id="start-btn" class="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all transform hover:scale-105 active:scale-95">
-                INITIATE PROTOCOL
-            </button>
-            <p class="mt-4 text-xs text-slate-500">Use Arrow Keys, WASD, or Swipe</p>
-        </div>
-
-        <!-- Game Over Overlay -->
-        <div id="game-over-screen" class="hidden absolute inset-0 bg-slate-900/95 backdrop-blur-md rounded-lg flex flex-col items-center justify-center text-center p-8 z-30">
-            <h2 class="text-4xl font-extrabold text-red-500 mb-1 text-neon-red">TRANSACTION FAILED</h2>
-            <p id="death-reason" class="text-slate-300 mb-6 text-sm font-mono">Unknown Error</p>
-            
-            <div class="bg-slate-800 w-full p-4 rounded border border-slate-700 mb-6 relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-1 h-full bg-cyan-500"></div>
-                <p class="text-xs text-cyan-400 font-bold mb-1 uppercase tracking-wider">Security Advisory</p>
-                <p id="security-tip" class="text-sm text-slate-200 italic leading-relaxed">"Always validate inputs..."</p>
-            </div>
-
-            <div class="flex flex-col gap-1 mb-6">
-                <span class="text-xs text-slate-500 uppercase">Total Processed Volume</span>
-                <span id="final-score" class="text-3xl font-bold text-green-400">$0.00</span>
-            </div>
-
-            <div class="flex gap-4">
-                <button id="restart-btn" class="px-6 py-2 bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white font-bold rounded transition-colors">
-                    RETRY
-                </button>
-                <button onclick="alert('Copied to clipboard: I processed ' + document.getElementById('final-score').innerText + ' in Transaction Snake!')" class="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-colors">
-                    SHARE REPORT
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Controls Hint (Desktop) -->
-    <div class="mt-4 text-slate-500 text-xs hidden md:block">
-        [ P ] PAUSE GAME &nbsp;|&nbsp; [ R ] RESTART
-    </div>
-
+    <script src="../assets/dodo-juice.js"></script>
     <script src="assets/script.js"></script>
 </body>
 </html>

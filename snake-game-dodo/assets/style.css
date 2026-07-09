@@ -1,40 +1,269 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
+/* ==========================================================================
+   TRANSACTION SNAKE — game styles on assets/dodo-arcade.css tokens.
+   Cyberpunk grid + scanline aesthetic rebuilt in custom CSS (no Tailwind CDN).
+   ========================================================================== */
+
+:root {
+  --snake-cyan: #22d3ee;
+  --snake-cyan-soft: rgba(34, 211, 238, 0.10);
+  --snake-cyan-line: rgba(34, 211, 238, 0.30);
+  --snake-gold: #ffd23f;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
 
 body {
-    font-family: 'JetBrains Mono', monospace;
-    background-color: #0f172a;
-    overflow: hidden;
-    touch-action: none; /* Prevent scroll on mobile */
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: var(--da-font);
+  color: var(--da-text);
+  -webkit-tap-highlight-color: transparent;
+  background:
+    linear-gradient(var(--snake-cyan-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--snake-cyan-soft) 1px, transparent 1px),
+    radial-gradient(120% 90% at 50% -10%, rgba(193, 255, 0, 0.10), transparent 55%),
+    radial-gradient(90% 80% at 50% 120%, rgba(34, 211, 238, 0.10), transparent 55%),
+    var(--dodo-bg);
+  background-size: 26px 26px, 26px 26px, 100% 100%, 100% 100%, 100% 100%;
 }
 
-.cyber-grid {
-    background-image: linear-gradient(rgba(34, 211, 238, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+/* --- Shell + stage -------------------------------------------------------- */
+.snake-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--da-space-3);
+  width: 100%;
+  height: 100dvh;
+  padding: var(--da-space-3);
+  overflow: hidden;
 }
 
-.scanline {
-    width: 100%;
-    height: 100px;
-    z-index: 10;
-    background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(34, 211, 238, 0.05) 50%, rgba(0,0,0,0) 100%);
-    opacity: 0.1;
-    position: absolute;
-    bottom: 100%;
-    animation: scanline 10s linear infinite;
-    pointer-events: none;
+.snake-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: var(--da-radius-lg);
 }
 
-@keyframes scanline {
-    0% { bottom: 100%; }
-    100% { bottom: -100px; }
+#gameCanvas {
+  display: block;
+  border-radius: var(--da-radius-lg);
+  background: #060b12;
+  border: 1px solid var(--snake-cyan-line);
+  box-shadow:
+    var(--da-shadow-3),
+    0 0 34px rgba(34, 211, 238, 0.18),
+    inset 0 0 40px rgba(6, 11, 18, 0.9);
+  touch-action: none;
 }
 
-/* Neon Glow Effects */
-.text-neon-blue { text-shadow: 0 0 10px rgba(34, 211, 238, 0.7); }
-.text-neon-red { text-shadow: 0 0 10px rgba(248, 113, 113, 0.7); }
-.text-neon-green { text-shadow: 0 0 10px rgba(74, 222, 128, 0.7); }
+/* --- Animated scanline sweep (ported from the legacy cyberpunk look) ------ */
+.snake-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 120px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(34, 211, 238, 0.06) 50%, rgba(0, 0, 0, 0) 100%);
+  opacity: 0.6;
+  animation: snake-scan 9s linear infinite;
+}
 
-canvas {
-    box-shadow: 0 0 30px rgba(34, 211, 238, 0.15);
+@keyframes snake-scan {
+  0% { transform: translateY(-120px); }
+  100% { transform: translateY(100dvh); }
+}
+
+/* --- HUD ------------------------------------------------------------------ */
+.snake-hud[hidden] { display: none; }
+.snake-hud {
+  position: static;
+  justify-content: center;
+  padding: 0;
+  pointer-events: none;
+}
+
+.snake-hud__cluster {
+  display: inline-flex;
+  align-items: stretch;
+  gap: var(--da-space-2);
+  padding: var(--da-space-2) var(--da-space-3);
+  background: rgba(13, 13, 13, 0.82);
+  border: 1px solid var(--da-border);
+  border-radius: var(--da-radius-pill);
+  box-shadow: var(--da-shadow-1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.snake-stat {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 66px;
+  line-height: 1;
+}
+
+.snake-stat__label {
+  font-family: var(--da-font-mono);
+  font-style: normal;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--da-text-muted);
+}
+
+.snake-stat__val {
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-lg);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.snake-stat__val.da-score { color: var(--dodo-green); }
+.snake-stat__val--lvl { color: var(--snake-cyan); text-shadow: 0 0 10px rgba(34, 211, 238, 0.4); }
+.snake-stat__val--best { color: var(--da-text); text-shadow: none; font-size: var(--da-fs-md); }
+
+#combo-badge { margin-left: var(--da-space-2); pointer-events: none; }
+.da-combo-badge[hidden] { display: none; }
+
+/* --- Start / Game-over legend + copy -------------------------------------- */
+.snake-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--da-space-2) var(--da-space-4);
+  margin: 0;
+  padding: 0;
+  max-width: 30ch;
+  list-style: none;
+  font-size: var(--da-fs-sm);
+  color: var(--da-text-secondary);
+}
+.snake-legend li { display: inline-flex; align-items: center; gap: var(--da-space-2); }
+.snake-legend__dot {
+  width: 10px; height: 10px; border-radius: 3px;
+  background: var(--c, var(--dodo-green));
+  box-shadow: 0 0 10px var(--c, var(--dodo-green));
+}
+
+.snake-controls {
+  margin: 0;
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-xs);
+  letter-spacing: 0.05em;
+  color: var(--da-text-muted);
+}
+
+.snake-over__eyebrow { color: var(--da-danger); }
+.snake-over__accent { color: var(--da-danger); }
+
+.snake-over__scores {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--da-space-6);
+}
+.snake-over__cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.snake-over__final { font-size: var(--da-fs-2xl); }
+.snake-over__cell .da-stat__value { font-size: var(--da-fs-xl); color: var(--da-text-secondary); }
+
+.snake-tip {
+  margin: 0;
+  max-width: 34ch;
+  font-size: var(--da-fs-sm);
+  line-height: 1.5;
+  color: var(--da-text-secondary);
+}
+.snake-tip__k {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--da-font-mono);
+  font-size: var(--da-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--snake-cyan);
+}
+
+/* --- D-pad (mobile parity; >=44px targets) -------------------------------- */
+.snake-dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 56px);
+  grid-template-rows: repeat(2, 56px);
+  gap: var(--da-space-2);
+  justify-content: center;
+  align-items: center;
+  z-index: var(--da-z-hud);
+}
+.snake-dpad__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  font-size: 1.2rem;
+  color: var(--da-text);
+  background: rgba(13, 13, 13, 0.78);
+  border: 1px solid var(--snake-cyan-line);
+  border-radius: var(--da-radius-md);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform var(--da-dur-fast) var(--da-ease),
+    border-color var(--da-dur) var(--da-ease),
+    background var(--da-dur) var(--da-ease);
+}
+.snake-dpad__btn:active {
+  transform: scale(0.92);
+  background: var(--snake-cyan-soft);
+  border-color: var(--snake-cyan);
+}
+.snake-dpad__btn:focus-visible { outline: 2px solid var(--dodo-green); outline-offset: 2px; }
+.snake-dpad__btn--up { grid-column: 2; grid-row: 1; }
+.snake-dpad__btn--left { grid-column: 1; grid-row: 2; }
+.snake-dpad__btn--right { grid-column: 3; grid-row: 2; }
+.snake-dpad__btn--down { grid-column: 2; grid-row: 2; }
+
+/* --- Overlay tightening for small viewports ------------------------------- */
+.da-screen { gap: var(--da-space-4); padding: var(--da-space-5) var(--da-space-4); }
+
+@media (max-height: 760px) {
+  .da-title--hero { font-size: 2.4rem; }
+  .da-subtitle { font-size: var(--da-fs-md); }
+  .da-screen { gap: var(--da-space-3); }
+}
+
+@media (max-width: 540px) {
+  .da-back-link__text { display: none; }
+  .da-back-link { padding-left: var(--da-space-3); padding-right: var(--da-space-3); }
+}
+
+@media (max-width: 400px) {
+  .snake-dpad { grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(2, 50px); }
+  .snake-dpad__btn { width: 50px; height: 50px; }
+  .snake-legend { font-size: var(--da-fs-xs); max-width: 26ch; }
+  .snake-hud__cluster { gap: var(--da-space-1); padding: var(--da-space-2); }
+  .snake-stat { min-width: 56px; }
+}
+
+/* --- Reduced motion ------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .snake-scanline { animation: none; opacity: 0.25; }
+  .snake-dpad__btn { transition: none; }
 }
