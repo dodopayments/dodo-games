@@ -10,3 +10,8 @@ wrangler.toml
 .omo/evidence/games-quality-revamp/_report/
 test-results/
 playwright-report/
+
+# Evidence binaries (gameplay videos, screenshots, Lighthouse JSON) are kept
+# locally for review but not tracked in git — only the REVIEW.md index is.
+.omo/evidence/games-quality-revamp/**
+!.omo/evidence/games-quality-revamp/REVIEW.md

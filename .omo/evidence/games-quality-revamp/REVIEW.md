@@ -1,5 +1,7 @@
 # Dodo Games — Quality Revamp: Video Review Index
 
+> Evidence binaries (videos/screenshots/lighthouse JSON) live locally under this directory and are gitignored; only this index is tracked.
+
 Human-reviewable proof of the quality revamp. Every revamped game has a **desktop** gameplay
 recording and a **mobile** (390×844, touch-driven) recording, plus a Lighthouse (mobile
 emulation) report. The home page has a walkthrough video and a final-thumbnails screenshot.
