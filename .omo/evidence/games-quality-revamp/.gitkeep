@@ -1,4 +1,0 @@
-# Evidence directory for Task 0.4 (games quality revamp verification harness).
-# Per-game evidence lands in ./{slug}/ : screenshots, gameplay-desktop.webm,
-# gameplay-mobile.webm, lighthouse.json, plus Playwright artifacts under
-# _playwright-artifacts/ and the HTML/JSON report under _report/.
