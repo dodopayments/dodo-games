@@ -7,6 +7,7 @@
   'use strict';
 
   var GAME_NAME = 'Dodo Pong';
+  var SLUG = 'dodo-pong';
   var HAS_JUICE = typeof window.DodoJuice !== 'undefined';
   var J = HAS_JUICE ? window.DodoJuice : null;
 
@@ -93,11 +94,12 @@
   var lastTs = 0;
 
   /* ---- highscore (with legacy migration) ------------------------------ */
+  var BEST_KEY = 'dodo_' + SLUG + '_highscore';
   if (HAS_JUICE && J.highscore) {
-    hs = J.highscore('dodo-pong', ['dodo_pong_highscore']);
+    hs = J.highscore(SLUG, ['dodo_pong_highscore']);
     best = hs.best;
   } else {
-    best = parseInt(localStorage.getItem('dodo_dodo-pong_highscore') || localStorage.getItem('dodo_pong_highscore') || '0', 10) || 0;
+    best = parseInt(localStorage.getItem(BEST_KEY) || localStorage.getItem('dodo_pong_highscore') || '0', 10) || 0;
   }
   try { bestRally = parseInt(localStorage.getItem('dodo_dodo-pong_bestrally') || '0', 10) || 0; } catch (e) { bestRally = 0; }
 
@@ -672,7 +674,7 @@
 
     var prevBest = best;
     if (hs) { hs.set(playerScore); best = hs.best; }
-    else if (playerScore > best) { best = playerScore; try { localStorage.setItem('dodo_dodo-pong_highscore', String(best)); } catch (e) {} }
+    else if (playerScore > best) { best = playerScore; try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {} }
     try { localStorage.setItem('dodo_dodo-pong_bestrally', String(Math.max(bestRally, parseInt(localStorage.getItem('dodo_dodo-pong_bestrally') || '0', 10) || 0))); } catch (e) {}
 
     if (typeof DodoAnalytics !== 'undefined') {
