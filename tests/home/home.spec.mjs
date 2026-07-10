@@ -27,6 +27,17 @@ const EXTERNAL_NOISE = [
   'fonts.gstatic.com',
 ];
 
+// Exact-hostname matcher: parse the URL and compare the hostname instead of
+// running an unanchored regex over the whole URL, so a host like
+// `googletagmanager.com.evil.test` (or a query param) cannot spoof a match.
+// `endsWith('.<domain>')` still covers legitimate subdomains (www., region1.).
+function isAnalyticsHost(hostname) {
+  return (
+    hostname === 'googletagmanager.com' || hostname.endsWith('.googletagmanager.com') ||
+    hostname === 'google-analytics.com' || hostname.endsWith('.google-analytics.com')
+  );
+}
+
 // Genre -> expected visible game count (must sum to 14).
 const GENRE_COUNTS = { Action: 3, Puzzle: 3, Arcade: 7, Word: 1 };
 
@@ -43,7 +54,7 @@ function attachConsole(page, sink) {
 
 // Neutralize GA network so tests are hermetic; dataLayer still records synchronously.
 async function stubAnalytics(target) {
-  await target.route(/googletagmanager\.com|google-analytics\.com/, (route) =>
+  await target.route((url) => isAnalyticsHost(url.hostname), (route) =>
     route
       .fulfill({ status: 200, contentType: 'application/javascript', body: '' })
       .catch(() => route.continue()),

@@ -41,6 +41,23 @@ const EXTERNAL_NOISE = [
   'cdn.tailwindcss.com',
 ];
 
+// Exact-hostname URL matchers. We parse the URL and compare the hostname
+// instead of substring/unanchored-regex matching so an attacker-controlled
+// URL like `https://cdn.tailwindcss.com.evil.test/` (or `?x=cdn.tailwindcss.com`)
+// cannot spoof a match. `endsWith('.<domain>')` covers legitimate subdomains.
+function isAnalyticsHost(hostname) {
+  return (
+    hostname === 'googletagmanager.com' || hostname.endsWith('.googletagmanager.com') ||
+    hostname === 'google-analytics.com' || hostname.endsWith('.google-analytics.com')
+  );
+}
+
+function isTailwindCdnUrl(url) {
+  let hostname = '';
+  try { hostname = new URL(url).hostname; } catch { /* non-absolute / invalid URL: no host */ }
+  return hostname === 'cdn.tailwindcss.com' || hostname.endsWith('.tailwindcss.com');
+}
+
 // ---------------------------------------------------------------------------
 // Config normalization
 // ---------------------------------------------------------------------------
@@ -127,13 +144,13 @@ async function newInstrumentedContext(browser, opts = {}) {
 
   // Neutralize external analytics endpoints so tests are hermetic but dataLayer
   // still records events synchronously (gtag pushes before the network call).
-  await context.route(/googletagmanager\.com|google-analytics\.com/, (route) =>
+  await context.route((url) => isAnalyticsHost(url.hostname), (route) =>
     route.fulfill({ status: 200, contentType: 'application/javascript', body: '' }).catch(() => route.continue()),
   );
 
   // Record (never block silently) any Tailwind CDN request for assertion #8.
   context.on('request', (req) => {
-    if (req.url().includes('cdn.tailwindcss.com')) tailwindRequests.push(req.url());
+    if (isTailwindCdnUrl(req.url())) tailwindRequests.push(req.url());
   });
 
   return { context, tailwindRequests, consoleErrors };
