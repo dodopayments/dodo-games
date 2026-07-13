@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Currency Blitz Dodo - Convert currencies against the clock. Race accuracy, speed, and streak multipliers in this cross-border payments arcade by Dodo Payments.">
+  <meta name="keywords" content="currency converter game, FX game, exchange rate quiz, dodo games, browser game, payments game">
+  <meta name="author" content="Dodo Payments">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://games.dodopayments.com/currency-blitz-dodo/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://games.dodopayments.com/currency-blitz-dodo/">
+  <meta property="og:title" content="Currency Blitz Dodo | Dodo Games">
+  <meta property="og:description" content="Convert currencies as fast as you can. Accuracy, speed, and streaks build your FX score.">
+  <meta property="og:image" content="https://games.dodopayments.com/assets/images/currency-blitz-dodo-og.jpg">
+  <meta property="og:site_name" content="Dodo Games">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://games.dodopayments.com/currency-blitz-dodo/">
+  <meta name="twitter:title" content="Currency Blitz Dodo | Dodo Games">
+  <meta name="twitter:description" content="Convert currencies as fast as you can. Accuracy, speed, and streaks build your FX score.">
+  <meta name="twitter:image" content="https://games.dodopayments.com/assets/images/currency-blitz-dodo-og.jpg">
+  <script src="../assets/analytics.js"></script>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <title>Currency Blitz Dodo | Dodo Games</title>
+  <link rel="stylesheet" href="../assets/dodo-arcade.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Currency Blitz Dodo",
+    "description": "Convert currencies against the clock. Earn points for accuracy, speed, and win streaks in a cross-border payments arcade challenge.",
+    "url": "https://games.dodopayments.com/currency-blitz-dodo/",
+    "image": "https://games.dodopayments.com/assets/images/currency-blitz-dodo-og.jpg",
+    "genre": ["Puzzle", "Arcade", "Educational"],
+    "gamePlatform": "Web Browser",
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
+    "playMode": "SinglePlayer",
+    "publisher": { "@type": "Organization", "name": "Dodo Payments" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+</head>
+<body>
+  <a href="/" class="da-back-link"><span class="da-back-link__arrow" aria-hidden="true">←</span> <span class="da-back-link__text">Back to Arcade</span></a>
+
+  <main class="cb-shell" id="cbShell">
+    <!-- PLAY -->
+    <section id="gameScreen" class="cb-play" hidden aria-live="polite">
+      <header class="cb-hud">
+        <div class="cb-stat cb-stat--score">
+          <span class="cb-stat__label">Score</span>
+          <span class="da-score" id="score">0</span>
+        </div>
+        <div class="cb-stat">
+          <span class="cb-stat__label">Streak</span>
+          <span class="cb-stat__value" id="streak">0</span>
+        </div>
+        <div class="cb-stat">
+          <span class="cb-stat__label">Lives</span>
+          <span class="cb-stat__value" id="lives" aria-label="Lives remaining">●●●</span>
+        </div>
+        <div class="cb-stat">
+          <span class="cb-stat__label">Best</span>
+          <span class="cb-stat__value" id="bestScore">0</span>
+        </div>
+        <span class="da-combo-badge" id="comboBadge" hidden>COMBO ×1</span>
+      </header>
+
+      <div class="cb-stage" id="cbStage">
+        <div class="cb-timer" aria-hidden="true">
+          <svg class="cb-timer__ring" viewBox="0 0 120 120">
+            <circle class="cb-timer__track" cx="60" cy="60" r="52" />
+            <circle class="cb-timer__progress" id="timerRing" cx="60" cy="60" r="52" />
+          </svg>
+          <div class="cb-timer__face">
+            <span class="cb-timer__secs" id="timerSecs">15</span>
+            <span class="cb-timer__label">sec</span>
+          </div>
+        </div>
+
+        <div class="cb-prompt" id="promptCard">
+          <p class="cb-prompt__eyebrow" id="promptEyebrow">Convert</p>
+          <div class="cb-prompt__pair">
+            <div class="cb-chip cb-chip--from">
+              <span class="cb-chip__amount" id="fromAmount">100</span>
+              <span class="cb-chip__code" id="fromCode">USD</span>
+            </div>
+            <span class="cb-prompt__arrow" aria-hidden="true">→</span>
+            <div class="cb-chip cb-chip--to">
+              <span class="cb-chip__amount cb-chip__amount--ghost">?</span>
+              <span class="cb-chip__code" id="toCode">INR</span>
+            </div>
+          </div>
+          <p class="cb-prompt__hint" id="rateHint">Arcade mid-rate · round to whole</p>
+        </div>
+
+        <div class="cb-answer" id="answerWrap">
+          <label class="cb-answer__label" for="answerInput">Your conversion</label>
+          <div class="cb-answer__field">
+            <span class="cb-answer__currency" id="answerCurrency">INR</span>
+            <input
+              id="answerInput"
+              class="cb-answer__input"
+              type="text"
+              inputmode="decimal"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              enterkeyhint="done"
+              aria-label="Converted amount"
+              placeholder="0"
+            />
+          </div>
+          <p class="cb-feedback" id="feedback" role="status" aria-live="assertive"></p>
+        </div>
+
+        <div class="cb-powers" role="group" aria-label="Power-ups">
+          <button type="button" class="cb-power" id="freezeBtn" disabled>
+            <span class="cb-power__icon" aria-hidden="true">⏱</span>
+            <span class="cb-power__meta">
+              <strong>Freeze</strong>
+              <small>+5s · <span id="freezeCount">1</span> left</small>
+            </span>
+          </button>
+          <div class="cb-power cb-power--passive" id="doubleHint" aria-hidden="true">
+            <span class="cb-power__icon">🟢</span>
+            <span class="cb-power__meta">
+              <strong>Double</strong>
+              <small>Answer in ≤3s</small>
+            </span>
+          </div>
+        </div>
+
+        <div class="cb-pad" id="numPad" role="group" aria-label="Number pad">
+          <button type="button" class="cb-pad__key" data-key="1">1</button>
+          <button type="button" class="cb-pad__key" data-key="2">2</button>
+          <button type="button" class="cb-pad__key" data-key="3">3</button>
+          <button type="button" class="cb-pad__key" data-key="4">4</button>
+          <button type="button" class="cb-pad__key" data-key="5">5</button>
+          <button type="button" class="cb-pad__key" data-key="6">6</button>
+          <button type="button" class="cb-pad__key" data-key="7">7</button>
+          <button type="button" class="cb-pad__key" data-key="8">8</button>
+          <button type="button" class="cb-pad__key" data-key="9">9</button>
+          <button type="button" class="cb-pad__key cb-pad__key--ghost" data-key=".">.</button>
+          <button type="button" class="cb-pad__key" data-key="0">0</button>
+          <button type="button" class="cb-pad__key cb-pad__key--ghost" data-key="back" aria-label="Backspace">⌫</button>
+          <button type="button" class="cb-pad__key cb-pad__key--clear cb-pad__key--ghost" data-key="clear">Clear</button>
+          <button type="button" class="cb-pad__key cb-pad__key--go" data-key="submit">Convert</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- START -->
+    <section id="startScreen" class="da-screen">
+      <p class="da-eyebrow">Dodo Payments Arcade</p>
+      <h1 class="da-title da-title--hero">CURRENCY <span class="da-title__accent">BLITZ</span></h1>
+      <p class="da-subtitle">Convert FX as fast as you can. Speed, accuracy, and streaks stack — freeze the clock when the rate gets spicy.</p>
+
+      <div class="cb-select">
+        <span class="cb-select__label">Difficulty</span>
+        <div class="cb-seg" id="difficultySelect" role="group" aria-label="Select difficulty">
+          <button type="button" class="cb-seg__btn is-active" data-diff="easy" aria-pressed="true">
+            <strong>Easy</strong><small>USD · EUR · GBP</small>
+          </button>
+          <button type="button" class="cb-seg__btn" data-diff="medium" aria-pressed="false">
+            <strong>Medium</strong><small>SGD · JPY · AED</small>
+          </button>
+          <button type="button" class="cb-seg__btn" data-diff="hard" aria-pressed="false">
+            <strong>Hard</strong><small>Random · 2 decimals</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="cb-mode" role="group" aria-label="Game mode">
+        <button type="button" class="cb-mode__btn is-active" id="modeBlitz" aria-pressed="true">Blitz Run</button>
+        <button type="button" class="cb-mode__btn" id="modeDaily" aria-pressed="false">Daily Challenge</button>
+      </div>
+
+      <div class="da-screen__actions">
+        <button id="startButton" type="button" class="da-btn da-btn--primary">Start Converting</button>
+      </div>
+
+      <div class="cb-board" aria-label="Local leaderboard">
+        <div><span class="cb-board__label">High Score</span><strong id="lbScore">0</strong></div>
+        <div><span class="cb-board__label">Best Streak</span><strong id="lbStreak">0</strong></div>
+        <div><span class="cb-board__label">Avg Speed</span><strong id="lbAvg">—</strong></div>
+        <div><span class="cb-board__label">Daily Best</span><strong id="lbDaily">0</strong></div>
+      </div>
+
+      <p class="cb-controls-hint">Number pad or keyboard · Enter to submit · 3 lives</p>
+    </section>
+
+    <!-- GAME OVER -->
+    <section id="gameOverScreen" class="da-screen" hidden>
+      <p class="da-eyebrow" id="resultEyebrow">Settlement Closed</p>
+      <h2 class="da-title" id="resultTitle">Out of Runway</h2>
+
+      <div class="cb-result">
+        <div class="cb-result__score">
+          <span class="da-stat__label">Final Score</span>
+          <span class="da-score" id="finalScore">0</span>
+        </div>
+        <div class="cb-result__grid">
+          <div><span class="da-stat__label">Correct</span><b id="finalCorrect">0</b></div>
+          <div><span class="da-stat__label">Best Streak</span><b id="finalStreak">0</b></div>
+          <div><span class="da-stat__label">Avg Time</span><b id="finalAvg">—</b></div>
+          <div><span class="da-stat__label">Fastest</span><b id="finalFast">—</b></div>
+        </div>
+      </div>
+
+      <p class="da-subtitle cb-result__meta">
+        Best <span id="overDiffLabel">Easy</span> <strong id="overDiffBest">0</strong>
+        &nbsp;·&nbsp; All-time <strong id="overBestScore">0</strong>
+      </p>
+
+      <div class="da-screen__actions">
+        <button id="restartButton" type="button" class="da-btn da-btn--primary">Play Again</button>
+        <button id="menuButton" type="button" class="da-btn da-btn--ghost">Change Mode</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/dodo-juice.js"></script>
+  <script src="assets/script.js"></script>
+</body>
+</html>
