@@ -114,5 +114,12 @@
       genre: 'Puzzle',
       released: '2026-02-22',
     },
+    {
+      slug: 'currency-blitz-dodo',
+      title: 'Currency Blitz',
+      hook: 'Convert FX against the clock. Stack speed, streaks, and freeze power-ups.',
+      genre: 'Puzzle',
+      released: '2026-07-13',
+    },
   ];
 })(window);

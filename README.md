@@ -31,6 +31,7 @@ Dodo Games is an engaging collection of playful, custom-built arcade games creat
 | **[Firewall Breaker Dodo](https://games.dodopayments.com/firewall-breaker-dodo)** | Smash 9 handcrafted firewall layers — trigger explosive bricks, grab PCI Shield and 2FA Ball, and earn 3 stars per level. |
 | **[API Wordle Dodo](https://games.dodopayments.com/api-wordle-dodo)** | Guess the 5-letter payment term in 6 tries — daily & free-play modes, hard mode, streaks, and 150+ fintech terms. |
 | **[Ledger Blocks Dodo](https://games.dodopayments.com/ledger-blocks-dodo)** | Drop transaction blocks into the ledger — hold pieces, project ghost drops, and clear rows to settle batches. |
+| **[Currency Blitz Dodo](https://games.dodopayments.com/currency-blitz-dodo)** | Convert currencies against the clock — stack speed bonuses, freeze the timer, and ride streak multipliers. |
 
 ## Local Development
 
@@ -180,6 +181,7 @@ dodo-games/
 ├── checkout-rush-dodo/     # Fast-paced matching game
 ├── dodo-dash/              # Endless runner game
 ├── merchant-hero-dodo/     # Space shooter game
+├── currency-blitz-dodo/    # Timed FX conversion race
 └── dist/                   # Built output (generated)
 ```
 
